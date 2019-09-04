@@ -40,8 +40,11 @@
             Choose Your Demise
         </button>
         <div class="dropdown-menu dropdown-menu-right" >
-            <button class="dropdown-item" type="button" th:each="cat : ${categories}"
-                    th:text="${cat.name}">Magical Category</button>
+            <form action="#" th:action="@{/}" method="post">
+                <button name="filter" class="dropdown-item" type="submit" th:each="cat : ${categories}"
+                        th:text="${cat.name}" value="#" th:value="${cat.name + ' ' + cat.getId()}">
+                </button>
+            </form>
         </div>
     </div>
 
