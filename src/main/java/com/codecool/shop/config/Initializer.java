@@ -32,12 +32,12 @@ public class Initializer implements ServletContextListener {
         supplierDataStore.add(eldamar);
 
         //setting up a new product category
+        ProductCategory scroll = new ProductCategory("Scroll", "Consumable", "A rolled up parchment. Contains various things");
+        productCategoryDataStore.add(scroll);
         ProductCategory weapon = new ProductCategory("Weapon", "Equipment", "Items that a character can use for dealing damage");
         productCategoryDataStore.add(weapon);
         ProductCategory potion = new ProductCategory("Potion", "Consumable", "Various liquids enclosed in a bottle.");
         productCategoryDataStore.add(potion);
-        ProductCategory scroll = new ProductCategory("Scroll", "Consumable", "A rolled up parchment. Contains various things");
-        productCategoryDataStore.add(scroll);
 
         //setting up products and printing it
         productDataStore.add(new Product("Potion of Healing", 24, "USD", "A magical liquid capable of healing up wounds with accelerated regeneration.", potion, eldamar));
