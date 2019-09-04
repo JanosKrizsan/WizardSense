@@ -39,8 +39,9 @@
         <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Choose Your Demise
         </button>
-        <div class="dropdown-menu dropdown-menu-right" th:each="cat : ${categories}">
-            <button class="dropdown-item" type="button" th:text="${cat.name}">Magical Category</button>
+        <div class="dropdown-menu dropdown-menu-right" >
+            <button class="dropdown-item" type="button" th:each="cat : ${categories}"
+                    th:text="${cat.name}">Magical Category</button>
         </div>
     </div>
 
