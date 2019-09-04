@@ -57,7 +57,6 @@ public class ProductController extends HttpServlet {
 
         Object filterBy = filter(productCategoryDataStore, productDataStore, req);
         context.setVariable("categories" , productCategoryDataStore.getAll());
-        feature/selection-poster
         context.setVariable("products", filterBy);
 
 
@@ -66,6 +65,9 @@ public class ProductController extends HttpServlet {
 
     @Override
     protected void doPost (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ProductDao productDataStore = ProductDaoMem.getInstance();
+        int productId = Integer.parseInt(req.getParameter("product"));
+
 
         doGet(req, resp);
     }
