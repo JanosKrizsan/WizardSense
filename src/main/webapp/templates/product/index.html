@@ -40,8 +40,12 @@
             Choose Your Demise
         </button>
         <div class="dropdown-menu dropdown-menu-right" >
+            <b>Categories:</b>
             <button class="dropdown-item" type="button" th:each="cat : ${categories}"
                     th:text="${cat.name}">Magical Category</button>
+            <b>Suppliers:</b>
+            <button class="dropdown-item" type="button" th:each="sup : ${suppliers}"
+                    th:text="${sup.name}">Magical Category</button>
         </div>
     </div>
 
