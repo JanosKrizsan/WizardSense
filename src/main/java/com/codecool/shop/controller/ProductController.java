@@ -57,7 +57,9 @@ public class ProductController extends HttpServlet {
 
         Object filterBy = filter(productCategoryDataStore, productDataStore, req);
         context.setVariable("categories" , productCategoryDataStore.getAll());
+        feature/selection-poster
         context.setVariable("products", filterBy);
+
 
         engine.process("product/index.html", context, resp.getWriter());
     }
