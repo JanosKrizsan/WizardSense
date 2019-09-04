@@ -24,18 +24,25 @@ public class Initializer implements ServletContextListener {
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
 
         //setting up a new supplier
-        Supplier amazon = new Supplier("Amazon", "Digital content and services");
-        supplierDataStore.add(amazon);
-        Supplier lenovo = new Supplier("Lenovo", "Computers");
-        supplierDataStore.add(lenovo);
+        Supplier althiev = new Supplier("Althiev", "Armor and Weapons");
+        supplierDataStore.add(althiev);
+        Supplier arnix = new Supplier("Arnix", "Scrolls and Books");
+        supplierDataStore.add(arnix);
+        Supplier eldamar = new Supplier("Eldamar's General Goods", "General Goods");
+        supplierDataStore.add(eldamar);
 
         //setting up a new product category
-        ProductCategory tablet = new ProductCategory("Tablet", "Hardware", "A tablet computer, commonly shortened to tablet, is a thin, flat mobile computer with a touchscreen display.");
-        productCategoryDataStore.add(tablet);
+        ProductCategory weapon = new ProductCategory("Weapon", "Equipment", "Items that a character can use for dealing damage");
+        productCategoryDataStore.add(weapon);
+        ProductCategory potion = new ProductCategory("Potion", "Consumable", "Various liquids enclosed in a bottle.");
+        productCategoryDataStore.add(potion);
+        ProductCategory scroll = new ProductCategory("Scroll", "Consumable", "A rolled up parchment. Contains various things");
+        productCategoryDataStore.add(scroll);
 
         //setting up products and printing it
-        productDataStore.add(new Product("Amazon Fire", 49.9f, "USD", "Fantastic price. Large content ecosystem. Good parental controls. Helpful technical support.", tablet, amazon));
-        productDataStore.add(new Product("Lenovo IdeaPad Miix 700", 479, "USD", "Keyboard cover is included. Fanless Core m5 processor. Full-size USB ports. Adjustable kickstand.", tablet, lenovo));
-        productDataStore.add(new Product("Amazon Fire HD 8", 89, "USD", "Amazon's latest Fire HD 8 tablet is a great value for media consumption.", tablet, amazon));
+        productDataStore.add(new Product("Potion of Healing", 24, "GP", "A magical liquid capable of healing up wounds with accelerated regeneration.", potion, eldamar));
+        productDataStore.add(new Product("Potion of Greater Healing", 46, "GP", "A more potent version of the healing potion.", potion, eldamar));
+        productDataStore.add(new Product("Scroll of Frost Ray", 37, "GP", "A scroll of magic containing the 1st level spell: Frost Ray", scroll, arnix));
+        productDataStore.add(new Product("Sword of Cinders", 123, "GP", "A finely crafted longsword capable of producing minor flames on it's blade upon speaking the command word.", weapon, althiev));
     }
 }
