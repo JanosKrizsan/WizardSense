@@ -40,9 +40,9 @@ public class Initializer implements ServletContextListener {
         productCategoryDataStore.add(scroll);
 
         //setting up products and printing it
-        productDataStore.add(new Product("Potion of Healing", 24, "GP", "A magical liquid capable of healing up wounds with accelerated regeneration.", potion, eldamar));
-        productDataStore.add(new Product("Potion of Greater Healing", 46, "GP", "A more potent version of the healing potion.", potion, eldamar));
-        productDataStore.add(new Product("Scroll of Frost Ray", 37, "GP", "A scroll of magic containing the 1st level spell: Frost Ray", scroll, arnix));
-        productDataStore.add(new Product("Sword of Cinders", 123, "GP", "A finely crafted longsword capable of producing minor flames on it's blade upon speaking the command word.", weapon, althiev));
+        productDataStore.add(new Product("Potion of Healing", 24, "USD", "A magical liquid capable of healing up wounds with accelerated regeneration.", potion, eldamar));
+        productDataStore.add(new Product("Potion of Greater Healing", 46, "USD", "A more potent version of the healing potion.", potion, eldamar));
+        productDataStore.add(new Product("Scroll of Frost Ray", 37, "USD", "A scroll of magic containing the 1st level spell: Frost Ray", scroll, arnix));
+        productDataStore.add(new Product("Sword of Cinders", 123, "USD", "A finely crafted longsword capable of producing minor flames on it's blade upon speaking the command word.", weapon, althiev));
     }
 }
