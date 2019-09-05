@@ -37,43 +37,45 @@
 
 <div class="container">
     <h3>Your Satchel of Goods</h3>
-    <tabley
-    <ul>
-        <li th:each="item : ${cart}" class="cart-item">
-            <div>
-                <img src="http://placehold.it/400x250/000/fff"
-                     th:attr="src='/static/img/product_' + ${item.id} + '.jpg'" alt="Image not found"/>
-                <span th:text="${item.name + '       ' + item.productCategory + '   ' + item.supplier}">
-                    name, category, supplier
-                </span>
-                <div th:text="${item.description}">description</div>
-                <div>
-                    <form action="#" th:action="@{/shopping-cart}" method="post">
-                        <!--            add images for increase/decrease-->
-                        <button class="cart-button" type="submit" name="increase" value="#" th:value="${item.id}">
-                            Add
-                        </button>
-                        <button class="cart-button" type="submit" name="decrease" value="#" th:value="${item.id}">
-                            Rem.
-                        </button>
-                    </form>
-                </div>
-            </div>
-            <div>
-                <p th:text="${item.defaultPrice + ' GP'}"></p>
-                <p th:text="${item.quantity + ' piece(s)'}"></p>
-                <p th:text="${'Sum : ' + item.getDefaultPrice() * item.getQuantity()}"></p>
-            </div>
-
-        </li>
-    </ul>
-
-
-    <div th:if="${totalSum > 0}">
+    <div th:if="${totalSum > 0}" class="sum-buttons">
         <span th:text="${totalSum + ' GP'}">9000</span>
         <a href="/checkout" class="btn btn-success">I shall buy this lot</a>
         <a href="/" class="btn btn-danger">Nay, I shall browse further</a>
     </div>
+
+    <tabley
+    <div>
+        <div th:each="item : ${cart}" class="cart-item">
+            <div class="product-card">
+                <img class="cart-image" src="http://placehold.it/400x250/000/fff"
+                     th:attr="src='/static/img/product_' + ${item.id} + '.jpg'" alt="Image not found"/>
+                <div class="item-details">
+                    <p th:text="${item.getName()}">...</p>
+                    <p th:text="${item.getProductCategory().getName()}">...</p>
+                    <p th:text="${item.getSupplier().getName()}">...</p>
+                    <p th:text="${item.getDescription()}">...</p>
+                    <div>
+                        <form action="#" th:action="@{/shopping-cart}" method="post">
+                            <button class="cart-button" type="submit" name="increase" value="#" th:value="${item.id}">
+                                <img src="static/img/add.png" alt="add">
+                            </button>
+                            <button class="cart-button" type="submit" name="decrease" value="#" th:value="${item.id}">
+                                <img src="static/img/minus.png" alt="remove">
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="item-pricing">
+                    <p th:text="${item.defaultPrice + ' GP'}"></p>
+                    <p th:text="${item.quantity + ' piece(s)'}"></p>
+                    <p th:text="${'Sum : ' + item.getDefaultPrice() * item.getQuantity()}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 </div>
 
 <div th:replace="footer.html :: copy"></div>

@@ -183,3 +183,34 @@
     -webkit-transition: all 0.2s ease-in;
     transition: all 0.2s ease-in;
 }
+
+.cart-image {
+    height: 150px;
+}
+
+.item-details {
+    border: 1px solid red;
+
+}
+
+.item-pricing {
+
+}
+
+.item-details tr td {
+    display: inline-block;
+
+}
+
+.product-card {
+    background: lightgray;
+    border-radius: 10px;
+    width: 80%;
+    height: 200px;
+}
+
+.sum-buttons {
+    position: absolute;
+    top: 0;
+    right: -100px;
+}
