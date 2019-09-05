@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8" />
-    <meta name="author" content="Codecool" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta charset="utf-8"/>
+    <meta name="author" content="Codecool"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
     <title>WizardSense | Satchel</title>
 
@@ -14,45 +14,63 @@
 
     <!--Latest compiled and minified Popper -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
-    integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+            integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+            crossorigin="anonymous"></script>
 
     <!-- Latest compiled and minified CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- End of Bootstrap components -->
 
-    <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/custom.css"/>
 </head>
 
 <body>
 
-<div class="jumbotron text-center">
-    <h1>
-        <a id="to-main-page" href="#" th:href="@{/}">
-            <img src="static/img/page_logo.png" alt="WizardSense"/>
-        </a>
-    </h1>
-</div>
+<div th:replace="logo.html :: copy"></div>
+
 
 <div class="container">
+    <h3>Your Satchel of Goods</h3>
+    <tabley
     <ul>
-        <li th:each="item : ${cart}" >
-            <span class="cart-item" th:text="${item.name + ' | Quantity: ' + item.getQuantity() + ' | ' + ' | Price: ' + item.price + ' | ' + ' | Total : ' + item.getDefaultPrice() * item.getQuantity() + ' | '}">CartItem</span>
-            <span><form action="#" th:action="@{/shopping-cart}" method="post">
-                <!--            add images for increase/decrease-->
-                <button class="cart-button" type="submit" name="increase" value="#" th:value="${item.id}">Add</button>
-                <button class="cart-button"type="submit" name="decrease" value="#" th:value="${item.id}">Rem.</button>
-            </form></span>
+        <li th:each="item : ${cart}" class="cart-item">
+            <div>
+                <img src="http://placehold.it/400x250/000/fff"
+                     th:attr="src='/static/img/product_' + ${item.id} + '.jpg'" alt="Image not found"/>
+                <span th:text="${item.name + '       ' + item.productCategory + '   ' + item.supplier}">
+                    name, category, supplier
+                </span>
+                <div th:text="${item.description}">description</div>
+                <div>
+                    <form action="#" th:action="@{/shopping-cart}" method="post">
+                        <!--            add images for increase/decrease-->
+                        <button class="cart-button" type="submit" name="increase" value="#" th:value="${item.id}">
+                            Add
+                        </button>
+                        <button class="cart-button" type="submit" name="decrease" value="#" th:value="${item.id}">
+                            Rem.
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div>
+                <p th:text="${item.defaultPrice + ' GP'}"></p>
+                <p th:text="${item.quantity + ' piece(s)'}"></p>
+                <p th:text="${'Sum : ' + item.getDefaultPrice() * item.getQuantity()}"></p>
+            </div>
+
         </li>
     </ul>
 
 
-    <div th:stlye="${totalSum < 1.0} ? 'display: none' : 'display: block'">
-        <span th:text="${totalSum}">9000</span>
+    <div th:if="${totalSum > 0}">
+        <span th:text="${totalSum + ' GP'}">9000</span>
         <a href="/checkout" class="btn btn-success">I shall buy this lot</a>
         <a href="/" class="btn btn-danger">Nay, I shall browse further</a>
     </div>

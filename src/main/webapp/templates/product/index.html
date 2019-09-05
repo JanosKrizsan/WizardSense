@@ -44,8 +44,8 @@
 
 <div class="container">
     <div class="btn-group">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Choose Your Demise
+        <button type="button" class="btn btn-secondary dropdown-toggle filtering-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Cast Filtering Spell
         </button>
         <div class="dropdown-menu dropdown-menu-right" >
             <form action="#" th:action="@{/}" method="post">
@@ -65,15 +65,15 @@
 
     <div id="products" class="row">
         <div class="col col-sm-12 col-md-6 col-lg-4" th:each="prod : ${products}">
-            <div class="card">
-                <img class="" src="http://placehold.it/400x250/000/fff" th:attr="src='/static/img/product_' + ${prod.id} + '.jpg'" alt="" />
+            <div class="card magic-select">
+                <img src="http://placehold.it/400x250/000/fff" th:attr="src='/static/img/product_' + ${prod.id} + '.jpg'" alt="" />
                 <div class="card-header">
                     <h4 class="card-title" th:text="${prod.name}">Product name</h4>
                     <p class="card-text" th:text="${prod.description}">Product description... </p>
                 </div>
                 <div class="card-body">
                     <div class="card-text">
-                        <p class="lead" th:text="${prod.getPrice()}">100 USD</p>
+                        <p class="lead" th:text="${prod.getDefaultPrice() + ' GP '}">100 USD</p>
                     </div>
                     <div class="card-text">
                         <form th:action="@{/}" method="post">
