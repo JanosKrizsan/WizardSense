@@ -3,7 +3,6 @@ package com.codecool.shop.controller;
 import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
-import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.dao.implementation.CartDaoMem;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
@@ -19,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,8 +34,13 @@ public class ProductController extends HttpServlet {
             List<Character> filtered = req.getParameter("filter").chars().mapToObj(e -> (char) e).collect(Collectors.toList());
             int filterId = Integer.parseInt(filtered.get(filtered.size() -1).toString());
             filtered.remove(filtered.size() - 1);
-            String filterName = filtered.toString().trim();
 
+            StringBuilder sBuilder = new StringBuilder();
+            for (Character character : filtered) {
+                sBuilder.append(character);
+            }
+
+            String filterName = sBuilder.toString().trim();
             String suppliers = SupplierDaoMem.getInstance().getAll().toString();
 
             if (suppliers.contains(filterName)) {
@@ -51,7 +54,7 @@ public class ProductController extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         ProductDao productDataStore = ProductDaoMem.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
 
@@ -76,7 +79,11 @@ public class ProductController extends HttpServlet {
             CartDao cartDataStore = CartDaoMem.getInstance();
 
             int productId = Integer.parseInt(req.getParameter("product"));
-            cartDataStore.add(productDataStore.find(productId));
+            if (cartDataStore.getAll().contains(productDataStore.find(productId))) {
+                cartDataStore.getAll().stream().filter((product -> product.equals(productDataStore.find(productId)))).forEach(product -> product.setQuantity(1));
+            } else {
+                cartDataStore.add(productDataStore.find(productId));
+            }
         } catch (NumberFormatException e) {
             System.out.println(e);
         }
