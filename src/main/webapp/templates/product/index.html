@@ -45,9 +45,10 @@
                         th:text="${cat.name}" value="#" th:value="${cat.name + ' ' + cat.getId()}">
                 </button>
             </form>
-
         </div>
     </div>
+
+    <a href="/shopping-cart"><img src="/static/img/shopping-cart.png" alt=""> </a>
 
     <div id="products" class="row">
         <div class="col col-sm-12 col-md-6 col-lg-4" th:each="prod : ${products}">
