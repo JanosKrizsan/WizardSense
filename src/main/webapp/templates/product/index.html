@@ -55,7 +55,10 @@
         </div>
     </div>
 
-    <a href="/shopping-cart"><img src="/static/img/shopping-cart.png" alt=""> </a>
+    <a href="/shopping-cart">
+        <img src="/static/img/shopping-cart.png" alt="">
+        <span th:if="${cartSize > 0}" th:text="${cartSize}" class="dot"></span>
+    </a>
 
     <div id="products" class="row">
         <div class="col col-sm-12 col-md-6 col-lg-4" th:each="prod : ${products}">
