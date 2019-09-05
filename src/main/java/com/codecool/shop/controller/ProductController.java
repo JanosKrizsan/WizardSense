@@ -34,8 +34,13 @@ public class ProductController extends HttpServlet {
             List<Character> filtered = req.getParameter("filter").chars().mapToObj(e -> (char) e).collect(Collectors.toList());
             int filterId = Integer.parseInt(filtered.get(filtered.size() -1).toString());
             filtered.remove(filtered.size() - 1);
-            String filterName = filtered.toString().trim();
 
+            StringBuilder sBuilder = new StringBuilder();
+            for (Character character : filtered) {
+                sBuilder.append(character);
+            }
+
+            String filterName = sBuilder.toString().trim();
             String suppliers = SupplierDaoMem.getInstance().getAll().toString();
 
             if (suppliers.contains(filterName)) {
