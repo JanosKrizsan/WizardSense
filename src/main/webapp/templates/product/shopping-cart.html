@@ -33,7 +33,7 @@
 <div class="jumbotron text-center">
     <h1>
         <a id="to-main-page" href="#" th:href="@{/}">
-        WizardSense
+            <img src="static/img/page_logo.png" alt="WizardSense"/>
         </a>
     </h1>
 </div>
@@ -51,7 +51,7 @@
     </ul>
 
 
-    <div th:stlye="${totalSum < 1} ? 'display: none' : 'display: block'">
+    <div th:stlye="${totalSum < 1.0} ? 'display: none' : 'display: block'">
         <span th:text="${totalSum}">9000</span>
         <a href="/checkout" class="btn btn-success">I shall buy this lot</a>
         <a href="/" class="btn btn-danger">Nay, I shall browse further</a>

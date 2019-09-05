@@ -8,6 +8,7 @@ import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
+import com.codecool.shop.model.BaseModel;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -57,7 +58,9 @@ public class ProductController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         ProductDao productDataStore = ProductDaoMem.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-        int cartSize = CartDaoMem.getInstance().getAll().size();
+
+        List<Integer> cartSize = CartDaoMem.getInstance().getAll().stream().map(BaseModel::getQuantity).collect(Collectors.toList());
+        int cartSizeSum = cartSize.stream().mapToInt(quantity -> quantity).sum();
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
@@ -66,7 +69,7 @@ public class ProductController extends HttpServlet {
         filter(productCategoryDataStore, productDataStore, req);
         context.setVariable("categories" , productCategoryDataStore.getAll());
         context.setVariable("suppliers", SupplierDaoMem.getInstance().getAll());
-        context.setVariable("cartSize", cartSize);
+        context.setVariable("cartSize", cartSizeSum);
         context.setVariable("products", defaultProds != null ? defaultProds : productDataStore.getAll());
 
 
