@@ -40,7 +40,14 @@
 
 <div class="container">
     <ul>
-        <li th:each="item : ${cart}" th:text="${item.name}">CartItem</li>
+        <li th:each="item : ${cart}" >
+            <span class="cart-item" th:text="${item.name + ' | Quantity: ' + item.getQuantity() + ' | ' + ' | Price: ' + item.price + ' | ' + ' | Total : ' + item.getDefaultPrice() * item.getQuantity() + ' | '}">CartItem</span>
+            <span><form action="#" th:action="@{/shopping-cart}" method="post">
+                <!--            add images for increase/decrease-->
+                <button class="cart-button" type="submit" name="increase" value="#" th:value="${item.id}">Add</button>
+                <button class="cart-button"type="submit" name="decrease" value="#" th:value="${item.id}">Rem.</button>
+            </form></span>
+        </li>
     </ul>
 </div>
 

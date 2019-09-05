@@ -72,3 +72,13 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+.cart-item {
+    float: left;
+    margin-bottom: 10px;
+}
+
+.cart-button {
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
