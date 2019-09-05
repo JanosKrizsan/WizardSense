@@ -5,7 +5,7 @@
     <meta name="author" content="Codecool" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-    <title>Codecool Shop</title>
+    <title>WizardSense | Satchel</title>
 
     <!-- Bootstrap components -->
     <!-- Latest compiled and minified Jquery -->
@@ -31,12 +31,23 @@
 <body>
 
 <div class="jumbotron text-center">
-    <h1>Codecool Shop</h1>
+    <h1>
+        <a id="to-main-page" href="#" th:href="@{/}">
+        WizardSense
+        </a>
+    </h1>
 </div>
 
 <div class="container">
     <ul>
-        <li th:each="item : ${cart}" th:text="${item.name}">CartItem</li>
+        <li th:each="item : ${cart}" >
+            <span class="cart-item" th:text="${item.name + ' | Quantity: ' + item.getQuantity() + ' | ' + ' | Price: ' + item.price + ' | ' + ' | Total : ' + item.getDefaultPrice() * item.getQuantity() + ' | '}">CartItem</span>
+            <span><form action="#" th:action="@{/shopping-cart}" method="post">
+                <!--            add images for increase/decrease-->
+                <button class="cart-button" type="submit" name="increase" value="#" th:value="${item.id}">Add</button>
+                <button class="cart-button"type="submit" name="decrease" value="#" th:value="${item.id}">Rem.</button>
+            </form></span>
+        </li>
     </ul>
 
     <a href="/checkout" class="btn btn-success">Checkout</a>

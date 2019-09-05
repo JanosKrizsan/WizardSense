@@ -26,18 +26,41 @@ import java.util.stream.Collectors;
 @WebServlet(urlPatterns = {"/shopping-cart"})
 public class CartController extends HttpServlet {
 
+    private void addOrRemoveProduct(HttpServletRequest req){
+        List<String> headers = Collections.list(req.getParameterNames());
+        CartDao cDS = CartDaoMem.getInstance();
+
+        if (headers.contains("increase")) {
+            int prodId = Integer.parseInt(req.getParameter("increase"));
+            cDS.find(prodId).setQuantity(1);
+        }
+        else if (headers.contains("decrease")) {
+            int prodId = Integer.parseInt(req.getParameter("decrease"));
+            cDS.find(prodId).setQuantity(-1);
+            if (cDS.find(prodId).getQuantity() == 0) {
+                cDS.remove(prodId);
+            }
+        }
+    }
+
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         CartDao cartDataStore = CartDaoMem.getInstance();
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
 
+        addOrRemoveProduct(req);
 
         context.setVariable("cart" , cartDataStore.getAll());
 
         engine.process("product/shopping-cart.html", context, resp.getWriter());
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        doGet(req, resp);
     }
 
 }

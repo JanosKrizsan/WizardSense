@@ -61,6 +61,28 @@
     margin: 0 0 11px;
 }
 
+#to-main-page, #reset {
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    /*optional*/
+    font-family: arial, sans-serif;
+    /*input has OS specific font-family*/
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.cart-item {
+    float: left;
+    margin-bottom: 10px;
+}
+
+.cart-button {
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
 .dot {
     margin-left: -20px;
     height: 20px;

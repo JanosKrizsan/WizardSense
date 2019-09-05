@@ -1,4 +1,13 @@
-package com.codecool.shop.dao;
+package com.codecool.shop.dao;//            for (Product product : cartDataStore.getAll()) {
+//                if (product.getId() == productId) {
+//                    product.setQuantity(1);
+//                    found = true;
+//                    break;
+//                }
+//            }
+//
+//            if (!found) {
+//            }
 
 import com.codecool.shop.model.Product;
 

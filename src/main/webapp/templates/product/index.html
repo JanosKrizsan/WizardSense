@@ -5,7 +5,7 @@
     <meta name="author" content="Codecool" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-    <title>Codecool Shop</title>
+    <title>WizardSense</title>
 
     <!-- Bootstrap components -->
     <!-- Latest compiled and minified Jquery -->
@@ -30,8 +30,12 @@
 
 <body>
 
-<div class="jumbotron text-center">
-    <h1>Codecool Shop</h1>
+<div name="store-name" class="jumbotron text-center">
+    <h1>
+        <form name="reset-form" action="#" th:action="@{/}" method="post">
+            <button id="reset" type="submit" name="reset" value="0">WizardSense</button>
+        </form>
+    </h1>
 </div>
 
 <div class="container">
