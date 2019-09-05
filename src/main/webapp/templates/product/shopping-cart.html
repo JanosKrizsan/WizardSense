@@ -50,10 +50,12 @@
                 <img class="cart-image" src="http://placehold.it/400x250/000/fff"
                      th:attr="src='/static/img/product_' + ${item.id} + '.jpg'" alt="Image not found"/>
                 <div class="item-details">
-                    <p th:text="${item.getName()}">...</p>
-                    <p th:text="${item.getProductCategory().getName()}">...</p>
-                    <p th:text="${item.getSupplier().getName()}">...</p>
+                    <p class="item-name" th:text="${item.getName()}">...</p>
+                    <p class="item-cat" th:text="${item.getProductCategory().getName()}">...</p>
+                    <p class="item-sup" th:text="${item.getSupplier().getName()}">...</p>
                     <p th:text="${item.getDescription()}">...</p>
+                </div>
+                <div class="item-pricing">
                     <div>
                         <form action="#" th:action="@{/shopping-cart}" method="post">
                             <button class="cart-button" type="submit" name="increase" value="#" th:value="${item.id}">
@@ -64,8 +66,6 @@
                             </button>
                         </form>
                     </div>
-                </div>
-                <div class="item-pricing">
                     <p th:text="${item.defaultPrice + ' GP'}"></p>
                     <p th:text="${item.quantity + ' piece(s)'}"></p>
                     <p th:text="${'Sum : ' + item.getDefaultPrice() * item.getQuantity()}"></p>

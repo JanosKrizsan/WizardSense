@@ -37,7 +37,8 @@ public class CartController extends HttpServlet {
         else if (headers.contains("decrease")) {
             int prodId = Integer.parseInt(req.getParameter("decrease"));
             cDS.find(prodId).setQuantity(-1);
-            if (cDS.find(prodId).getQuantity() == 0) {
+            if (cDS.find(prodId).getQuantity() == 0 || cDS.find(prodId).getQuantity() < 0) {
+                cDS.find(prodId).setQuantity(1);
                 cDS.remove(prodId);
             }
         }
