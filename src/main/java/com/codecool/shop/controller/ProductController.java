@@ -68,10 +68,16 @@ public class ProductController extends HttpServlet {
 
     @Override
     protected void doPost (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ProductDao productDataStore = ProductDaoMem.getInstance();
-        CartDao cartDataStore = CartDaoMem.getInstance();
-        int productId = Integer.parseInt(req.getParameter("product"));
-        cartDataStore.add(productDataStore.find(productId));
+
+        try{
+            ProductDao productDataStore = ProductDaoMem.getInstance();
+            CartDao cartDataStore = CartDaoMem.getInstance();
+
+            int productId = Integer.parseInt(req.getParameter("product"));
+            cartDataStore.add(productDataStore.find(productId));
+        } catch (NumberFormatException e) {
+            System.out.println(e);
+        }
 
 
         doGet(req, resp);
