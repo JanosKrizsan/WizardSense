@@ -50,7 +50,12 @@
         </li>
     </ul>
 
-    <a href="/checkout" class="btn btn-success">Checkout</a>
+
+    <div th:stlye="${totalSum < 1} ? 'display: none' : 'display: block'">
+        <span th:text="${totalSum}">9000</span>
+        <a href="/checkout" class="btn btn-success">I shall buy this lot</a>
+        <a href="/" class="btn btn-danger">Nay, I shall browse further</a>
+    </div>
 </div>
 
 <div th:replace="footer.html :: copy"></div>

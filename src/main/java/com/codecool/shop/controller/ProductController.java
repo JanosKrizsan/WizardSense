@@ -66,7 +66,6 @@ public class ProductController extends HttpServlet {
         filter(productCategoryDataStore, productDataStore, req);
         context.setVariable("categories" , productCategoryDataStore.getAll());
         context.setVariable("suppliers", SupplierDaoMem.getInstance().getAll());
-        context.setVariable("products", filterBy);
         context.setVariable("cartSize", cartSize);
         context.setVariable("products", defaultProds != null ? defaultProds : productDataStore.getAll());
 

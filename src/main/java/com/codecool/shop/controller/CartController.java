@@ -43,6 +43,15 @@ public class CartController extends HttpServlet {
         }
     }
 
+    private float getTotalSum(CartDao cDS) {
+        float result = 0;
+        List<Float> priceSums = cDS.getAll().stream().map(p -> p.getDefaultPrice()* p.getQuantity()).collect(Collectors.toList());
+        for (float price : priceSums) {
+            result += price;
+        }
+        return result;
+    }
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -54,6 +63,7 @@ public class CartController extends HttpServlet {
         addOrRemoveProduct(req);
 
         context.setVariable("cart" , cartDataStore.getAll());
+        context.setVariable("totalSum", getTotalSum(cartDataStore));
 
         engine.process("product/shopping-cart.html", context, resp.getWriter());
     }
