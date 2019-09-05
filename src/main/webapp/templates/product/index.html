@@ -41,12 +41,12 @@
         </button>
         <div class="dropdown-menu dropdown-menu-right" >
             <form action="#" th:action="@{/}" method="post">
-                <div>&nbsp&nbsp&nbspCategories:</div>
+                <div><strong>&nbsp&nbsp&nbspCategories:</strong></div>
                 <div class="dropdown-divider"></div>
                 <button name="filter" class="dropdown-item" type="submit" th:each="cat : ${categories}"
                         th:text="${cat.name}" value="#" th:value="${cat.name + ' ' + cat.getId()}">
                 </button>
-                <div>&nbsp&nbsp&nbspSuppliers:</div>
+                <div><strong>&nbsp&nbsp&nbspSuppliers:</strong></div>
                 <div class="dropdown-divider"></div>
                 <button name="filter" class="dropdown-item" type="submit" th:each="sup : ${suppliers}"
                         th:text="${sup.name}" value="#" th:value="${sup.name + ' ' + sup.getId()}">
