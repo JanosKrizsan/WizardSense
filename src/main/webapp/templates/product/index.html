@@ -30,12 +30,16 @@
 
 <body>
 
-<div name="store-name" class="jumbotron text-center">
-    <h1>
+<div name="store-name" class="navbar">
         <form name="reset-form" action="#" th:action="@{/}" method="post">
-            <button id="reset" type="submit" name="reset" value="0"><img src="static/img/page_logo.png" alt="WizardSense"/></button>
+            <button id="reset" type="submit" name="reset" value="0"><img class="logo" src="static/img/page_logo.png" alt="WizardSense"/></button>
         </form>
-    </h1>
+    <a href="/shopping-cart" style="text-decoration: none">
+        <img class="cart-logo" src="/static/img/shopping-cart.png" alt="">
+        <span th:if="${cartSize > 0}" th:text="${cartSize}" class="dot"></span>
+    </a>
+    <a class="login" href="#">Login</a>
+    <a class="register" href="#">Register</a>
 </div>
 
 <div class="container">
@@ -58,11 +62,6 @@
             </form>
         </div>
     </div>
-
-    <a href="/shopping-cart" style="text-decoration: none">
-        <img src="/static/img/shopping-cart.png" alt="">
-        <span th:if="${cartSize > 0}" th:text="${cartSize}" class="dot"></span>
-    </a>
 
     <div id="products" class="row">
         <div class="col col-sm-12 col-md-6 col-lg-4" th:each="prod : ${products}">
