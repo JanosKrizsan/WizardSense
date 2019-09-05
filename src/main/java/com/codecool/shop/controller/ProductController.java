@@ -45,6 +45,8 @@ public class ProductController extends HttpServlet {
             } else {
                 defaultProds = pDS.getBy(pCD.find(filterId));
             }
+        } else if (headers.contains("reset")) {
+            defaultProds = pDS.getAll();
         }
     }
 
