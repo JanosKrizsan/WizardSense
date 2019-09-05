@@ -205,8 +205,10 @@
 .item-pricing {
     position: relative;
     display: inline-block;
-    left: 220px;
+    left: 182px;
     top: 13%;
+    border-left: solid 3px black;
+    padding-left: 30px;
 }
 
 .product-card {
@@ -219,7 +221,7 @@
 .sum-buttons {
     position: absolute;
     top: 0;
-    right: -100px;
+    right: -38px;
 }
 
 .item-name {
