@@ -81,6 +81,9 @@
 .cart-button {
     margin-left: 10px;
     margin-bottom: 10px;
+    border: 0;
+    border-radius: 0px;
+    background: none;
 }
 
 .dot {
@@ -224,6 +227,18 @@
     right: -38px;
 }
 
+.sum-buttons a{
+    margin-top: -10px;
+}
+
+.sum-buttons span{
+    margin-right: 50px;
+    margin-top: 5px;
+    font-size: 24px;
+    color: #d6b51a;
+    font-weight: bolder;
+}
+
 .item-name {
     display: inline-block;
     font-size: 18px;
@@ -241,4 +256,10 @@
     display: inline-block;
     margin-left: 40px;
 
+}
+
+.empty-cart{
+    text-align: center;
+    color: gray;
+    margin-top: 100px
 }

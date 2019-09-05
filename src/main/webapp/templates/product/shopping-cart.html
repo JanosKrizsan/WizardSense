@@ -38,17 +38,17 @@
 <div class="container">
     <h3>Your Satchel of Goods</h3>
     <div th:if="${totalSum > 0}" class="sum-buttons">
+        Total sum:
         <span th:text="${totalSum + ' GP'}">9000</span>
         <a href="/checkout" class="btn btn-success">I shall buy this lot</a>
         <a href="/" class="btn btn-danger">Nay, I shall browse further</a>
     </div>
 
-    <tabley
-    <div>
+    <div th:if="${!cart.isEmpty()}">
         <div th:each="item : ${cart}" class="cart-item">
             <div class="product-card">
                 <img class="cart-image" src="http://placehold.it/400x250/000/fff"
-                     th:attr="src='/static/img/product_' + ${item.id} + '.jpg'" alt="Image not found"/>
+                     th:attr="src='/static/img/product_' + ${item.id} + '.png'" alt="Image not found"/>
                 <div class="item-details">
                     <p class="item-name" th:text="${item.getName()}">...</p>
                     <p class="item-cat" th:text="${item.getProductCategory().getName()}">...</p>
@@ -73,7 +73,9 @@
             </div>
         </div>
     </div>
-
+    <div th:unless="${!cart.isEmpty()}">
+        <p><h6 class="empty-cart">Your satchel doesn't contain anything.</h6></p>
+    </div>
 
 
 </div>
