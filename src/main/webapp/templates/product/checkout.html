@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="author" content="Codecool" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <title>Codecool Shop</title>
+
+    <!-- Bootstrap components -->
+    <!-- Latest compiled and minified Jquery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+    <!--Latest compiled and minified Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+    integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <!-- End of Bootstrap components -->
+
+    <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
+</head>
+
+<body>
+
+<div class="jumbotron text-center">
+    <h1>Codecool Shop</h1>
+</div>
+
+<div class="container">
+    <form th:action="@{/checkout}" method="post">
+        <p><strong>Basic info:</strong></p>
+        <p>Name: <input name="name" type="text" th:value="${details.name}" placeholder="Firstname Lastname" required></p>
+        <p>Message link: <input name="email" type="email" th:value="${details.email}" placeholder="email@wizardsense.com" required ></p>
+        <p>Telepathic link ID: <input name="phoneNum" type="text" th:value="${details.phoneNum}" placeholder="+36-000-0000" required pattern="[\+]\d{2}[\-]\d{4}[\-]\d{4}"></p>
+
+        <p><strong>Billing info:</strong></p>
+        <p>Country: <input name="billCountry" type="text" th:value="${details.billingCountry}" placeholder="Pabusia" required></p>
+        <p>City: <input name="billCity" type="text" th:value="${details.billingCity}" placeholder="Paingbing" required></p>
+        <p>District Code: <input name="billZip" type="text" th:value="${details.billingZipCode}" placeholder="05" required></p>
+        <p>Address: <input name="billAddress" type="text" th:value="${details.billingAddress}" placeholder="14 Victory Street" required></p>
+
+
+        <p><strong>Shipping info:</strong></p>
+        <p>Country: <input name="shipCountry" type="text" th:value="${details.shippingCountry}" placeholder="Pabusia" required></p>
+        <p>City: <input name="shipCity" type="text" th:value="${details.shippingCity}" placeholder="Paingbing" required></p>
+        <p>District Code: <input name="shipZip" type="text" th:value="${details.shippingZipCode}" placeholder="05" required></p>
+        <p>Address: <input name="shipAddress" type="text" th:value="${details.shippingAddress}" placeholder="14 Victory Street" required></p>
+
+        <input type="submit" value="Proceed to Payment">
+    </form>
+</div>
+
+<div th:replace="footer.html :: copy"></div>
+
+</body>
+</html>
