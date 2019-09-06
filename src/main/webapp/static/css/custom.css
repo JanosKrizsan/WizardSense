@@ -263,3 +263,21 @@
     color: gray;
     margin-top: 100px
 }
+
+.check-form p , .check-form input {
+    display: inline-block;
+}
+
+.check-form p{
+    width: 120px;
+}
+
+.container form input {
+    margin: 0 20px 20px;
+    width: 320px;
+    border-radius: 5px;
+}
+
+.container form {
+    text-align: center;
+}
