@@ -4,12 +4,14 @@ import com.codecool.shop.config.ConnectionHandler;
 import com.codecool.shop.dao.GenericQueriesDao;
 import com.codecool.shop.model.Cart;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
 public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<Cart> {
 
     private static CartDaoJDBC instance = null;
+    private PreparedStatement statement;
 
 
     private CartDaoJDBC() {

@@ -105,7 +105,7 @@ public class ProductDaoJDBC extends ConnectionHandler implements ProductDao {
     @Override
     public List<Product> getAll() {
         try {
-            statement = getConn().prepareStatement("SELECT * FROM products;");
+            statement = getConn().prepareStatement("SELECT id FROM products;");
             ResultSet results = statement.executeQuery();
 
             List<Product> products = new ArrayList<>();

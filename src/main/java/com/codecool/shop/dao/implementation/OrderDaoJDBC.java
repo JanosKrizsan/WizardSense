@@ -10,6 +10,7 @@ public class OrderDaoJDBC extends ConnectionHandler implements GenericQueriesDao
 
     private static OrderDaoJDBC instance = null;
 
+
     private OrderDaoJDBC() {
     }
 
