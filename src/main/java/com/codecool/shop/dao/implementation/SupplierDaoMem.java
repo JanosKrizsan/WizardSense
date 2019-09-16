@@ -1,12 +1,12 @@
 package com.codecool.shop.dao.implementation;
 
-import com.codecool.shop.dao.SupplierDao;
+import com.codecool.shop.dao.GenericQueriesDao;
 import com.codecool.shop.model.Supplier;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SupplierDaoMem implements SupplierDao {
+public class SupplierDaoMem implements GenericQueriesDao<Supplier> {
 
     private List<Supplier> data = new ArrayList<>();
     private static SupplierDaoMem instance = null;

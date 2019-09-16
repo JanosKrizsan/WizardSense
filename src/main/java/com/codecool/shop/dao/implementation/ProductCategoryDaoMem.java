@@ -1,13 +1,13 @@
 package com.codecool.shop.dao.implementation;
 
 
-import com.codecool.shop.dao.ProductCategoryDao;
+import com.codecool.shop.dao.GenericQueriesDao;
 import com.codecool.shop.model.ProductCategory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductCategoryDaoMem implements ProductCategoryDao {
+public class ProductCategoryDaoMem implements GenericQueriesDao<ProductCategory> {
 
     private List<ProductCategory> data = new ArrayList<>();
     private static ProductCategoryDaoMem instance = null;

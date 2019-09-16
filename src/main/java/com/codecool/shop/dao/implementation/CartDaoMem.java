@@ -1,15 +1,12 @@
 package com.codecool.shop.dao.implementation;
 
-import com.codecool.shop.dao.CartDao;
-import com.codecool.shop.dao.SupplierDao;
+import com.codecool.shop.dao.GenericQueriesDao;
 import com.codecool.shop.model.Cart;
-import com.codecool.shop.model.Product;
-import com.codecool.shop.model.Supplier;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CartDaoMem implements CartDao {
+public class CartDaoMem implements GenericQueriesDao<Cart> {
 
     private List<Cart> data = new ArrayList<>();
     private static CartDaoMem instance = null;

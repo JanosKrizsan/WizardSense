@@ -1,8 +1,7 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
-import com.codecool.shop.dao.CartDao;
-import com.codecool.shop.dao.implementation.CartDaoMem;
+
 import com.codecool.shop.dao.implementation.OrderMem;
 import com.codecool.shop.model.Order;
 import org.thymeleaf.TemplateEngine;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.HashMap;
 
 

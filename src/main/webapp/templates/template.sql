@@ -98,4 +98,3 @@ ALTER TABLE ONLY orders
 ALTER TABLE addresses
     ADD CONSTRAINT fk_user_address_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
 
-

@@ -65,5 +65,10 @@
             <artifactId>thymeleaf</artifactId>
             <version>3.0.9.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.7.jre7</version>
+        </dependency>
     </dependencies>
 </project>

@@ -1,12 +1,12 @@
 package com.codecool.shop.dao.implementation;
 
 
-import com.codecool.shop.dao.OrderDao;
+import com.codecool.shop.dao.GenericQueriesDao;
 import com.codecool.shop.model.Order;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderMem implements OrderDao {
+public class OrderMem implements GenericQueriesDao<Order> {
 
     private static OrderMem instance = null;
     private List<Order> data = new ArrayList<>();
