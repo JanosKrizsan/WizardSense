@@ -8,7 +8,6 @@ public class BaseModel {
     protected int id;
     protected String name;
     protected String description;
-    protected int quantity = 1;
 
     public BaseModel(String name) {
         this.name = name;
@@ -42,14 +41,6 @@ public class BaseModel {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int increaseDecrease) {
-        this.quantity = quantity + increaseDecrease;
     }
 
     @Override

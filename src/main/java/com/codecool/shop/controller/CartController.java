@@ -8,6 +8,7 @@ import com.codecool.shop.dao.implementation.CartDaoMem;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
+import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.Product;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -28,28 +29,23 @@ public class CartController extends HttpServlet {
 
     private void addOrRemoveProduct(HttpServletRequest req){
         List<String> headers = Collections.list(req.getParameterNames());
-        CartDao cDS = CartDaoMem.getInstance();
+        ProductDaoMem products = ProductDaoMem.getInstance();
+        Cart cart = CartDaoMem.getInstance().find(0);
 
         if (headers.contains("increase")) {
             int prodId = Integer.parseInt(req.getParameter("increase"));
-            cDS.find(prodId).setQuantity(1);
+            cart.addProduct(products.find(prodId));
         }
         else if (headers.contains("decrease")) {
             int prodId = Integer.parseInt(req.getParameter("decrease"));
-            if(cDS.getAll().contains(cDS.find(prodId))) {
-                cDS.find(prodId).setQuantity(-1);
-                if (cDS.find(prodId).getQuantity() == 0 || cDS.find(prodId).getQuantity() < 0) {
-                    cDS.find(prodId).setQuantity(1);
-                    cDS.remove(prodId);
-                }
-            }
+            cart.removeProduct(products.find(prodId));
         }
     }
 
-    private float getTotalSum(CartDao cDS) {
+    private float getTotalSum(Cart cart) {
         float result = 0;
-        List<Float> priceSums = cDS.getAll().stream().map(p -> p.getDefaultPrice()* p.getQuantity()).collect(Collectors.toList());
-        for (float price : priceSums) {
+        List<Float> priceSums = cart.getProductsInCart().stream().map(p -> p.getDefaultPrice() * cart.getQuantityOfProduct(p)).collect(Collectors.toList());
+        for (float price : priceSums){
             result += price;
         }
         return result;
@@ -58,15 +54,15 @@ public class CartController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        CartDao cartDataStore = CartDaoMem.getInstance();
+        Cart cart = CartDaoMem.getInstance().find(0);
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
 
         addOrRemoveProduct(req);
 
-        context.setVariable("cart" , cartDataStore.getAll());
-        context.setVariable("totalSum", getTotalSum(cartDataStore));
+        context.setVariable("cart" , cart);
+        context.setVariable("totalSum", getTotalSum(cart));
 
         engine.process("product/shopping-cart.html", context, resp.getWriter());
     }

@@ -1,11 +1,14 @@
 package com.codecool.shop.config;
 
+import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
+import com.codecool.shop.dao.implementation.CartDaoMem;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
+import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
@@ -13,6 +16,8 @@ import com.codecool.shop.model.Supplier;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 @WebListener
 public class Initializer implements ServletContextListener {
@@ -22,6 +27,11 @@ public class Initializer implements ServletContextListener {
         ProductDao productDataStore = ProductDaoMem.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
+        CartDao cartDataStore = CartDaoMem.getInstance();
+
+        //setting up a new cart
+        Cart cart = new Cart(new HashMap<>(0));
+        cartDataStore.add(cart);
 
         //setting up a new supplier
         Supplier althiev = new Supplier("Althiev's Smithy", "Armor and Weapons");

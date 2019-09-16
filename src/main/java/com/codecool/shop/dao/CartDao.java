@@ -1,23 +1,14 @@
-package com.codecool.shop.dao;//            for (Product product : cartDataStore.getAll()) {
-//                if (product.getId() == productId) {
-//                    product.setQuantity(1);
-//                    found = true;
-//                    break;
-//                }
-//            }
-//
-//            if (!found) {
-//            }
+package com.codecool.shop.dao;
 
-import com.codecool.shop.model.Product;
+import com.codecool.shop.model.Cart;
 
 import java.util.List;
 
 public interface CartDao {
 
-    void add(Product product);
-    Product find(int id);
+    void add(Cart cart);
+    Cart find(int id);
     void remove(int id);
 
-    List<Product> getAll();
+    List<Cart> getAll();
 }

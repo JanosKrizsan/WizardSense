@@ -9,6 +9,7 @@ import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.BaseModel;
+import com.codecool.shop.model.Cart;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,7 +35,7 @@ public class ProductController extends HttpServlet {
 
         if (headers.contains("filter")) {
             List<Character> filtered = req.getParameter("filter").chars().mapToObj(e -> (char) e).collect(Collectors.toList());
-            int filterId = Integer.parseInt(filtered.get(filtered.size() -1).toString());
+            int filterId = Integer.parseInt(filtered.get(filtered.size() - 1).toString());
             filtered.remove(filtered.size() - 1);
 
             StringBuilder sBuilder = new StringBuilder();
@@ -59,17 +61,16 @@ public class ProductController extends HttpServlet {
         ProductDao productDataStore = ProductDaoMem.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
 
-        List<Integer> cartSize = CartDaoMem.getInstance().getAll().stream().map(BaseModel::getQuantity).collect(Collectors.toList());
-        int cartSizeSum = cartSize.stream().mapToInt(quantity -> quantity).sum();
+        int cartSize = CartDaoMem.getInstance().find(0).getSumOfProducts();
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
 
 
         filter(productCategoryDataStore, productDataStore, req);
-        context.setVariable("categories" , productCategoryDataStore.getAll());
+        context.setVariable("categories", productCategoryDataStore.getAll());
         context.setVariable("suppliers", SupplierDaoMem.getInstance().getAll());
-        context.setVariable("cartSize", cartSizeSum);
+        context.setVariable("cartSize", cartSize);
         context.setVariable("products", defaultProds != null ? defaultProds : productDataStore.getAll());
 
 
@@ -77,18 +78,14 @@ public class ProductController extends HttpServlet {
     }
 
     @Override
-    protected void doPost (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        try{
+        try {
             ProductDao productDataStore = ProductDaoMem.getInstance();
-            CartDao cartDataStore = CartDaoMem.getInstance();
+            Cart cartData = CartDaoMem.getInstance().find(0);
 
             int productId = Integer.parseInt(req.getParameter("product"));
-            if (cartDataStore.getAll().contains(productDataStore.find(productId))) {
-                cartDataStore.getAll().stream().filter((product -> product.equals(productDataStore.find(productId)))).forEach(product -> product.setQuantity(1));
-            } else {
-                cartDataStore.add(productDataStore.find(productId));
-            }
+            cartData.addProduct(productDataStore.find(productId));
         } catch (NumberFormatException e) {
             System.out.println(e);
         }
