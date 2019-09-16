@@ -1,21 +1,15 @@
 package com.codecool.shop.dao.implementation;
 
 
-public class OrderMem {
+import com.codecool.shop.dao.OrderDao;
+import com.codecool.shop.model.Order;
+import java.util.ArrayList;
+import java.util.List;
 
+public class OrderMem implements OrderDao {
 
     private static OrderMem instance = null;
-    public String name;
-    public String email;
-    public String phoneNum;
-    public String billingCountry;
-    public String billingCity;
-    public String billingZipCode;
-    public String billingAddress;
-    public String shippingCountry;
-    public String shippingCity;
-    public String shippingZipCode;
-    public String shippingAddress;
+    private List<Order> data = new ArrayList<>();
 
     /* A private Constructor prevents any other class from instantiating.
      */
@@ -29,24 +23,23 @@ public class OrderMem {
         return instance;
     }
 
-    public void setOrderInfo(String name, String email, String phoneNum, String billingCountry, String billingCity,
-                             String billingZipCode, String billingAddress, String shippingCountry, String shippingCity,
-                             String shippingZipCode, String shippingAddress) {
-        this.name = name;
-        this.email = email;
-        this.phoneNum = phoneNum;
-        this.billingCountry = billingCountry;
-        this.billingCity = billingCity;
-        this.billingZipCode = billingZipCode;
-        this.billingAddress = billingAddress;
-        this.shippingCountry = shippingCountry;
-        this.shippingCity = shippingCity;
-        this.shippingZipCode = shippingZipCode;
-        this.shippingAddress = shippingAddress;
+    @Override
+    public void add(Order order) {
+        data.add(order);
     }
 
-    public String[] getOrderInfo() {
-        return new String[]{name, email, phoneNum, billingCountry, billingCity, billingZipCode, billingAddress,
-                shippingCountry, shippingCity, shippingZipCode, shippingAddress};
+    @Override
+    public Order find(int id) {
+        return data.get(id);
+    }
+
+    @Override
+    public void remove(int id) {
+        data.remove(id);
+    }
+
+    @Override
+    public List<Order> getAll() {
+        return data;
     }
 }

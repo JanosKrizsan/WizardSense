@@ -38,12 +38,12 @@
     <form th:action="@{/checkout}" method="post">
         <p><strong>Basic info:</strong></p>
 
-        <div class="check-form"><p>Name: </p><input name="name" type="text" th:value="${details.name}"
+        <div class="check-form"><p>Name: </p><input name="name" type="text" th:value="${details.get('name')}"
                                                     placeholder="Firstname Lastname"
                                                     required>
-            <p>Message link: </p><input name="email" type="email" th:value="${details.email}"
+            <p>Message link: </p><input name="email" type="email" th:value="${details.get('email')}"
                                         placeholder="email@wizardsense.com" required></div>
-        <div class="check-form"><p>Telepathic link ID: </p><input name="phoneNum" type="text" th:value="${details.phoneNum}"
+        <div class="check-form"><p>Telepathic link ID: </p><input name="phoneNum" type="text" th:value="${details.get('phoneNum')}"
                                                placeholder="+36-000-0000" required
                                                pattern="[\+]\d{2}[\-]\d{4}[\-]\d{4}">
         </div>
@@ -51,35 +51,35 @@
         <p><strong>Billing info:</strong></p>
         <div class="check-form">
 
-            <p>Country: </p><input name="billCountry" type="text" th:value="${details.billingCountry}"
+            <p>Country: </p><input name="billCountry" type="text" th:value="${details.get('billingCountry')}"
                                    placeholder="Pabusia" required>
 
 
-            <p>City: </p><input name="billCity" type="text" th:value="${details.billingCity}"
+            <p>City: </p><input name="billCity" type="text" th:value="${details.get('billingCity')}"
                                 placeholder="Paingbing"
                                 required>
 
         </div>
         <div class="check-form">
 
-            <p>District Code: </p><input name="billZip" type="text" th:value="${details.billingZipCode}"
+            <p>District Code: </p><input name="billZip" type="text" th:value="${details.get('billingZipCode')}"
                                          placeholder="05" required>
-            <p>Address: </p><input name="billAddress" type="text" th:value="${details.billingAddress}"
+            <p>Address: </p><input name="billAddress" type="text" th:value="${details.get('billingAddress')}"
                                    placeholder="14 Victory Street" required>
         </div>
 
         <p><strong>Shipping info:</strong></p>
         <div class="check-form">
             <p>Country: </p><input name="shipCountry" type="text"
-                                   th:value="${details.shippingCountry}"
+                                   th:value="${details.get('shippingCountry')}"
                                    placeholder="Pabusia" required>
-            <p>City: </p><input name="shipCity" type="text" th:value="${details.shippingCity}" placeholder="Paingbing"
+            <p>City: </p><input name="shipCity" type="text" th:value="${details.get('shippingCity')}" placeholder="Paingbing"
                                 required></div>
         <div class="check-form">
-            <p>District Code: </p><input name="shipZip" type="text" th:value="${details.shippingZipCode}"
+            <p>District Code: </p><input name="shipZip" type="text" th:value="${details.get('shippingZipCode')}"
                                          placeholder="05"
                                          required>
-            <p>Address: </p><input name="shipAddress" type="text" th:value="${details.shippingAddress}"
+            <p>Address: </p><input name="shipAddress" type="text" th:value="${details.get('shippingAddress')}"
                                    placeholder="14 Victory Street" required>
         </div>
 

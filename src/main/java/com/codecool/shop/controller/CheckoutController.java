@@ -4,6 +4,7 @@ import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.implementation.CartDaoMem;
 import com.codecool.shop.dao.implementation.OrderMem;
+import com.codecool.shop.model.Order;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.HashMap;
 
 
 @WebServlet(urlPatterns = {"/checkout"})
@@ -22,7 +24,8 @@ public class CheckoutController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        OrderMem details = OrderMem.getInstance();
+        OrderMem.getInstance().add(new Order());
+        HashMap details = OrderMem.getInstance().find(0).getOrderFields();
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
@@ -35,7 +38,7 @@ public class CheckoutController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        OrderMem order = OrderMem.getInstance();
+        Order order = OrderMem.getInstance().find(0);
 
         String name = req.getParameter("name");
         String email = req.getParameter("email");
@@ -49,7 +52,23 @@ public class CheckoutController extends HttpServlet {
         String shipZip = req.getParameter("shipZip");
         String shipAddress = req.getParameter("shipAddress");
 
-        order.setOrderInfo(name, email, phoneNum, billCountry, billCity, billZip, billAddress, shipCountry, shipCity, shipZip, shipAddress);
+        order.setOrderFields(new HashMap<String, String>() {
+            {
+                put("name", req.getParameter("name"));
+                put("email", req.getParameter("email"));
+                put("phoneNum", req.getParameter("phoneNum"));
+                put("billingCountry", req.getParameter("billCountry"));
+                put("billingCity", req.getParameter("billCity"));
+                put("billingZipCode", req.getParameter("billZip"));
+                put("billingAddress", req.getParameter("billAddress"));
+                put("shippingCountry", req.getParameter("shipCountry"));
+                put("shippingCity", req.getParameter("shipCity"));
+                put("shippingZipCode", req.getParameter("shipZip"));
+                put("shippingAddress", req.getParameter("shipAddress"));
+
+            }
+
+        });
 
         resp.sendRedirect("/pay");
     }
