@@ -2,14 +2,12 @@ package com.codecool.shop.config;
 
 import com.codecool.shop.dao.GenericQueriesDao;
 import com.codecool.shop.dao.ProductDao;
-import com.codecool.shop.dao.implementation.CartDaoMem;
-import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
-import com.codecool.shop.dao.implementation.ProductDaoMem;
-import com.codecool.shop.dao.implementation.SupplierDaoMem;
-import com.codecool.shop.model.Cart;
-import com.codecool.shop.model.Product;
-import com.codecool.shop.model.ProductCategory;
-import com.codecool.shop.model.Supplier;
+import com.codecool.shop.dao.implementation.JDBC.*;
+import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
+import com.codecool.shop.dao.implementation.Memory.ProductCategoryDaoMem;
+import com.codecool.shop.dao.implementation.Memory.ProductDaoMem;
+import com.codecool.shop.dao.implementation.Memory.SupplierDaoMem;
+import com.codecool.shop.model.*;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -18,13 +16,25 @@ import java.util.HashMap;
 
 @WebListener
 public class Initializer implements ServletContextListener {
+    private ProductDao productDataStore = ProductDaoJDBC.getInstance();
+    private GenericQueriesDao<ProductCategory> productCategoryDataStore = ProductCategoryDaoJDBC.getInstance();
+    private GenericQueriesDao<Supplier> supplierDataStore = SupplierDaoJDBC.getInstance();
+    private GenericQueriesDao<Cart> cartDataStore = CartDaoJDBC.getInstance();
+    private GenericQueriesDao<User> userDataStore = UserDaoJDBC.getInstance();
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        ProductDao productDataStore = ProductDaoMem.getInstance();
-        GenericQueriesDao<ProductCategory> productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-        GenericQueriesDao<Supplier> supplierDataStore = SupplierDaoMem.getInstance();
-        GenericQueriesDao<Cart> cartDataStore = CartDaoMem.getInstance();
+        if(productDataStore.getAll().size() != 0 && userDataStore.getAll().size() > 0){
+            fillMeUp();
+        }
+
+    }
+
+    private void fillMeUp(){
+
+        //adding the admin user
+        User admin = new User("admin", "admin");
+        userDataStore.add(admin);
 
         //setting up a new cart
         Cart cart = new Cart(new HashMap<>(0));

@@ -1,4 +1,4 @@
-package com.codecool.shop.dao.implementation;
+package com.codecool.shop.dao.implementation.JDBC;
 
 import com.codecool.shop.config.ConnectionHandler;
 import com.codecool.shop.dao.ProductDao;

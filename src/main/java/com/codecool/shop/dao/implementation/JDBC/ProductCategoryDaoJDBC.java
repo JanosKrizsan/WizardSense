@@ -1,8 +1,8 @@
-package com.codecool.shop.dao.implementation;
+package com.codecool.shop.dao.implementation.JDBC;
 
 import com.codecool.shop.config.ConnectionHandler;
 import com.codecool.shop.dao.GenericQueriesDao;
-import com.codecool.shop.model.Supplier;
+import com.codecool.shop.model.ProductCategory;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,27 +10,29 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SupplierDaoJDBC extends ConnectionHandler implements GenericQueriesDao<Supplier> {
+public class ProductCategoryDaoJDBC extends ConnectionHandler implements GenericQueriesDao<ProductCategory> {
 
-    private static SupplierDaoJDBC instance = null;
+    private static ProductCategoryDaoJDBC instance = null;
     private PreparedStatement statement;
 
-    private SupplierDaoJDBC() {
+
+    private ProductCategoryDaoJDBC() {
     }
 
-    public static SupplierDaoJDBC getInstance() {
+    public static ProductCategoryDaoJDBC getInstance() {
         if (instance == null) {
-            instance = new SupplierDaoJDBC();
+            instance = new ProductCategoryDaoJDBC();
         }
         return instance;
     }
 
     @Override
-    public void add(Supplier supplier) {
+    public void add(ProductCategory category) {
         try {
-            statement = getConn().prepareStatement("INSERT INTO suppliers (name, description) VALUES  (?, ?);");
-            statement.setString(1, supplier.getName());
-            statement.setString(2, supplier.getDescription());
+            statement = getConn().prepareStatement("INSERT INTO product_categories (name, description, department) VALUES  (?, ?, ?);");
+            statement.setString(1, category.getName());
+            statement.setString(2, category.getDescription());
+            statement.setString(3, category.getDepartment());
             statement.executeUpdate();
             statement.close();
 
@@ -40,37 +42,39 @@ public class SupplierDaoJDBC extends ConnectionHandler implements GenericQueries
     }
 
     @Override
-    public Supplier find(int id) {
-        Supplier supplier = null;
+    public ProductCategory find(int id) {
+        ProductCategory category = null;
         try {
-            statement = getConn().prepareStatement("SELECT * FROM suppliers WHERE id = ?;");
+            statement = getConn().prepareStatement("SELECT * FROM product_categories WHERE id = ?;");
             statement.setInt(1, id);
 
             ResultSet results = statement.executeQuery();
 
             String name = "";
+            String department = "";
             String description = "";
 
             while (results.next()){
                 name = results.getString("name");
+                department = results.getString("department");
                 description = results.getString("description");
             }
 
-            supplier = new Supplier(name, description);
-            supplier.setId(id);
+            category = new ProductCategory(name, department, description);
+            category.setId(id);
 
             statement.close();
 
         } catch (SQLException e) {
             System.out.println(e);
         }
-        return supplier;
+        return category;
     }
 
     @Override
     public void remove(int id) {
         try {
-            statement = getConn().prepareStatement("DELETE FROM suppliers WHERE id=?;");
+            statement = getConn().prepareStatement("DELETE FROM product_categories WHERE id=?;");
             statement.setInt(1, id);
             statement.executeUpdate();
             statement.close();
@@ -80,26 +84,26 @@ public class SupplierDaoJDBC extends ConnectionHandler implements GenericQueries
     }
 
     @Override
-    public List<Supplier> getAll() {
-        List<Supplier> suppliers = new ArrayList<>();
+    public List<ProductCategory> getAll() {
+        List<ProductCategory> categories = new ArrayList<>();
         try {
-            statement = getConn().prepareStatement("SELECT id FROM suppliers;");
+            statement = getConn().prepareStatement("SELECT id FROM product_categories");
             ResultSet results = statement.executeQuery();
 
             while (results.next()) {
 
                 int id = results.getInt("id");
-                suppliers.add(find(id));
+                categories.add(find(id));
 
             }
 
             statement.close();
             results.close();
 
-            return suppliers;
+            return categories;
         } catch (SQLException e) {
             System.out.println(e);
         }
-        return suppliers;
+        return categories;
     }
 }

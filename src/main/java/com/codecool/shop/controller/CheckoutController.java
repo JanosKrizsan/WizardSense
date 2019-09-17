@@ -2,7 +2,7 @@ package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
 
-import com.codecool.shop.dao.implementation.OrderMem;
+import com.codecool.shop.dao.implementation.Memory.OrderMem;
 import com.codecool.shop.model.Order;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
