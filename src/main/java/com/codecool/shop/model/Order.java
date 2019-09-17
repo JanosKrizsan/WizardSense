@@ -1,26 +1,32 @@
 package com.codecool.shop.model;
 
-import java.util.HashMap;
 
 public class Order {
     private int id;
+    private User user;
+    private Cart cart;
+    private String status;
 
-    private HashMap<String, String> orderFields = new HashMap<String, String>() {
-        {
-            put("name", "");
-            put("email", "");
-            put("phoneNum", "");
-            put("billingCountry", "");
-            put("billingCity", "");
-            put("billingZipCode", "");
-            put("billingAddress", "");
-            put("shippingCountry", "");
-            put("shippingCity", "");
-            put("shippingZipCode", "");
-            put("shippingAddress", "");
+    public Order(User user, Cart cart) {
+        this.user = user;
+        this.cart = cart;
+    }
 
-        }
-    };
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
     public int getId() {
         return id;
     }
@@ -29,12 +35,12 @@ public class Order {
         this.id = id;
     }
 
-    public HashMap<String, String> getOrderFields() {
-        return orderFields;
+    public String getStatus() {
+        return status;
     }
 
-    public void setOrderFields(HashMap<String, String> orderFields) {
-        this.orderFields = orderFields;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
 
