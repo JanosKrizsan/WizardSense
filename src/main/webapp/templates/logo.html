@@ -3,7 +3,16 @@
 <body>
 
 <div th:fragment="copy" class="navbar">
-        <a id="to-main-page" href="#" th:href="@{/}"><img class="logo" src="/static/img/page_logo.png" alt="WizardSense"></a>
+    <a id="to-main-page" href="#" th:href="@{/}"><img class="logo" src="/static/img/page_logo.png"
+                                                      alt="WizardSense"></a>
+    <div th:if="${user != null}">
+        <a th:text="'Hello there '+ ${user.getUsername()}+'!'"></a>
+        (<a th:href="@{/logout}">Logout</a>)
+    </div>
+    <div th:unless="${user != null}">
+        <a class="login" th:href="@{/login}">Login</a>
+        <a class="register" th:href="@{/register}">Register</a>
+    </div>
 </div>
 
 </body>

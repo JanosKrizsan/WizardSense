@@ -38,8 +38,14 @@
         <img class="cart-logo" src="/static/img/shopping-cart.png" alt="">
         <span th:if="${cartSize > 0}" th:text="${cartSize}" class="dot"></span>
     </a>
-    <a class="login" href="#">Login</a>
-    <a class="register" href="#">Register</a>
+    <div th:if="${user != null}">
+        <a th:text="'Hello there '+ ${user.getUsername()}+'!'"></a>
+        (<a th:href="@{/logout}">Logout</a>)
+    </div>
+    <div th:unless="${user != null}">
+        <a class="login" th:href="@{/login}">Login</a>
+        <a class="register" th:href="@{/register}">Register</a>
+    </div>
 </div>
 
 <div class="container">

@@ -1,6 +1,7 @@
 package com.codecool.shop.dao.implementation.JDBC;
 
 import com.codecool.shop.config.ConnectionHandler;
+import com.codecool.shop.config.Utils;
 import com.codecool.shop.dao.GenericQueriesDao;
 import com.codecool.shop.model.User;
 
@@ -37,13 +38,43 @@ public class UserDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
         try {
             statement = getConn().prepareStatement("INSERT INTO users (user_name, password) VALUES  (?, ?);");
             statement.setString(1, user.getUsername());
-            statement.setString(2, passWordHasher(user.getPassword()));
+            statement.setString(2, Utils.hashPass(user.getPassword()));
             statement.executeUpdate();
             statement.close();
 
         } catch (SQLException e) {
             System.out.println(e);
         }
+    }
+
+    public User find(String username) {
+        User user = null;
+        try {
+            statement = getConn().prepareStatement("SELECT * FROM users WHERE user_name = ?;");
+            statement.setString(1, username);
+
+            ResultSet results = statement.executeQuery();
+
+            int userId = 0;
+            String userName = null;
+            String password = null;
+
+            while (results.next()) {
+                userId = results.getInt("id");
+                userName = results.getString("user_name");
+                password = results.getString("password");
+            }
+
+            user = new User(userName, password);
+            user.setId(userId);
+
+            statement.close();
+            results.close();
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return user;
     }
 
     @Override
@@ -112,19 +143,4 @@ public class UserDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
         return users;
     }
 
-    private String passWordHasher(String rawPassword){
-        SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[8];
-        random.nextBytes(salt);
-
-        KeySpec spec = new PBEKeySpec(rawPassword.toCharArray(), salt, 4321, 25);
-        try {
-            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-            byte[] hash = factory.generateSecret(spec).getEncoded();
-            return new String(hash, StandardCharsets.UTF_8);
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }

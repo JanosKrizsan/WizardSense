@@ -9,10 +9,7 @@ import com.codecool.shop.dao.implementation.JDBC.SupplierDaoJDBC;
 
 import com.codecool.shop.config.TemplateEngineUtil;
 
-import com.codecool.shop.model.Cart;
-import com.codecool.shop.model.Product;
-import com.codecool.shop.model.ProductCategory;
-import com.codecool.shop.model.Supplier;
+import com.codecool.shop.model.*;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -78,6 +75,7 @@ public class ProductController extends HttpServlet {
         context.setVariable("suppliers", supplierDataStore.getAll());
         context.setVariable("cartSize", cartSize);
         context.setVariable("products", defaultProds != null ? defaultProds : productDataStore.getAll());
+        context.setVariable("user", req.getSession().getAttribute("user"));
 
 
         engine.process("product/index.html", context, resp.getWriter());
@@ -112,7 +110,7 @@ public class ProductController extends HttpServlet {
                     if(carts.size() == 1) {
                         cartDataStore.increaseProductQuantity(carts.get(0), product);
                     } else if (carts.size() < 1) {
-                        Cart cart = new Cart(products, session.getAttribute("user"));
+                        Cart cart = new Cart(products, (User)session.getAttribute("user"));
                     } else {
                         throw new SQLDataException("Duplicate data in database, please revise");
                     }

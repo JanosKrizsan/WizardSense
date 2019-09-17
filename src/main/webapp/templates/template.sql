@@ -73,7 +73,7 @@ CREATE TABLE users
 (
     id        SERIAL PRIMARY KEY,
     user_name VARCHAR(30) UNIQUE,
-    password  VARCHAR(50)
+    password  VARCHAR(100)
 );
 
 DROP TABLE IF EXISTS addresses;
