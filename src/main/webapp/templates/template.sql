@@ -53,7 +53,7 @@ CREATE TABLE carts
 (
     id               SERIAL PRIMARY KEY,
     product_id       INTEGER,
-    product_quantity INTEGER,
+    product_quantity INTEGER
 );
 
 DROP TABLE IF EXISTS orders;
@@ -70,24 +70,24 @@ DROP TABLE IF EXISTS users;
 DROP SEQUENCE IF EXISTS users_id_seq;
 CREATE TABLE users
 (
-    id           SERIAL PRIMARY KEY,
-    user_name    VARCHAR(15),
-    password     VARCHAR(50),
-    name         VARCHAR(20),
-    e_mail       VARCHAR(20),
-    phone_number VARCHAR(15)
+    id        SERIAL PRIMARY KEY,
+    user_name VARCHAR(15),
+    password  VARCHAR(50)
 );
 
 DROP TABLE IF EXISTS addresses;
 DROP SEQUENCE IF EXISTS addresses_id_seq;
 CREATE TABLE addresses
 (
-    id       SERIAL PRIMARY KEY,
-    user_id  INTEGER,
-    country  VARCHAR(15),
-    city     VARCHAR(10),
-    zip_code VARCHAR(8),
-    address  VARCHAR(30)
+    id           SERIAL PRIMARY KEY,
+    user_id      INTEGER,
+    name         VARCHAR(20),
+    e_mail       VARCHAR(20),
+    phone_number VARCHAR(15),
+    country      VARCHAR(15),
+    city         VARCHAR(10),
+    zip_code     VARCHAR(8),
+    address      VARCHAR(30)
 
 
 );
