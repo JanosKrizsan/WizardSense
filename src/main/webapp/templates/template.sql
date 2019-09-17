@@ -54,7 +54,6 @@ CREATE TABLE carts
     id               SERIAL PRIMARY KEY,
     product_id       INTEGER,
     product_quantity INTEGER,
-    order_id         INTEGER
 );
 
 DROP TABLE IF EXISTS orders;
@@ -97,8 +96,7 @@ ALTER TABLE ONLY products
     ADD CONSTRAINT fk_product_category_id FOREIGN KEY (product_category_id) REFERENCES product_categories (id) ON DELETE CASCADE,
     ADD CONSTRAINT fk_supplier_id FOREIGN KEY (supplier_id) REFERENCES suppliers (id) ON DELETE CASCADE;
 ALTER TABLE ONLY carts
-    ADD CONSTRAINT fk_product_id FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE,
-    ADD CONSTRAINT fk_order_id FOREIGN KEY (order_id) REFERENCES orders (id) ON DELETE CASCADE;
+    ADD CONSTRAINT fk_product_id FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE;
 ALTER TABLE ONLY orders
     ADD CONSTRAINT fk_cart_id FOREIGN KEY (cart_id) REFERENCES carts (id) ON DELETE CASCADE,
     ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE;
