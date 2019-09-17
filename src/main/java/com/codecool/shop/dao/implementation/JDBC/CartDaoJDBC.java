@@ -120,7 +120,7 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
 
     public Cart getCartByUserId(int id) {
         try {
-            statement = getConn().prepareStatement("SELECT * FROM carts WHERE user_id=?");
+            statement = getConn().prepareStatement("SELECT * FROM carts WHERE user_id=?;");
             statement.setInt(1, id);
             ResultSet results = statement.executeQuery();
 
@@ -138,5 +138,21 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
             System.out.println(e);
         }
         return null;
+    }
+
+    public void increaseProductQuantity(Cart cart, Product product) {
+        try {
+            statement = getConn().prepareStatement("UPDATE carts " +
+                    "SET product_quantity = product_quantity + 1 " +
+                    "WHERE id=? AND user_id=? AND product_id=?;");
+            statement.setInt(1, cart.getId());
+            statement.setInt(2, cart.getUser().getId());
+            statement.setInt(3, product.getId());
+            statement.executeUpdate();
+            statement.close();
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
     }
 }

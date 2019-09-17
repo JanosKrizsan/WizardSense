@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLDataException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -63,8 +64,8 @@ public class ProductController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         ProductDao productDataStore = ProductDaoJDBC.getInstance();
-        GenericQueriesDao<Supplier> supplierDataStore = SupplierDaoJDBC.getInstance();
-        GenericQueriesDao<ProductCategory> productCategoryDataStore = ProductCategoryDaoJDBC.getInstance();
+        SupplierDaoJDBC supplierDataStore = SupplierDaoJDBC.getInstance();
+        ProductCategoryDaoJDBC productCategoryDataStore = ProductCategoryDaoJDBC.getInstance();
 
         int cartSize = CartDaoJDBC.getInstance().find(1).getSumOfProducts();
 
@@ -88,24 +89,38 @@ public class ProductController extends HttpServlet {
         List<String> headers = Collections.list(req.getParameterNames());
 
         if (headers.contains("product")){
-            List<Cart> carts = CartDaoJDBC.getInstance().getAll();
+            ;
             try {
                 ProductDao productDataStore = ProductDaoJDBC.getInstance();
+                CartDaoJDBC cartDataStore = CartDaoJDBC.getInstance();
                 int productId = Integer.parseInt(req.getParameter("product"));
                 Product product = productDataStore.find(productId);
 
                 HttpSession session = req.getSession();
+
                 HashMap<Product, Integer> products = new HashMap<>();
                 products.put(product, 1);
+
                 if(session.getAttribute("user") != null) {
 
-                    Cart cart = new Cart(products, session.getAttribute("user"));
-                    //add to database new cart
+                    List<Cart> carts = cartDataStore.getAll().stream()
+                            .filter(cart -> cart.getProductList()
+                                    .containsKey(product))
+                            .filter(cart -> cart.getUser().equals(session.getAttribute("user")))
+                            .collect(Collectors.toList());
+
+                    if(carts.size() == 1) {
+                        cartDataStore.increaseProductQuantity(carts.get(0), product);
+                    } else if (carts.size() < 1) {
+                        Cart cart = new Cart(products, session.getAttribute("user"));
+                    } else {
+                        throw new SQLDataException("Duplicate data in database, please revise");
+                    }
                 }
 
 
 
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException | SQLDataException e) {
                 System.out.println(e);
             }
         }

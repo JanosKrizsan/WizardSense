@@ -1,5 +1,7 @@
 package com.codecool.shop.dao;
 
+import com.codecool.shop.model.User;
+
 import java.util.List;
 
 public interface GenericQueriesDao<T> {
@@ -9,4 +11,5 @@ public interface GenericQueriesDao<T> {
     void remove(int id);
 
     List<T> getAll();
+
 }
