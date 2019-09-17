@@ -20,7 +20,7 @@ CREATE TABLE products
 (
     id                  SERIAL PRIMARY KEY,
     name                VARCHAR(30) NOT NULL,
-    description         TEXT,
+    description         VARCHAR(200),
     default_price       INTEGER     NOT NULL,
     default_currency    CHAR(3),
     product_category_id INTEGER     NOT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE suppliers
 (
     id          SERIAL PRIMARY KEY,
     name        VARCHAR(30) NOT NULL,
-    description TEXT
+    description VARCHAR(200)
 );
 
 DROP TABLE IF EXISTS product_categories;
@@ -43,7 +43,7 @@ CREATE TABLE product_categories
 (
     id          SERIAL PRIMARY KEY,
     name        VARCHAR(30) NOT NULL,
-    description TEXT,
+    description VARCHAR(200),
     department  VARCHAR(10)
 );
 

@@ -10,9 +10,12 @@ import com.codecool.shop.dao.implementation.JDBC.SupplierDaoJDBC;
 import com.codecool.shop.config.TemplateEngineUtil;
 
 import com.codecool.shop.model.Cart;
+import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
+import com.codecool.shop.model.Supplier;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
+import sun.tools.asm.CatchData;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,9 +32,9 @@ import java.util.stream.Collectors;
 @WebServlet(urlPatterns = {"/"})
 public class ProductController extends HttpServlet {
 
-    private Object defaultProds = null;
+    private List<Product> defaultProds = null;
 
-    private void filter(GenericQueriesDao<ProductCategory> pCD, ProductDao pDS, HttpServletRequest req) {
+    private void filter(GenericQueriesDao<Supplier> sDS, GenericQueriesDao<ProductCategory> pCD, ProductDao pDS, HttpServletRequest req) {
         List<String> headers = Collections.list(req.getParameterNames());
 
         if (headers.contains("filter")) {
@@ -44,21 +48,23 @@ public class ProductController extends HttpServlet {
             }
 
             String filterName = sBuilder.toString().trim();
-            String suppliers = SupplierDaoJDBC.getInstance().getAll().toString();
+            List<Supplier> suppliers = sDS.getAll().stream().filter(supplier -> supplier.getName().equals(filterName)).collect(Collectors.toList());
 
-            if (suppliers.contains(filterName)) {
-                defaultProds = pDS.getBy(SupplierDaoJDBC.getInstance().find(filterId));
+
+            if (suppliers.size() > 0) {
+                defaultProds = pDS.getBy(sDS.find(filterId));
             } else {
                 defaultProds = pDS.getBy(pCD.find(filterId));
             }
         } else if (headers.contains("reset")) {
-            defaultProds = pDS.getAll();
+            defaultProds = null;
         }
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         ProductDao productDataStore = ProductDaoJDBC.getInstance();
+        GenericQueriesDao<Supplier> supplierDataStore = SupplierDaoJDBC.getInstance();
         GenericQueriesDao<ProductCategory> productCategoryDataStore = ProductCategoryDaoJDBC.getInstance();
 
         int cartSize = CartDaoJDBC.getInstance().find(1).getSumOfProducts();
@@ -67,9 +73,9 @@ public class ProductController extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
 
 
-        filter(productCategoryDataStore, productDataStore, req);
+        filter(supplierDataStore ,productCategoryDataStore, productDataStore, req);
         context.setVariable("categories", productCategoryDataStore.getAll());
-        context.setVariable("suppliers", SupplierDaoJDBC.getInstance().getAll());
+        context.setVariable("suppliers", supplierDataStore.getAll());
         context.setVariable("cartSize", cartSize);
         context.setVariable("products", defaultProds != null ? defaultProds : productDataStore.getAll());
 
@@ -79,15 +85,20 @@ public class ProductController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<Cart> carts = CartDaoJDBC.getInstance().getAll();
 
-        try {
-            ProductDao productDataStore = ProductDaoJDBC.getInstance();
-            Cart cartData = CartDaoJDBC.getInstance().find(1);
+        if (carts.size() == 0) {
+            CartDaoJDBC.getInstance().add((new Cart(new HashMap<>(0))));
+        } else {
+            try {
+                ProductDao productDataStore = ProductDaoJDBC.getInstance();
+                Cart cart = CartDaoJDBC.getInstance().find(1);
 
-            int productId = Integer.parseInt(req.getParameter("product"));
-            cartData.addProduct(productDataStore.find(productId));
-        } catch (NumberFormatException e) {
-            System.out.println(e);
+                int productId = Integer.parseInt(req.getParameter("product"));
+//                carts.addProduct(productDataStore.find(productId));
+            } catch (NumberFormatException e) {
+                System.out.println(e);
+            }
         }
 
 

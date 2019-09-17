@@ -9,6 +9,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import java.util.HashMap;
+import java.util.List;
 
 @WebListener
 public class Initializer implements ServletContextListener {
@@ -20,7 +21,8 @@ public class Initializer implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        if(productDataStore.getAll() != null && userDataStore.getAll() != null){
+
+        if(productDataStore.getAll().size() == 0 && userDataStore.getAll().size() == 0){
             fillMeUp();
         }
 
