@@ -83,15 +83,20 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
 
     @Override
     public void remove(int id) {
+        Cart cart = find(id);
         try {
-            statement = getConn().prepareStatement("DELETE FROM carts WHERE id=?;");
+
+            if (cart.getProductList().size() < 1) {
+                statement = getConn().prepareStatement("DELETE FROM carts WHERE id=?;");
+            } else {
+                statement = getConn().prepareStatement("UPDATE carts SET product_quantity = product_quantity - 1 WHERE id=?;");
+            }
             statement.setInt(1, id);
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
             System.out.println(e);
         }
-
     }
 
     @Override
