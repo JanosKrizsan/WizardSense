@@ -132,15 +132,13 @@ public class ProductDaoJDBC extends ConnectionHandler implements ProductDao {
     public List<Product> getBy(Supplier supplier) {
 
         List<Product> product = getAll();
-        List<Product> filtered = product.stream().filter(prod -> prod.getSupplier().getId() == supplier.getId()).collect(Collectors.toList());
-        return filtered;
+        return product.stream().filter(prod -> prod.getSupplier().getId() == supplier.getId()).collect(Collectors.toList());
     }
 
     @Override
     public List<Product> getBy(ProductCategory productCategory) {
 
         List<Product> product = getAll();
-        List<Product> filtered = product.stream().filter(prod -> prod.getProductCategory().getId() == productCategory.getId()).collect(Collectors.toList());
-        return filtered;
+        return product.stream().filter(prod -> prod.getProductCategory().getId() == productCategory.getId()).collect(Collectors.toList());
     }
 }

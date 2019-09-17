@@ -6,10 +6,12 @@ import java.util.Set;
 public class Cart {
 
     private int id;
+    private User user;
     private HashMap<Product, Integer> productList;
 
-    public Cart(HashMap<Product, Integer> productList) {
+    public Cart(HashMap<Product, Integer> productList, User user) {
         this.productList = productList;
+        this.user = user;
     }
 
     public int getId() {
@@ -67,4 +69,13 @@ public class Cart {
         return String.format("id: %1$d, " +
                 "product list: %2$s", id, productList);
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
+

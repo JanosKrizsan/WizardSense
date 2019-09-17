@@ -35,8 +35,6 @@ public class Initializer implements ServletContextListener {
         userDataStore.add(admin);
 
         //setting up a new cart
-        Cart cart = new Cart(new HashMap<>(0));
-        cartDataStore.add(cart);
 
         //setting up a new supplier
         Supplier althiev = new Supplier("Althiev's Smithy", "Armor and Weapons");

@@ -15,13 +15,12 @@ import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
-import sun.tools.asm.CatchData;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -84,18 +83,28 @@ public class ProductController extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Cart> carts = CartDaoJDBC.getInstance().getAll();
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        if (carts.size() == 0) {
-            CartDaoJDBC.getInstance().add((new Cart(new HashMap<>(0))));
-        } else {
+        List<String> headers = Collections.list(req.getParameterNames());
+
+        if (headers.contains("product")){
+            List<Cart> carts = CartDaoJDBC.getInstance().getAll();
             try {
                 ProductDao productDataStore = ProductDaoJDBC.getInstance();
-                Cart cart = CartDaoJDBC.getInstance().find(1);
-
                 int productId = Integer.parseInt(req.getParameter("product"));
-//                carts.addProduct(productDataStore.find(productId));
+                Product product = productDataStore.find(productId);
+
+                HttpSession session = req.getSession();
+                HashMap<Product, Integer> products = new HashMap<>();
+                products.put(product, 1);
+                if(session.getAttribute("user") != null) {
+
+                    Cart cart = new Cart(products, session.getAttribute("user"));
+                    //add to database new cart
+                }
+
+
+
             } catch (NumberFormatException e) {
                 System.out.println(e);
             }

@@ -3,8 +3,8 @@ ALTER TABLE IF EXISTS ONLY products
 ALTER TABLE IF EXISTS ONLY products
     DROP CONSTRAINT IF EXISTS fk_supplier_id CASCADE;
 ALTER TABLE IF EXISTS ONLY carts
-    DROP CONSTRAINT IF EXISTS fk_product_id CASCADE;
-ALTER TABLE IF EXISTS ONLY carts
+    DROP CONSTRAINT IF EXISTS fk_product_id CASCADE,
+    DROP CONSTRAINT IF EXISTS fk_user_cart_id CASCADE,
     DROP CONSTRAINT IF EXISTS fk_order_id CASCADE;
 ALTER TABLE IF EXISTS ONLY orders
     DROP CONSTRAINT IF EXISTS fk_cart_id CASCADE;
@@ -52,6 +52,7 @@ DROP SEQUENCE IF EXISTS carts_id_seq;
 CREATE TABLE carts
 (
     id               INTEGER NOT NULL ,
+    user_id          INTEGER NOT NULL ,
     product_id       INTEGER,
     product_quantity INTEGER
 );
@@ -71,7 +72,7 @@ DROP SEQUENCE IF EXISTS users_id_seq;
 CREATE TABLE users
 (
     id        SERIAL PRIMARY KEY,
-    user_name VARCHAR(30),
+    user_name VARCHAR(30) UNIQUE,
     password  VARCHAR(50)
 );
 
@@ -96,6 +97,7 @@ ALTER TABLE ONLY products
     ADD CONSTRAINT fk_product_category_id FOREIGN KEY (product_category_id) REFERENCES product_categories (id) ON DELETE CASCADE,
     ADD CONSTRAINT fk_supplier_id FOREIGN KEY (supplier_id) REFERENCES suppliers (id) ON DELETE CASCADE;
 ALTER TABLE ONLY carts
+    ADD CONSTRAINT fk_user_cart_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     ADD CONSTRAINT fk_product_id FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE;
 ALTER TABLE ONLY orders
     ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE;
