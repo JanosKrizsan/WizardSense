@@ -1,10 +1,17 @@
-ALTER TABLE IF EXISTS ONLY products DROP CONSTRAINT IF EXISTS fk_product_category_id CASCADE;
-ALTER TABLE IF EXISTS ONLY products DROP CONSTRAINT IF EXISTS fk_supplier_id CASCADE;
-ALTER TABLE IF EXISTS ONLY carts DROP CONSTRAINT IF EXISTS fk_product_id CASCADE;
-ALTER TABLE IF EXISTS ONLY carts DROP CONSTRAINT IF EXISTS fk_order_id CASCADE;
-ALTER TABLE IF EXISTS ONLY orders DROP CONSTRAINT IF EXISTS fk_cart_id CASCADE;
-ALTER TABLE IF EXISTS ONLY orders DROP CONSTRAINT IF EXISTS fk_user_id CASCADE;
-ALTER TABLE IF EXISTS ONLY addresses DROP CONSTRAINT IF EXISTS fk_user_address_id CASCADE;
+ALTER TABLE IF EXISTS ONLY products
+    DROP CONSTRAINT IF EXISTS fk_product_category_id CASCADE;
+ALTER TABLE IF EXISTS ONLY products
+    DROP CONSTRAINT IF EXISTS fk_supplier_id CASCADE;
+ALTER TABLE IF EXISTS ONLY carts
+    DROP CONSTRAINT IF EXISTS fk_product_id CASCADE;
+ALTER TABLE IF EXISTS ONLY carts
+    DROP CONSTRAINT IF EXISTS fk_order_id CASCADE;
+ALTER TABLE IF EXISTS ONLY orders
+    DROP CONSTRAINT IF EXISTS fk_cart_id CASCADE;
+ALTER TABLE IF EXISTS ONLY orders
+    DROP CONSTRAINT IF EXISTS fk_user_id CASCADE;
+ALTER TABLE IF EXISTS ONLY addresses
+    DROP CONSTRAINT IF EXISTS fk_user_address_id CASCADE;
 
 
 DROP TABLE IF EXISTS products;
@@ -17,8 +24,8 @@ CREATE TABLE products
     default_price       INTEGER     NOT NULL,
     default_currency    CHAR(3),
     product_category_id INTEGER     NOT NULL,
-    supplier_id         INTEGER     NOT NULL
-
+    supplier_id         INTEGER     NOT NULL,
+    image_src           VARCHAR(50)
 );
 
 DROP TABLE IF EXISTS suppliers;
@@ -87,14 +94,14 @@ CREATE TABLE addresses
 );
 
 ALTER TABLE ONLY products
-    ADD CONSTRAINT fk_product_category_id FOREIGN KEY (product_category_id) REFERENCES product_categories(id) ON DELETE CASCADE,
-    ADD CONSTRAINT fk_supplier_id FOREIGN KEY (supplier_id) REFERENCES suppliers(id) ON DELETE CASCADE;
+    ADD CONSTRAINT fk_product_category_id FOREIGN KEY (product_category_id) REFERENCES product_categories (id) ON DELETE CASCADE,
+    ADD CONSTRAINT fk_supplier_id FOREIGN KEY (supplier_id) REFERENCES suppliers (id) ON DELETE CASCADE;
 ALTER TABLE ONLY carts
-    ADD CONSTRAINT fk_product_id FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
-    ADD CONSTRAINT fk_order_id FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE;
+    ADD CONSTRAINT fk_product_id FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE,
+    ADD CONSTRAINT fk_order_id FOREIGN KEY (order_id) REFERENCES orders (id) ON DELETE CASCADE;
 ALTER TABLE ONLY orders
-    ADD CONSTRAINT fk_cart_id FOREIGN KEY (cart_id) REFERENCES carts(id) ON DELETE CASCADE,
-    ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
+    ADD CONSTRAINT fk_cart_id FOREIGN KEY (cart_id) REFERENCES carts (id) ON DELETE CASCADE,
+    ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE;
 ALTER TABLE addresses
-    ADD CONSTRAINT fk_user_address_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
+    ADD CONSTRAINT fk_user_address_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE;
 
