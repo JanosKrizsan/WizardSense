@@ -1,6 +1,7 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
+import com.codecool.shop.dao.implementation.JDBC.CartDaoJDBC;
 import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
 import com.codecool.shop.dao.implementation.Memory.ProductDaoMem;
 import com.codecool.shop.model.Cart;
@@ -24,7 +25,7 @@ public class CartController extends HttpServlet {
     private void addOrRemoveProduct(HttpServletRequest req){
         List<String> headers = Collections.list(req.getParameterNames());
         ProductDaoMem products = ProductDaoMem.getInstance();
-        Cart cart = CartDaoMem.getInstance().find(0);
+        Cart cart = CartDaoJDBC.getInstance().find(1);
 
         if (headers.contains("increase")) {
             int prodId = Integer.parseInt(req.getParameter("increase"));
@@ -48,7 +49,7 @@ public class CartController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Cart cart = CartDaoMem.getInstance().find(0);
+        Cart cart = CartDaoJDBC.getInstance().find(1);
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());

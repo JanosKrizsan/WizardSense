@@ -32,13 +32,14 @@ public class ProductDaoJDBC extends ConnectionHandler implements ProductDao {
     public void add(Product product) {
         try {
             statement = getConn().prepareStatement("INSERT INTO products (name, description, default_price, " +
-                    "default_currency, product_category_id, supplier_id) VALUES (?, ?, ?, ?, ?, ?);");
+                    "default_currency, product_category_id, supplier_id, image_src) VALUES (?, ?, ?, ?, ?, ?, ?);");
             statement.setString(1, product.getName());
             statement.setString(2, product.getDescription());
             statement.setFloat(3, product.getDefaultPrice());
             statement.setString(4, product.getDefaultCurrency().getCurrencyCode());
             statement.setInt(5, product.getProductCategory().getId());
             statement.setInt(6, product.getSupplier().getId());
+            statement.setString(7, product.getImageSrc());
             statement.executeUpdate();
             statement.close();
 

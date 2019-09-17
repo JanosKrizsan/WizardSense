@@ -3,10 +3,6 @@ package com.codecool.shop.config;
 import com.codecool.shop.dao.GenericQueriesDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.JDBC.*;
-import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
-import com.codecool.shop.dao.implementation.Memory.ProductCategoryDaoMem;
-import com.codecool.shop.dao.implementation.Memory.ProductDaoMem;
-import com.codecool.shop.dao.implementation.Memory.SupplierDaoMem;
 import com.codecool.shop.model.*;
 
 import javax.servlet.ServletContextEvent;
@@ -24,7 +20,7 @@ public class Initializer implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        if(productDataStore.getAll().size() != 0 && userDataStore.getAll().size() > 0){
+        if(productDataStore.getAll() != null && userDataStore.getAll() != null){
             fillMeUp();
         }
 
@@ -42,18 +38,24 @@ public class Initializer implements ServletContextListener {
 
         //setting up a new supplier
         Supplier althiev = new Supplier("Althiev's Smithy", "Armor and Weapons");
+        althiev.setId(1);
         supplierDataStore.add(althiev);
         Supplier arnix = new Supplier("Arnix's Scribery", "Scrolls and Books");
+        arnix.setId(2);
         supplierDataStore.add(arnix);
         Supplier eldamar = new Supplier("Eldamar's General Goods", "General Goods");
+        eldamar.setId(3);
         supplierDataStore.add(eldamar);
 
         //setting up a new product category
         ProductCategory scroll = new ProductCategory("Scroll", "Consumable", "A rolled up parchment. Contains various things");
+        scroll.setId(1);
         productCategoryDataStore.add(scroll);
         ProductCategory weapon = new ProductCategory("Weapon", "Equipment", "Items that a character can use for dealing damage");
+        weapon.setId(2);
         productCategoryDataStore.add(weapon);
         ProductCategory potion = new ProductCategory("Potion", "Consumable", "Various liquids enclosed in a bottle.");
+        potion.setId(3);
         productCategoryDataStore.add(potion);
 
         //setting up products and printing it

@@ -67,6 +67,7 @@ public class UserDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
             user.setId(id);
 
             statement.close();
+            results.close();
 
         } catch (SQLException e) {
             System.out.println(e);

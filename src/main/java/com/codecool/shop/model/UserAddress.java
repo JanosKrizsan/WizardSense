@@ -4,22 +4,13 @@ import java.util.HashMap;
 
 public class UserAddress {
     private int id;
-    private HashMap<String, String> orderFields = new HashMap<String, String>() {
-        {
-            put("name", "");
-            put("email", "");
-            put("phoneNum", "");
-            put("billingCountry", "");
-            put("billingCity", "");
-            put("billingZipCode", "");
-            put("billingAddress", "");
-            put("shippingCountry", "");
-            put("shippingCity", "");
-            put("shippingZipCode", "");
-            put("shippingAddress", "");
+    private int userId;
+    private HashMap<String, String> orderFields;
 
-        }
-    };
+    public UserAddress(HashMap<String, String> orderFields, int userId) {
+        this.orderFields = orderFields;
+        this.userId = userId;
+    }
 
     public int getId() {
         return id;
@@ -35,5 +26,13 @@ public class UserAddress {
 
     public void setOrderFields(HashMap<String, String> orderFields) {
         this.orderFields = orderFields;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

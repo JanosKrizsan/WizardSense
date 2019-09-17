@@ -19,8 +19,8 @@ DROP SEQUENCE IF EXISTS products_id_seq;
 CREATE TABLE products
 (
     id                  SERIAL PRIMARY KEY,
-    name                VARCHAR(15) NOT NULL,
-    description         VARCHAR(40),
+    name                VARCHAR(30) NOT NULL,
+    description         TEXT,
     default_price       INTEGER     NOT NULL,
     default_currency    CHAR(3),
     product_category_id INTEGER     NOT NULL,
@@ -33,8 +33,8 @@ DROP SEQUENCE IF EXISTS suppliers_id_seq;
 CREATE TABLE suppliers
 (
     id          SERIAL PRIMARY KEY,
-    name        VARCHAR(15) NOT NULL,
-    description VARCHAR(40)
+    name        VARCHAR(30) NOT NULL,
+    description TEXT
 );
 
 DROP TABLE IF EXISTS product_categories;
@@ -42,8 +42,8 @@ DROP SEQUENCE IF EXISTS product_categories_id_seq;
 CREATE TABLE product_categories
 (
     id          SERIAL PRIMARY KEY,
-    name        VARCHAR(15) NOT NULL,
-    description VARCHAR(40),
+    name        VARCHAR(30) NOT NULL,
+    description TEXT,
     department  VARCHAR(10)
 );
 
@@ -71,8 +71,8 @@ DROP SEQUENCE IF EXISTS users_id_seq;
 CREATE TABLE users
 (
     id        SERIAL PRIMARY KEY,
-    user_name VARCHAR(15),
-    password  VARCHAR(25)
+    user_name VARCHAR(30),
+    password  VARCHAR(50)
 );
 
 DROP TABLE IF EXISTS addresses;
@@ -83,8 +83,8 @@ CREATE TABLE addresses
     user_id      INTEGER,
     name         VARCHAR(20),
     e_mail       VARCHAR(20),
-    phone_number VARCHAR(15),
-    country      VARCHAR(15),
+    phone_number VARCHAR(30),
+    country      VARCHAR(30),
     city         VARCHAR(10),
     zip_code     VARCHAR(8),
     address      VARCHAR(30)
