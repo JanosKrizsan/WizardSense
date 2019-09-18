@@ -32,6 +32,7 @@ public class LoginController extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
 
         context.setVariable("user", (User)req.getSession().getAttribute("user"));
+        context.setVariable("errorMessage", req.getAttribute("errorMessage"));
 
         engine.process("product/login.html", context, resp.getWriter());
     }
@@ -46,11 +47,14 @@ public class LoginController extends HttpServlet {
 
         User userToLogin = userDataStore.find(username);
 
-        if (Utils.checkPass(password, userToLogin.getPassword())){
+        if (userToLogin.getPassword() == null || !Utils.checkPass(password, userToLogin.getPassword())){
+            req.setAttribute("errorMessage", "Your alias or the spell is improper!");
+            doGet(req, resp);
+        } else {
             session.setAttribute("user", userToLogin);
+            resp.sendRedirect("/");
         }
 
-        resp.sendRedirect("/");
 
     }
 

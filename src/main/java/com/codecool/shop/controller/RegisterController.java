@@ -38,10 +38,10 @@ public class RegisterController extends HttpServlet {
         String rePassword = req.getParameter("rePassword");
 
         if (!password.equals(rePassword)) {
-            req.setAttribute("errorMessage", "Passwords do not match!");
+            req.setAttribute("errorMessage", "Your spellwords are mismatching!");
             doGet(req, resp);
         } else if (userDataStore.find(username).getUsername() != null) {
-            req.setAttribute("errorMessage", "Username is already taken!");
+            req.setAttribute("errorMessage", "Thou hast chosen an alias already in existence!");
             doGet(req, resp);
         } else {
             userDataStore.add(new User(username, password));

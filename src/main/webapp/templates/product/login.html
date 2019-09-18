@@ -37,7 +37,12 @@
 </div>
 
 <div class="container container-inputs">
+
     <form th:action="@{/login}" method="post">
+        <p><strong>Estabilish Telepahic Senses:</strong></p>
+
+        <p class="error-message" th:if="${errorMessage != null}" th:text="${errorMessage}"></p>
+
         <div class="login-form">
             <p>WizardAlias: <input name="username" type="text" placeholder="BaileyTomund" required></p>
                 <p>SpellWord: <input name="password" type="password" placeholder="SpellWord" required></p>

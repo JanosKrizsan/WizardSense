@@ -90,7 +90,7 @@
     z-index: 2;
     position: fixed;
     top: 35px;
-    right: 200px;
+    right: 300px;
     height: 20px;
     width: 20px;
     background-color: #d82d2d;
@@ -107,7 +107,7 @@
     width: 40px;
     position: fixed;
     top: 20px;
-    right: 200px;
+    right: 300px;
 }
 
 .logo {
@@ -126,11 +126,11 @@
 }
 
 .login {
-    right: 100px;
+    right: 180px;
 }
 
 .register {
-    right: 20px;
+    right: 80px;
 }
 
 .navbar {
@@ -277,8 +277,20 @@
     margin: 0 20px 20px;
     width: 320px;
     border-radius: 5px;
+    display: inline-block;
 }
 
 .container form {
     text-align: center;
+}
+
+.error-message {
+    text-align: center;
+    color: red;
+    font-size: large;
+    font-weight: bolder;
+}
+
+.register-form input {
+    align-content: center;
 }
