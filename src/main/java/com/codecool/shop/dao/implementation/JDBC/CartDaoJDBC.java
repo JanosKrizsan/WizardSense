@@ -36,11 +36,17 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
         HashMap<Product, Integer> products = cart.getProductList();
         try {
             for (Product product : products.keySet()) {
-                statement = getConn().prepareStatement("INSERT INTO carts (id, user_id, product_id, product_quantity) VALUES (? , ? , ?, ?);");
+                if (find(cart.getId()).getProductList().containsKey(product)) {
+                    statement = getConn().prepareStatement("UPDATE carts " +
+                            "SET product_quantity = product_quantity + 1 " +
+                            "WHERE id=? AND user_id=? AND product_id=?;");
+                } else {
+                    statement = getConn().prepareStatement("INSERT INTO carts (id, user_id, product_id, product_quantity) VALUES (? , ? , ?, ?);");
+                    statement.setInt(4, products.get(product));
+                }
                 statement.setInt(1, cart.getId());
                 statement.setInt(2, cart.getUser().getId());
                 statement.setInt(3, product.getId());
-                statement.setInt(4, products.get(product));
                 statement.executeUpdate();
                 statement.close();
             }
@@ -58,12 +64,13 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
 
             ResultSet results = statement.executeQuery();
 
-            int productId = 0;
-            int productQuantity = 0;
+            int productId;
+            int productQuantity;
             User user = null;
             HashMap<Product, Integer> productMap = new HashMap<>();
 
             while (results.next()) {
+
                 productId = results.getInt("product_id");
                 productQuantity = results.getInt("product_quantity");
                 user = UserDaoJDBC.getInstance().find(results.getInt("user_id"));
@@ -71,6 +78,7 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
             }
 
             cart = new Cart(productMap, user);
+            System.out.println(cart);
             cart.setId(id);
             statement.close();
             results.close();
@@ -85,15 +93,16 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
     public void remove(int id) {
         Cart cart = find(id);
         try {
-
-            if (cart.getProductList().size() < 1) {
-                statement = getConn().prepareStatement("DELETE FROM carts WHERE id=?;");
-            } else {
-                statement = getConn().prepareStatement("UPDATE carts SET product_quantity = product_quantity - 1 WHERE id=?;");
+            for (Product product : cart.getProductList().keySet()) {
+                if (cart.getProductList().get(product) <= 1) {
+                    statement = getConn().prepareStatement("DELETE FROM carts WHERE id=?;");
+                } else {
+                    statement = getConn().prepareStatement("UPDATE carts SET product_quantity = product_quantity - 1 WHERE id=?;");
+                }
+                statement.setInt(1, id);
+                statement.executeUpdate();
+                statement.close();
             }
-            statement.setInt(1, id);
-            statement.executeUpdate();
-            statement.close();
         } catch (SQLException e) {
             System.out.println(e);
         }
@@ -143,21 +152,5 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
             System.out.println(e);
         }
         return null;
-    }
-
-    public void increaseProductQuantity(Cart cart, Product product) {
-        try {
-            statement = getConn().prepareStatement("UPDATE carts " +
-                    "SET product_quantity = product_quantity + 1 " +
-                    "WHERE id=? AND user_id=? AND product_id=?;");
-            statement.setInt(1, cart.getId());
-            statement.setInt(2, cart.getUser().getId());
-            statement.setInt(3, product.getId());
-            statement.executeUpdate();
-            statement.close();
-
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
     }
 }
