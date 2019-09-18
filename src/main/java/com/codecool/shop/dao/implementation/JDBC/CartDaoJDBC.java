@@ -36,7 +36,7 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
     public void add(Cart cart) {
         HashMap<Product, Integer> products = cart.getProductList();
         try {
-             for (Product product : products.keySet()) {
+            for (Product product : products.keySet()) {
                 statement = getConn().prepareStatement("INSERT INTO carts (id, user_id, product_id, product_quantity) VALUES (? , ? , ?, ?);");
                 statement.setInt(1, cart.getId());
                 statement.setInt(2, cart.getUser().getId());
@@ -49,6 +49,27 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
             System.out.println(e);
         }
     }
+
+    public Integer getLatestId() {
+        try {
+            statement = getConn().prepareStatement("SELECT MAX(id) as id FROM carts;");
+            ResultSet result = statement.executeQuery();
+
+            Integer id = null;
+
+            while (result.next()){
+                id = result.getInt("id")+1;
+            }
+
+            statement.close();
+            return id;
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
 
     @Override
     public Cart find(int id) {
@@ -144,7 +165,7 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
 
     public void increaseOrDecreaseQuantity(Cart cart, Integer productId, boolean incOrDec) {
 
-        try{
+        try {
             if (incOrDec) {
                 statement = getConn().prepareStatement("UPDATE carts " +
                         "SET product_quantity = product_quantity + 1 " +

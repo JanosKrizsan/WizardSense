@@ -20,6 +20,7 @@ import java.sql.SQLDataException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -65,8 +66,8 @@ public class ProductController extends HttpServlet {
         HttpSession session = req.getSession();
 
         int cartSize = 0;
-        if(session.getAttribute("userID") != null) {
-            int userID = (int)session.getAttribute("userID");
+        if (session.getAttribute("userID") != null) {
+            int userID = (int) session.getAttribute("userID");
             Cart cart = cartDataStore.getCartByUserId(userID);
 
             cartSize = cart != null ? cartDataStore.getCartByUserId(userID).getSumOfProducts() : 0;
@@ -77,7 +78,7 @@ public class ProductController extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
 
 
-        filter(supplierDataStore ,productCategoryDataStore, productDataStore, req);
+        filter(supplierDataStore, productCategoryDataStore, productDataStore, req);
         context.setVariable("categories", productCategoryDataStore.getAll());
         context.setVariable("suppliers", supplierDataStore.getAll());
         context.setVariable("cartSize", cartSize);
@@ -94,7 +95,7 @@ public class ProductController extends HttpServlet {
 
         List<String> headers = Collections.list(req.getParameterNames());
 
-        if (headers.contains("product")){
+        if (headers.contains("product")) {
 
             try {
                 HttpSession session = req.getSession();
@@ -102,7 +103,7 @@ public class ProductController extends HttpServlet {
                 int userId = (int) session.getAttribute("userID");
                 User user = userDataStore.find(userId);
 
-                if(user != null) {
+                if (user != null) {
                     int productId = Integer.parseInt(req.getParameter("product"));
                     Product product = productDataStore.find(productId);
 
@@ -110,9 +111,27 @@ public class ProductController extends HttpServlet {
                     HashMap<Product, Integer> products = new HashMap<>();
                     products.put(product, 1);
 
-                    cartDataStore.add(new Cart(products, user));
-                }
 
+                    Cart cartToCheck = cartDataStore.getCartByUserId(userId);
+
+                    Cart newCart = new Cart(products, user);
+                    newCart.setId(userId);
+
+                    if (cartToCheck == null) {
+                        cartDataStore.add(newCart);
+                    } else {
+
+                        Set myset = cartToCheck.getProductsInCart();
+                        boolean mybool = cartToCheck.getProductsInCart().contains(product);
+
+                        if(cartDataStore.getCartProductQuantity(cartToCheck, productId) >= 1){
+                            cartDataStore.increaseOrDecreaseQuantity(cartToCheck, productId, true);
+                        } else {
+                            cartDataStore.add(newCart);
+                        }
+                    }
+
+                }
 
 
             } catch (NumberFormatException e) {

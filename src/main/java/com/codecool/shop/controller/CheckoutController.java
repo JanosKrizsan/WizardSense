@@ -38,8 +38,7 @@ public class CheckoutController extends HttpServlet {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
 
-        addressDataStore.find()
-        context.setVariable("details", details);
+//        context.setVariable("details", details);
         context.setVariable("userID", userId);
         context.setVariable("userName", userName);
         context.setVariable("details", userAddresses);
