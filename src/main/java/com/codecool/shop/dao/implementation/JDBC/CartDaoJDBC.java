@@ -141,6 +141,18 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
         return carts;
     }
 
+    @Override
+    public void removeAll() {
+        try {
+            statement = getConn().prepareStatement("TRUNCATE carts CASCADE ");
+            statement.executeUpdate();
+            statement.close();
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
     public Cart getCartByUserId(int id) {
         try {
             statement = getConn().prepareStatement("SELECT id FROM carts WHERE user_id=?;");

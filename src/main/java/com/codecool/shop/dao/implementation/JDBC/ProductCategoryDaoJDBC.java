@@ -106,4 +106,16 @@ public class ProductCategoryDaoJDBC extends ConnectionHandler implements Generic
         }
         return categories;
     }
+
+    @Override
+    public void removeAll() {
+        try {
+            statement = getConn().prepareStatement("TRUNCATE product_categories CASCADE ");
+            statement.executeUpdate();
+            statement.close();
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
 }

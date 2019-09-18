@@ -12,7 +12,7 @@ public abstract class ConnectionHandler {
 
 
     private Connection conn;
-    private DataSource dataSource;
+    private PGSimpleDataSource dataSource;
 
     public ConnectionHandler() {
         try {
@@ -23,12 +23,12 @@ public abstract class ConnectionHandler {
         }
     }
 
-    public DataSource connect() throws SQLException {
+    public PGSimpleDataSource connect() throws SQLException {
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
 
-        dataSource.setDatabaseName("wizardshop");
-        dataSource.setUser("john");
-        dataSource.setPassword("1710");
+        dataSource.setDatabaseName("wizardsense");
+        dataSource.setUser("postgres");
+        dataSource.setPassword("19980114");
 
         dataSource.getConnection().close();
 
@@ -39,7 +39,17 @@ public abstract class ConnectionHandler {
         return conn;
     }
 
-    public DataSource getDataSource() {
+    public PGSimpleDataSource getDataSource() {
         return dataSource;
     }
+
+    public void setConn(Connection conn) {
+        this.conn = conn;
+    }
+
+    public void setDataSource(PGSimpleDataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 }
+
+

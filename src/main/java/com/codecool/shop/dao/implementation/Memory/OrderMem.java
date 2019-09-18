@@ -42,4 +42,9 @@ public class OrderMem implements GenericQueriesDao<Order> {
     public List<Order> getAll() {
         return data;
     }
+
+    @Override
+    public void removeAll() {
+        data.clear();
+    }
 }

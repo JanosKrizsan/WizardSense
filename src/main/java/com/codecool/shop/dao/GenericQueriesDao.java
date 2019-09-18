@@ -11,5 +11,6 @@ public interface GenericQueriesDao<T> {
     void remove(int id);
 
     List<T> getAll();
+    void removeAll();
 
 }

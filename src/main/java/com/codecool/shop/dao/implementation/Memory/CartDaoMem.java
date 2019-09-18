@@ -43,4 +43,9 @@ public class CartDaoMem implements GenericQueriesDao<Cart> {
         return data;
     }
 
+    @Override
+    public void removeAll() {
+        data.clear();
+    }
+
 }

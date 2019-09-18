@@ -61,4 +61,8 @@ public class BaseModel {
         return sb.toString();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return this.toString().equals(obj.toString());
+    }
 }

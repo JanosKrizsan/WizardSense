@@ -1,54 +1,84 @@
-package com.codecool.shop.dao;
+package JDBC;
 
-import com.codecool.shop.dao.implementation.Memory.CartDaoMem;
-import com.codecool.shop.dao.implementation.Memory.ProductCategoryDaoMem;
-import com.codecool.shop.dao.implementation.Memory.ProductDaoMem;
-import com.codecool.shop.dao.implementation.Memory.SupplierDaoMem;
+import com.codecool.shop.dao.GenericQueriesDao;
+import com.codecool.shop.dao.ProductDao;
+import com.codecool.shop.dao.implementation.JDBC.CartDaoJDBC;
+import com.codecool.shop.dao.implementation.JDBC.ProductCategoryDaoJDBC;
+import com.codecool.shop.dao.implementation.JDBC.ProductDaoJDBC;
+import com.codecool.shop.dao.implementation.JDBC.SupplierDaoJDBC;
+import com.codecool.shop.dao.implementation.Memory.*;
 import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.postgresql.ds.PGSimpleDataSource;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
-class MemoryDaoTest {
+class JDBCDaoTest {
 
     // Getting the memory DAOs
-    private ProductDao productDataStore = ProductDaoMem.getInstance();
-    private GenericQueriesDao<ProductCategory> productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-    private GenericQueriesDao<Supplier> supplierDataStore = SupplierDaoMem.getInstance();
-    private GenericQueriesDao<Cart> cartDataStore = CartDaoMem.getInstance();
+    private static ProductCategoryDaoJDBC productCategoryDataStore = ProductCategoryDaoJDBC.getInstance();
+    private static SupplierDaoJDBC supplierDataStore = SupplierDaoJDBC.getInstance();
+    private static ProductDaoJDBC productDataStore = ProductDaoJDBC.getInstance();
+    private static CartDaoJDBC cartDataStore = CartDaoJDBC.getInstance();
 
     private ProductCategory testCategory = new ProductCategory("Test Category", "Test Department", "Test Description");
     private Supplier testSupplier = new Supplier("Test Supplier", "Test Description");
-    private Product testProduct = new Product("TestProd", 0, "HUF", "Just a test", testCategory, testSupplier);
+    private Product testProduct = new Product("TestProd", 0, "USD", "Just a test", testCategory, testSupplier);
+    private Cart testCart = new Cart(new HashMap<>(0), null);
 
     private ProductCategory fakeCategory = new ProductCategory("Fake Category", "Fake Department", "Fake Description");
     private Supplier fakeSupplier = new Supplier("Fake Supplier", "Fake Description");
-    private Product fakeProduct = new Product("FakeProd", 0, "HUF", "Just a fake", fakeCategory, fakeSupplier);
+    private Product fakeProduct = new Product("FakeProd", 0, "USD", "Just a fake", fakeCategory, fakeSupplier);
 
-    private Cart testCart = new Cart(new HashMap<>(0), null);
 
+    static Connection setConnectionData(PGSimpleDataSource dataSource) throws SQLException {
+        dataSource.setDatabaseName("wizardsensetest");
+        dataSource.setUser("postgres");
+        dataSource.setPassword("19980114");
+
+        return dataSource.getConnection();
+    }
+
+    @BeforeAll
+    static void establishConnection(){
+        try {
+            productCategoryDataStore.setConn(setConnectionData(productCategoryDataStore.getDataSource()));
+            supplierDataStore.setConn(setConnectionData(supplierDataStore.getDataSource()));
+            productDataStore.setConn(setConnectionData(productDataStore.getDataSource()));
+            cartDataStore.setConn(setConnectionData(cartDataStore.getDataSource()));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @AfterEach
     @BeforeEach
     void cleanTheSlate() {
-        productDataStore.remove(1);
-        supplierDataStore.remove(1);
-        productCategoryDataStore.remove(1);
-        cartDataStore.remove(0);
+        productDataStore.removeAll();
+        supplierDataStore.removeAll();
+        productCategoryDataStore.removeAll();
+        cartDataStore.removeAll();
     }
+
 
     @Test
     void testAddProductCategory() {
         productCategoryDataStore.add(testCategory);
-        ProductCategory supposedProductCategory = productCategoryDataStore.find(1);
-        assertEquals(testCategory, supposedProductCategory);
+        ProductCategory supposedCategory = productCategoryDataStore.find(1);
+        assertEquals(testCategory, supposedCategory);
     }
 
     @Test
@@ -61,6 +91,7 @@ class MemoryDaoTest {
     @Test
     void testAddSupplier() {
         supplierDataStore.add(testSupplier);
+        testSupplier.setId(1);
         Supplier supposedSupplier = supplierDataStore.find(1);
         assertEquals(testSupplier, supposedSupplier);
     }
@@ -74,6 +105,8 @@ class MemoryDaoTest {
 
     @Test
     void testAddProduct() {
+        supplierDataStore.add(testSupplier);
+        productCategoryDataStore.add(testCategory);
         productDataStore.add(testProduct);
         Product supposedProduct = productDataStore.find(1);
         assertEquals(testProduct, supposedProduct);
@@ -111,21 +144,21 @@ class MemoryDaoTest {
     @Test
     void testAddCart() {
         cartDataStore.add(testCart);
-        Cart supposedCart = cartDataStore.find(0);
+        Cart supposedCart = cartDataStore.find(1);
         assertEquals(testCart, supposedCart);
     }
 
     @Test
     void testRemoveCart() {
         cartDataStore.add(testCart);
-        cartDataStore.remove(0);
+        cartDataStore.remove(1);
         assertEquals(cartDataStore.getAll(), new ArrayList<Cart>());
     }
 
     @Test
     void testAddToCart() {
         cartDataStore.add(testCart);
-        Cart cartToAddTo = cartDataStore.find(0);
+        Cart cartToAddTo = cartDataStore.find(1);
         cartToAddTo.addProduct(testProduct);
         HashMap<Product, Integer> supposedMap = new HashMap<Product, Integer>() {{
             put(testProduct, 1);
@@ -137,7 +170,7 @@ class MemoryDaoTest {
     @Test
     void testRemoveFromCart() {
         cartDataStore.add(testCart);
-        Cart cartToAddTo = cartDataStore.find(0);
+        Cart cartToAddTo = cartDataStore.find(1);
         cartToAddTo.addProduct(testProduct);
         cartToAddTo.removeProduct(testProduct);
         HashMap<Product, Integer> supposedMap = new HashMap<>();

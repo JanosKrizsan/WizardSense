@@ -141,4 +141,16 @@ public class ProductDaoJDBC extends ConnectionHandler implements ProductDao {
         List<Product> product = getAll();
         return product.stream().filter(prod -> prod.getProductCategory().getId() == productCategory.getId()).collect(Collectors.toList());
     }
+
+    @Override
+    public void removeAll() {
+        try {
+            statement = getConn().prepareStatement("TRUNCATE carts CASCADE ");
+            statement.executeUpdate();
+            statement.close();
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
 }

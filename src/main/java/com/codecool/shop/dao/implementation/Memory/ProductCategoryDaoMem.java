@@ -44,4 +44,9 @@ public class ProductCategoryDaoMem implements GenericQueriesDao<ProductCategory>
     public List<ProductCategory> getAll() {
         return data;
     }
+
+    @Override
+    public void removeAll() {
+        data.clear();
+    }
 }

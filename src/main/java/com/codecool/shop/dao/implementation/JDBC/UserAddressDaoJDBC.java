@@ -119,4 +119,16 @@ public class UserAddressDaoJDBC extends ConnectionHandler implements GenericQuer
         }
         return null;
     }
+
+    @Override
+    public void removeAll() {
+        try {
+            statement = getConn().prepareStatement("TRUNCATE addresses CASCADE ");
+            statement.executeUpdate();
+            statement.close();
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
 }

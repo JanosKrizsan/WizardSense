@@ -43,4 +43,9 @@ public class SupplierDaoMem implements GenericQueriesDao<Supplier> {
     public List<Supplier> getAll() {
         return data;
     }
+
+    @Override
+    public void removeAll() {
+        data.clear();
+    }
 }

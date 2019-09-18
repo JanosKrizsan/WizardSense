@@ -102,4 +102,16 @@ public class SupplierDaoJDBC extends ConnectionHandler implements GenericQueries
         }
         return suppliers;
     }
+
+    @Override
+    public void removeAll() {
+        try {
+            statement = getConn().prepareStatement("TRUNCATE suppliers CASCADE ");
+            statement.executeUpdate();
+            statement.close();
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
 }

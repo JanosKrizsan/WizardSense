@@ -101,4 +101,16 @@ public class OrderDaoJDBC extends ConnectionHandler implements GenericQueriesDao
         }
         return orders;
     }
+
+    @Override
+    public void removeAll() {
+        try {
+            statement = getConn().prepareStatement("TRUNCATE orders CASCADE ");
+            statement.executeUpdate();
+            statement.close();
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
 }
