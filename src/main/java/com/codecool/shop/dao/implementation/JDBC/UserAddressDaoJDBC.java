@@ -57,7 +57,7 @@ public class UserAddressDaoJDBC extends ConnectionHandler implements GenericQuer
             ResultSet results = statement.executeQuery();
 
             int userId = 0;
-            HashMap<String, String> addressFields = new HashMap<String, String>();
+            HashMap<String, String> addressFields = new HashMap<>();
             while (results.next()) {
 
                  addressFields.put("name", results.getString("name"));

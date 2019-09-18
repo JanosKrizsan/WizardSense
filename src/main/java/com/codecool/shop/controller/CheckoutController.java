@@ -2,6 +2,7 @@ package com.codecool.shop.controller;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.implementation.JDBC.CartDaoJDBC;
 import com.codecool.shop.dao.implementation.JDBC.OrderDaoJDBC;
+import com.codecool.shop.dao.implementation.JDBC.UserAddressDaoJDBC;
 import com.codecool.shop.dao.implementation.JDBC.UserDaoJDBC;
 import com.codecool.shop.model.Order;
 import com.codecool.shop.model.UserAddress;
@@ -21,6 +22,7 @@ public class CheckoutController extends HttpServlet {
     private OrderDaoJDBC orderDataStore = OrderDaoJDBC.getInstance();
     private CartDaoJDBC cartDataStore = CartDaoJDBC.getInstance();
     private UserDaoJDBC userDataStore = UserDaoJDBC.getInstance();
+    private UserAddressDaoJDBC addressDataStore = UserAddressDaoJDBC.getInstance();
 
 
     @Override
@@ -36,6 +38,8 @@ public class CheckoutController extends HttpServlet {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
 
+        addressDataStore.find()
+        context.setVariable("details", details);
         context.setVariable("userID", userId);
         context.setVariable("userName", userName);
         context.setVariable("details", userAddresses);
