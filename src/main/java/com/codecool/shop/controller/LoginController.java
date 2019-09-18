@@ -31,7 +31,8 @@ public class LoginController extends HttpServlet {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
 
-        context.setVariable("user", (User)req.getSession().getAttribute("user"));
+        context.setVariable("userID", req.getSession().getAttribute("userID"));
+        context.setVariable("userName", req.getSession().getAttribute("userName"));
         context.setVariable("errorMessage", req.getAttribute("errorMessage"));
 
         engine.process("product/login.html", context, resp.getWriter());
@@ -51,7 +52,8 @@ public class LoginController extends HttpServlet {
             req.setAttribute("errorMessage", "Your alias or the spell is improper!");
             doGet(req, resp);
         } else {
-            session.setAttribute("user", userToLogin);
+            session.setAttribute("userID", userToLogin.getId());
+            session.setAttribute("userName", userToLogin.getUsername());
             resp.sendRedirect("/");
         }
 

@@ -38,11 +38,11 @@
         <img class="cart-logo" src="/static/img/shopping-cart.png" alt="">
         <span th:if="${cartSize > 0}" th:text="${cartSize}" class="dot"></span>
     </a>
-    <div th:if="${user != null}">
-        <a th:text="'Hello there '+ ${user.getUsername()}+'!'"></a>
+    <div th:if="${userID != null}">
+        <a th:text="'Hello there '+ ${userName}+'!'"></a>
         (<a th:href="@{/logout}">Logout</a>)
     </div>
-    <div th:unless="${user != null}">
+    <div th:unless="${userID != null}">
         <a class="login" th:href="@{/login}">Login</a>
         <a class="register" th:href="@{/register}">Register</a>
     </div>
@@ -84,7 +84,7 @@
                     <div class="card-text">
                         <form th:action="@{/}" method="post">
                             <input type="hidden" th:value="${prod.getId()}" name="product">
-                            <input class="btn btn-success" type="submit" value="Add to cart">
+                            <input class="btn btn-success" type="submit" value="Add to cart" th:if="${userID}">
                         </form>
 
                     </div>

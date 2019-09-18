@@ -58,7 +58,8 @@ public class CartController extends HttpServlet {
 
         context.setVariable("cart" , cart);
         context.setVariable("totalSum", getTotalSum(cart));
-        context.setVariable("user", req.getSession().getAttribute("user"));
+        context.setVariable("userID", req.getSession().getAttribute("userID"));
+        context.setVariable("userName", req.getSession().getAttribute("userName"));
 
         engine.process("product/shopping-cart.html", context, resp.getWriter());
     }

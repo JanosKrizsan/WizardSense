@@ -75,7 +75,8 @@ public class ProductController extends HttpServlet {
         context.setVariable("suppliers", supplierDataStore.getAll());
         context.setVariable("cartSize", cartSize);
         context.setVariable("products", defaultProds != null ? defaultProds : productDataStore.getAll());
-        context.setVariable("user", req.getSession().getAttribute("user"));
+        context.setVariable("userID", req.getSession().getAttribute("userID"));
+        context.setVariable("userName", req.getSession().getAttribute("userName"));
 
 
         engine.process("product/index.html", context, resp.getWriter());

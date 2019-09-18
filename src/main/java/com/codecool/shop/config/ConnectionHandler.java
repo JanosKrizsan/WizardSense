@@ -26,9 +26,9 @@ public abstract class ConnectionHandler {
     public DataSource connect() throws SQLException {
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
 
-        dataSource.setDatabaseName("wizardshop");
-        dataSource.setUser("john");
-        dataSource.setPassword("1710");
+        dataSource.setDatabaseName("wizardsense");
+        dataSource.setUser("postgres");
+        dataSource.setPassword("19980114");
 
         dataSource.getConnection().close();
 
