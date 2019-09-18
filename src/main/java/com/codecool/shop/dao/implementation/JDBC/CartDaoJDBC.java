@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<Cart> {
 
@@ -35,18 +36,12 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
     public void add(Cart cart) {
         HashMap<Product, Integer> products = cart.getProductList();
         try {
-            for (Product product : products.keySet()) {
-                if (find(cart.getId()).getProductList().containsKey(product)) {
-                    statement = getConn().prepareStatement("UPDATE carts " +
-                            "SET product_quantity = product_quantity + 1 " +
-                            "WHERE id=? AND user_id=? AND product_id=?;");
-                } else {
-                    statement = getConn().prepareStatement("INSERT INTO carts (id, user_id, product_id, product_quantity) VALUES (? , ? , ?, ?);");
-                    statement.setInt(4, products.get(product));
-                }
+             for (Product product : products.keySet()) {
+                statement = getConn().prepareStatement("INSERT INTO carts (id, user_id, product_id, product_quantity) VALUES (? , ? , ?, ?);");
                 statement.setInt(1, cart.getId());
                 statement.setInt(2, cart.getUser().getId());
                 statement.setInt(3, product.getId());
+                statement.setInt(4, products.get(product));
                 statement.executeUpdate();
                 statement.close();
             }
@@ -78,7 +73,6 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
             }
 
             cart = new Cart(productMap, user);
-            System.out.println(cart);
             cart.setId(id);
             statement.close();
             results.close();
@@ -91,18 +85,12 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
 
     @Override
     public void remove(int id) {
-        Cart cart = find(id);
         try {
-            for (Product product : cart.getProductList().keySet()) {
-                if (cart.getProductList().get(product) <= 1) {
-                    statement = getConn().prepareStatement("DELETE FROM carts WHERE id=?;");
-                } else {
-                    statement = getConn().prepareStatement("UPDATE carts SET product_quantity = product_quantity - 1 WHERE id=?;");
-                }
-                statement.setInt(1, id);
-                statement.executeUpdate();
-                statement.close();
-            }
+            statement = getConn().prepareStatement("DELETE FROM carts WHERE product_id=?;");
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            statement.close();
+
         } catch (SQLException e) {
             System.out.println(e);
         }
@@ -134,7 +122,7 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
 
     public Cart getCartByUserId(int id) {
         try {
-            statement = getConn().prepareStatement("SELECT * FROM carts WHERE user_id=?;");
+            statement = getConn().prepareStatement("SELECT id FROM carts WHERE user_id=?;");
             statement.setInt(1, id);
             ResultSet results = statement.executeQuery();
 
@@ -151,6 +139,53 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
         } catch (SQLException e) {
             System.out.println(e);
         }
+        return null;
+    }
+
+    public void increaseOrDecreaseQuantity(Cart cart, Integer productId, boolean incOrDec) {
+
+        try{
+            if (incOrDec) {
+                statement = getConn().prepareStatement("UPDATE carts " +
+                        "SET product_quantity = product_quantity + 1 " +
+                        "WHERE id=? AND user_id=? AND product_id=?;");
+            } else {
+                statement = getConn().prepareStatement("UPDATE carts " +
+                        "SET product_quantity = product_quantity - 1 " +
+                        "WHERE id=? AND user_id=? AND product_id=?;");
+            }
+
+            statement.setInt(1, cart.getId());
+            statement.setInt(2, cart.getUser().getId());
+            statement.setInt(3, productId);
+            statement.executeUpdate();
+            statement.close();
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public Integer getCartProductQuantity(Cart cart, int productId) {
+        try {
+            statement = getConn().prepareStatement("SELECT product_quantity FROM carts WHERE id=? AND user_id=? AND product_id=?;");
+            statement.setInt(1, cart.getId());
+            statement.setInt(2, cart.getUser().getId());
+            statement.setInt(3, productId);
+
+            ResultSet result = statement.executeQuery();
+
+            int quantity = 0;
+            while (result.next()) {
+
+                quantity = result.getInt("product_quantity");
+
+            }
+            return quantity;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
         return null;
     }
 }

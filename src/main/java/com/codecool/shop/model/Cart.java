@@ -55,6 +55,7 @@ public class Cart {
     }
 
     public Integer getSumOfProducts(){
+
         int products = 0;
         for (Product product :
                 getProductsInCart()) {

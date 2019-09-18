@@ -67,7 +67,9 @@ public class ProductController extends HttpServlet {
         int cartSize = 0;
         if(session.getAttribute("userID") != null) {
             int userID = (int)session.getAttribute("userID");
-            cartSize = cartDataStore.getCartByUserId(userID).getSumOfProducts();
+            Cart cart = cartDataStore.getCartByUserId(userID);
+
+            cartSize = cart != null ? cartDataStore.getCartByUserId(userID).getSumOfProducts() : 0;
         }
 
 
