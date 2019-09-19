@@ -16,14 +16,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.SQLException;
+
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @WebServlet(urlPatterns = {"/shopping-cart"})
 public class CartController extends HttpServlet {
     private CartDaoJDBC cartDataStore = CartDaoJDBC.getInstance();
     private UserDaoJDBC userDataStore = UserDaoJDBC.getInstance();
+    private ProductDaoJDBC productDataStore = ProductDaoJDBC.getInstance();
+
 
     private void addOrRemoveProduct(HttpServletRequest req){
         List<String> headers = Collections.list(req.getParameterNames());
@@ -53,7 +56,7 @@ public class CartController extends HttpServlet {
     private float getTotalSum(Cart cart) {
         float sum = 0;
 
-        for (Product product : cart.getProductList().keySet()) {
+        for (Product product : cart.getProductsInCart()) {
             sum += product.getDefaultPrice() * cart.getProductList().get(product);
         }
         return sum;
@@ -76,6 +79,23 @@ public class CartController extends HttpServlet {
         if (cart == null) {
             cart = new Cart(new HashMap<>(), userDataStore.find(userId));
         }
+//        else if (cart.getProductList().size() > 1){
+//            List<Integer> unsorted = new ArrayList<>();
+//
+//            for (Product product : cart.getProductsInCart()) {
+//                unsorted.add(product.getId());
+//            }
+//
+//            Collections.sort(unsorted);
+//            cart.setProductList(new HashMap<>());
+//
+//            Cart cloneCart = cartDataStore.getCartByUserId(userId);
+//
+//            for (Integer id : unsorted) {
+//                Product product = productDataStore.find(id);
+//                cart.getProductList().put(product, cloneCart.getProductList().get(product));
+//            }
+//        }
 
             TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
             WebContext context = new WebContext(req, resp, req.getServletContext());

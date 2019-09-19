@@ -5,6 +5,7 @@ import com.codecool.shop.dao.implementation.JDBC.CartDaoJDBC;
 import com.codecool.shop.dao.implementation.JDBC.OrderDaoJDBC;
 import com.codecool.shop.dao.implementation.JDBC.UserAddressDaoJDBC;
 import com.codecool.shop.dao.implementation.JDBC.UserDaoJDBC;
+import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.Order;
 import com.codecool.shop.model.UserAddress;
 import org.thymeleaf.TemplateEngine;
@@ -21,7 +22,8 @@ import java.util.List;
 
 @WebServlet(urlPatterns = {"/address-list"})
 public class AddressController extends HttpServlet {
-    private static UserAddressDaoJDBC addressDataStore = UserAddressDaoJDBC.getInstance();
+    private UserAddressDaoJDBC addressDataStore = UserAddressDaoJDBC.getInstance();
+    private CartDaoJDBC cartDataStore = CartDaoJDBC.getInstance();
 
 
     @Override
@@ -33,11 +35,14 @@ public class AddressController extends HttpServlet {
         String userName = (String)session.getAttribute("userName");
 
         List<UserAddress> addressList = addressDataStore.getAddressByUserId(userID);
+        Cart cart = cartDataStore.getCartByUserId(userID);
+
+        Integer cartSize = cartDataStore.getCartByUserId(userID).getSumOfProducts();
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
 
-
+        context.setVariable("cartSize", cartSize);
         context.setVariable("addresses", addressList);
         context.setVariable("userID", userID);
         context.setVariable("userName", userName);
