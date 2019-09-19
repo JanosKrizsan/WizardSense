@@ -7,9 +7,10 @@ public class Order {
     private Cart cart;
     private String status;
 
-    public Order(User user, Cart cart) {
+    public Order(User user, Cart cart, String status) {
         this.user = user;
         this.cart = cart;
+        this.status = status;
     }
 
     public User getUser() {

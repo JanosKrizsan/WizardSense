@@ -1,8 +1,12 @@
 package com.codecool.shop.config;
 
-import javax.sql.DataSource;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Properties;
 
 import org.postgresql.ds.PGSimpleDataSource;
 
@@ -24,11 +28,28 @@ public abstract class ConnectionHandler {
     }
 
     public PGSimpleDataSource connect() throws SQLException {
+
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
 
-        dataSource.setDatabaseName("wizardsense");
-        dataSource.setUser("postgres");
-        dataSource.setPassword("19980114");
+        try{
+            ClassLoader cl = Class.forName("com.codecool.shop.config.ConnectionHandler").getClassLoader();
+            InputStream inputs = cl.getResourceAsStream("datasource.properties");
+
+            Properties prop = new Properties();
+
+            if (inputs != null) {
+                prop.load(new InputStreamReader(inputs, StandardCharsets.UTF_8));
+            }
+
+            dataSource.setURL(prop.getProperty("url"));
+            dataSource.setDatabaseName(prop.getProperty("name"));
+            dataSource.setUser(prop.getProperty("user"));
+            dataSource.setPassword(prop.getProperty("password"));
+
+        } catch (ClassNotFoundException | IOException e) {
+            System.out.println(e);
+        }
+
 
         dataSource.getConnection().close();
 
