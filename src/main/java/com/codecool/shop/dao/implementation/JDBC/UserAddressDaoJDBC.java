@@ -136,4 +136,25 @@ public class UserAddressDaoJDBC extends ConnectionHandler implements GenericQuer
             System.out.println(e);
         }
     }
+
+    public List<UserAddress> getAddressByUserId(int userID) {
+        try {
+            statement = getConn().prepareStatement("SELECT * FROM addresses WHERE user_id=?;");
+            statement.setInt(1, userID);
+
+            List<UserAddress> addressesOfUser = new ArrayList<>();
+            ResultSet results = statement.executeQuery();
+
+            while(results.next()) {
+
+                addressesOfUser.add(find(results.getInt("id")));
+
+            }
+
+            return addressesOfUser;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
 }

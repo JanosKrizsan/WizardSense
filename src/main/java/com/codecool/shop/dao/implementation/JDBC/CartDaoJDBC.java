@@ -9,10 +9,7 @@ import com.codecool.shop.model.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<Cart> {
 
@@ -54,27 +51,6 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
             System.out.println(e);
         }
     }
-
-    public Integer getLatestId() {
-        try {
-            statement = getConn().prepareStatement("SELECT MAX(id) as id FROM carts;");
-            ResultSet result = statement.executeQuery();
-
-            Integer id = null;
-
-            while (result.next()){
-                id = result.getInt("id")+1;
-            }
-
-            statement.close();
-            return id;
-
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return null;
-    }
-
 
     @Override
     public Cart find(int id) {
