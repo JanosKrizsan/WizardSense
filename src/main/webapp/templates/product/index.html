@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="head.html :: copy"></head>
-<body>
+<body class="index-container">
 
 <div name="store-name" class="navbar">
         <form name="reset-form" action="#" th:action="@{/}" method="post">
@@ -16,8 +16,8 @@
         (<a th:href="@{/logout}">Logout</a>)
     </div>
     <div th:unless="${userID != null}">
-        <a class="login" th:href="@{/login}">Login</a>
-        <a class="register" th:href="@{/register}">Register</a>
+        <a class="login-navbar" th:href="@{/login}">Login</a>
+        <a class="register-navbar" th:href="@{/register}">Register</a>
     </div>
 </div>
 

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="head.html :: copy"><script defer src="/static/js/wizardScriptLogin.js"></script></head>
+<head th:replace="head.html :: copy"></head>
 
 <body>
 
@@ -15,13 +15,13 @@
 
     <div class="login">
         <form th:action="@{/login}" method="post">
-            <p><strong>Establish Telepathic Senses:</strong></p>
+            <p class="fancy-text"><strong>Establish Telepathic Senses:</strong></p>
 
-            <p class="error-message" th:if="${errorMessage != null}" th:text="${errorMessage}"></p>
+            <p class="error-message fancy-text" th:if="${errorMessage != null}" th:text="${errorMessage}"></p>
 
             <div class="login-form">
-                <p>WizardAlias: <input name="username" type="text" placeholder="BaileyTomund"></p>
-                <p>SpellWord: <input name="password" type="password" placeholder="SpellWord"></p>
+                <p class="fancy-text">WizardAlias: <input name="username" type="text" placeholder="BaileyTomund"></p>
+                <p class="fancy-text">SpellWord: <input name="password" type="password" placeholder="SpellWord"></p>
                 <p>
                     <input class="login-button" type="button" value="Awaken Sense!">
                 </p>

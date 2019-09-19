@@ -118,18 +118,18 @@
     left: 0;
 }
 
-.login, .register {
+.login-navbar, .register-navbar {
     z-index: 2;
     margin: 10px;
     position: fixed;
     top: 20px;
 }
 
-.login {
+.login-navbar {
     right: 180px;
 }
 
-.register {
+.register-navbar {
     right: 80px;
 }
 
@@ -282,11 +282,12 @@
 
 .container form {
     text-align: center;
+    margin-top: 130px;
 }
 
 .error-message {
     text-align: center;
-    color: red;
+    color: black;
     font-size: large;
     font-weight: bolder;
 }
@@ -301,9 +302,34 @@
     height: 483px;
     background-size: cover;
     text-align: center;
+    margin-left: 90px;
+}
+
+.login input{
+    font-size: medium;
+    width: 130px !important;
+}
+
+.login .fancy-text {
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+    color: purple;
+    font-size: 25px;
+    font-weight: bolder;
+}
+
+.login ::placeholder{
+    -webkit-text-stroke-width: 0;
+    -webkit-text-stroke-color: transparent;
+    color: grey;
+    font-weight: normal;
 }
 
 .container .login {
-    margin-top: 73px;
     display: inline-block;
+}
+
+.index-container {
+    background-image: url("/static/img/shelves.jpg");
+    background-size: cover;
 }
