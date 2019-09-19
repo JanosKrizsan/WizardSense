@@ -29,10 +29,15 @@ public class UserDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
     @Override
     public void add(User user) {
         try {
-            statement = getConn().prepareStatement("INSERT INTO users (user_name, password) VALUES  (?, ?);");
+            statement = getConn().prepareStatement("INSERT INTO users (user_name, password) VALUES  (?, ?) RETURNING id; ");
             statement.setString(1, user.getUsername());
             statement.setString(2, Utils.hashPass(user.getPassword()));
-            statement.executeUpdate();
+            ResultSet result = statement.executeQuery();
+            int cartId = user.getId();
+            while (result.next()){
+                cartId = result.getInt("id");
+            }
+            user.setId(cartId);
             statement.close();
 
         } catch (SQLException e) {

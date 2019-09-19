@@ -64,7 +64,6 @@ class JDBCDaoTest {
         }
     }
 
-    @AfterEach
     @BeforeEach
     void cleanTheSlate() {
         productDataStore.removeAll();
@@ -77,29 +76,28 @@ class JDBCDaoTest {
     @Test
     void testAddProductCategory() {
         productCategoryDataStore.add(testCategory);
-        ProductCategory supposedCategory = productCategoryDataStore.find(1);
+        ProductCategory supposedCategory = productCategoryDataStore.find(testCategory.getId());
         assertEquals(testCategory, supposedCategory);
     }
 
     @Test
     void testRemoveProductCategory() {
         productCategoryDataStore.add(testCategory);
-        productCategoryDataStore.remove(1);
+        productCategoryDataStore.remove(testCategory.getId());
         assertEquals(productCategoryDataStore.getAll(), new ArrayList<ProductCategory>());
     }
 
     @Test
     void testAddSupplier() {
         supplierDataStore.add(testSupplier);
-        testSupplier.setId(1);
-        Supplier supposedSupplier = supplierDataStore.find(1);
+        Supplier supposedSupplier = supplierDataStore.find(testSupplier.getId());
         assertEquals(testSupplier, supposedSupplier);
     }
 
     @Test
     void testRemoveSupplier() {
         supplierDataStore.add(testSupplier);
-        supplierDataStore.remove(1);
+        supplierDataStore.remove(testSupplier.getId());
         assertEquals(supplierDataStore.getAll(), new ArrayList<Supplier>());
     }
 
@@ -108,57 +106,69 @@ class JDBCDaoTest {
         supplierDataStore.add(testSupplier);
         productCategoryDataStore.add(testCategory);
         productDataStore.add(testProduct);
-        Product supposedProduct = productDataStore.find(1);
+        Product supposedProduct = productDataStore.find(testProduct.getId());
         assertEquals(testProduct, supposedProduct);
     }
 
     @Test
     void testFilterBySupplier() {
+
+        supplierDataStore.add(testSupplier);
+        productCategoryDataStore.add(testCategory);
+
+        supplierDataStore.add(fakeSupplier);
+        productCategoryDataStore.add(fakeCategory);
+
         productDataStore.add(testProduct);
         productDataStore.add(fakeProduct);
         List<Product> supposedProducts = new ArrayList<Product>() {{
             add(testProduct);
         }};
         assertEquals(productDataStore.getBy(testSupplier), supposedProducts);
-        productDataStore.remove(2);
     }
 
     @Test
     void testFilterByCategory() {
+
+        supplierDataStore.add(testSupplier);
+        productCategoryDataStore.add(testCategory);
+
+        supplierDataStore.add(fakeSupplier);
+        productCategoryDataStore.add(fakeCategory);
+
         productDataStore.add(testProduct);
         productDataStore.add(fakeProduct);
         List<Product> supposedProducts = new ArrayList<Product>() {{
             add(testProduct);
         }};
         assertEquals(productDataStore.getBy(testCategory), supposedProducts);
-        productDataStore.remove(2);
     }
 
     @Test
     void testRemoveProduct() {
         productDataStore.add(testProduct);
-        productDataStore.remove(1);
+        productDataStore.remove(testProduct.getId());
         assertEquals(productDataStore.getAll(), new ArrayList<Product>());
     }
 
     @Test
     void testAddCart() {
         cartDataStore.add(testCart);
-        Cart supposedCart = cartDataStore.find(1);
+        Cart supposedCart = cartDataStore.find(testCart.getId());
         assertEquals(testCart, supposedCart);
     }
 
     @Test
     void testRemoveCart() {
         cartDataStore.add(testCart);
-        cartDataStore.remove(1);
+        cartDataStore.remove(testCart.getId());
         assertEquals(cartDataStore.getAll(), new ArrayList<Cart>());
     }
 
     @Test
     void testAddToCart() {
         cartDataStore.add(testCart);
-        Cart cartToAddTo = cartDataStore.find(1);
+        Cart cartToAddTo = cartDataStore.find(testCart.getId());
         cartToAddTo.addProduct(testProduct);
         HashMap<Product, Integer> supposedMap = new HashMap<Product, Integer>() {{
             put(testProduct, 1);
@@ -170,7 +180,7 @@ class JDBCDaoTest {
     @Test
     void testRemoveFromCart() {
         cartDataStore.add(testCart);
-        Cart cartToAddTo = cartDataStore.find(1);
+        Cart cartToAddTo = cartDataStore.find(testCart.getId());
         cartToAddTo.addProduct(testProduct);
         cartToAddTo.removeProduct(testProduct);
         HashMap<Product, Integer> supposedMap = new HashMap<>();

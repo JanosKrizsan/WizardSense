@@ -30,7 +30,7 @@ public class UserAddressDaoJDBC extends ConnectionHandler implements GenericQuer
     public void add(UserAddress userAddress) {
         try {
             statement = getConn().prepareStatement("INSERT INTO addresses (user_id, name, e_mail, phone_number, country, city, zip_code, address) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id;");
             statement.setInt(1, userAddress.getUserId());
             statement.setString(2, userAddress.getOrderFields().get("name"));
             statement.setString(3, userAddress.getOrderFields().get("eMail"));
@@ -39,7 +39,12 @@ public class UserAddressDaoJDBC extends ConnectionHandler implements GenericQuer
             statement.setString(6, userAddress.getOrderFields().get("city"));
             statement.setString(7, userAddress.getOrderFields().get("zipCode"));
             statement.setString(8, userAddress.getOrderFields().get("address"));
-            statement.executeUpdate();
+            ResultSet result = statement.executeQuery();
+            int cartId = userAddress.getId();
+            while (result.next()){
+                cartId = result.getInt("id");
+            }
+            userAddress.setId(cartId);
             statement.close();
 
         } catch (SQLException e) {

@@ -29,11 +29,16 @@ public class ProductCategoryDaoJDBC extends ConnectionHandler implements Generic
     @Override
     public void add(ProductCategory category) {
         try {
-            statement = getConn().prepareStatement("INSERT INTO product_categories (name, description, department) VALUES  (?, ?, ?);");
+            statement = getConn().prepareStatement("INSERT INTO product_categories (name, description, department) VALUES  (?, ?, ?) RETURNING id;");
             statement.setString(1, category.getName());
             statement.setString(2, category.getDescription());
             statement.setString(3, category.getDepartment());
-            statement.executeUpdate();
+            ResultSet result = statement.executeQuery();
+            int cartId = category.getId();
+            while (result.next()){
+                cartId = result.getInt("id");
+            }
+            category.setId(cartId);
             statement.close();
 
         } catch (SQLException e) {

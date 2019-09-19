@@ -37,12 +37,17 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
         HashMap<Product, Integer> products = cart.getProductList();
         try {
             for (Product product : products.keySet()) {
-                statement = getConn().prepareStatement("INSERT INTO carts (id, user_id, product_id, product_quantity) VALUES (? , ? , ?, ?);");
+                statement = getConn().prepareStatement("INSERT INTO carts (id, user_id, product_id, product_quantity) VALUES (? , ? , ?, ?) RETURNING id;");
                 statement.setInt(1, cart.getId());
                 statement.setInt(2, cart.getUser().getId());
                 statement.setInt(3, product.getId());
                 statement.setInt(4, products.get(product));
-                statement.executeUpdate();
+                ResultSet result = statement.executeQuery();
+                int cartId = cart.getId();
+                while (result.next()){
+                    cartId = result.getInt("id");
+                }
+                cart.setId(cartId);
                 statement.close();
             }
         } catch (SQLException e) {

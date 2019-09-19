@@ -28,10 +28,15 @@ public class SupplierDaoJDBC extends ConnectionHandler implements GenericQueries
     @Override
     public void add(Supplier supplier) {
         try {
-            statement = getConn().prepareStatement("INSERT INTO suppliers (name, description) VALUES  (?, ?);");
+            statement = getConn().prepareStatement("INSERT INTO suppliers (name, description) VALUES  (?, ?) RETURNING id;");
             statement.setString(1, supplier.getName());
             statement.setString(2, supplier.getDescription());
-            statement.executeUpdate();
+            ResultSet result = statement.executeQuery();
+            int cartId = supplier.getId();
+            while (result.next()){
+                cartId = result.getInt("id");
+            }
+            supplier.setId(cartId);
             statement.close();
 
         } catch (SQLException e) {
