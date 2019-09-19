@@ -2,7 +2,6 @@ package com.codecool.shop.dao.implementation.Memory;
 
 import com.codecool.shop.dao.GenericQueriesDao;
 import com.codecool.shop.model.Cart;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,8 +10,6 @@ public class CartDaoMem implements GenericQueriesDao<Cart> {
     private List<Cart> data = new ArrayList<>();
     private static CartDaoMem instance = null;
 
-    /* A private Constructor prevents any other class from instantiating.
-     */
     private CartDaoMem() {
     }
 

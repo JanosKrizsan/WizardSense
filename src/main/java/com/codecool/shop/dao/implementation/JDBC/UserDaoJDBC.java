@@ -4,7 +4,6 @@ import com.codecool.shop.config.ConnectionHandler;
 import com.codecool.shop.config.Utils;
 import com.codecool.shop.dao.GenericQueriesDao;
 import com.codecool.shop.model.User;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

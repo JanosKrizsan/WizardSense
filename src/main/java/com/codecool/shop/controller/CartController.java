@@ -8,7 +8,6 @@ import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.Product;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +17,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @WebServlet(urlPatterns = {"/shopping-cart"})
@@ -115,9 +113,3 @@ public class CartController extends HttpServlet {
     }
 
 }
-
-// // Alternative setting of the template context
-// Map<String, Object> params = new HashMap<>();
-// params.put("category", productCategoryDataStore.find(1));
-// params.put("products", productDataStore.getBy(productCategoryDataStore.find(1)));
-// context.setVariables(params);

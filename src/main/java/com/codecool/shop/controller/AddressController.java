@@ -2,11 +2,8 @@ package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.implementation.JDBC.CartDaoJDBC;
-import com.codecool.shop.dao.implementation.JDBC.OrderDaoJDBC;
 import com.codecool.shop.dao.implementation.JDBC.UserAddressDaoJDBC;
-import com.codecool.shop.dao.implementation.JDBC.UserDaoJDBC;
 import com.codecool.shop.model.Cart;
-import com.codecool.shop.model.Order;
 import com.codecool.shop.model.UserAddress;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -54,9 +51,3 @@ public class AddressController extends HttpServlet {
 
     }
 }
-
-// // Alternative setting of the template context
-// Map<String, Object> params = new HashMap<>();
-// params.put("category", productCategoryDataStore.find(1));
-// params.put("products", productDataStore.getBy(productCategoryDataStore.find(1)));
-// context.setVariables(params);

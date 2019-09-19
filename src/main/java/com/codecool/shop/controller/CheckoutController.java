@@ -62,9 +62,3 @@ public class CheckoutController extends HttpServlet {
         doGet(req, resp);
     }
 }
-
-// // Alternative setting of the template context
-// Map<String, Object> params = new HashMap<>();
-// params.put("category", productCategoryDataStore.find(1));
-// params.put("products", productDataStore.getBy(productCategoryDataStore.find(1)));
-// context.setVariables(params);

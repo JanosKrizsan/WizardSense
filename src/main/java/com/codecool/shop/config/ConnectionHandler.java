@@ -71,14 +71,6 @@ public abstract class ConnectionHandler {
     public void setConn(Connection conn) {
         this.conn = conn;
     }
-
-    public void setDataSource(PGSimpleDataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    private void testChecker() {
-
-    }
 }
 
 

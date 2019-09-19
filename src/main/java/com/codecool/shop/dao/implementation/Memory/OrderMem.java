@@ -1,6 +1,5 @@
 package com.codecool.shop.dao.implementation.Memory;
 
-
 import com.codecool.shop.dao.GenericQueriesDao;
 import com.codecool.shop.model.Order;
 import java.util.ArrayList;
@@ -11,8 +10,7 @@ public class OrderMem implements GenericQueriesDao<Order> {
     private static OrderMem instance = null;
     private List<Order> data = new ArrayList<>();
 
-    /* A private Constructor prevents any other class from instantiating.
-     */
+
     private OrderMem() {
     }
 
