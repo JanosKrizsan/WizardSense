@@ -30,7 +30,16 @@ public class OrderDaoJDBC extends ConnectionHandler implements GenericQueriesDao
 
     @Override
     public void add(Order order) {
-
+        try {
+            statement = getConn().prepareStatement("INSERT INTO orders (cart_id, user_id, status) VALUES (? , ?, ?);");
+            statement.setInt(1, order.getCart().getId());
+            statement.setInt(2, order.getUser().getId());
+            statement.setString(3, order.getStatus());
+            statement.executeUpdate();
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
     }
 
     @Override
@@ -54,9 +63,8 @@ public class OrderDaoJDBC extends ConnectionHandler implements GenericQueriesDao
                 orderStatus = results.getString("status");
             }
 
-            order = new Order(userDao.find(userId), cartDao.find(cartId));
+            order = new Order(userDao.find(userId), cartDao.find(cartId), orderStatus);
             order.setId(orderId);
-            order.setStatus(orderStatus);
 
             statement.close();
 

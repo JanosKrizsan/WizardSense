@@ -1,6 +1,5 @@
 package com.codecool.shop.config;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -24,11 +23,17 @@ public abstract class ConnectionHandler {
     }
 
     public PGSimpleDataSource connect() throws SQLException {
-        PGSimpleDataSource dataSource = new PGSimpleDataSource();
 
-        dataSource.setDatabaseName("wizardsense");
-        dataSource.setUser("postgres");
-        dataSource.setPassword("19980114");
+        PGSimpleDataSource dataSource = new PGSimpleDataSource();
+//        try{
+//            ClassLoader cl = Class.forName("com.codecool.shop.config.ConnectionHandler").getClassLoader();
+//
+//
+//        }
+
+        dataSource.setDatabaseName("wizardshop");
+        dataSource.setUser("john");
+        dataSource.setPassword("1710");
 
         dataSource.getConnection().close();
 
