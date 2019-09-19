@@ -25,6 +25,8 @@
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- End of Bootstrap components -->
 
+    <script defer src="/static/js/wizardScriptLogin.js"></script>
+
     <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
 </head>
 
@@ -36,21 +38,23 @@
     </a>
 </div>
 
-<div class="container container-inputs">
+<div class="container container-inputs" >
 
-    <form th:action="@{/login}" method="post">
-        <p><strong>Estabilish Telepahic Senses:</strong></p>
+    <div class="login">
+        <form th:action="@{/login}" method="post">
+            <p><strong>Establish Telepathic Senses:</strong></p>
 
-        <p class="error-message" th:if="${errorMessage != null}" th:text="${errorMessage}"></p>
+            <p class="error-message" th:if="${errorMessage != null}" th:text="${errorMessage}"></p>
 
-        <div class="login-form">
-            <p>WizardAlias: <input name="username" type="text" placeholder="BaileyTomund" required></p>
-                <p>SpellWord: <input name="password" type="password" placeholder="SpellWord" required></p>
-            <p>
-                <input type="submit" value="Awaken Sense!">
-            </p>
-        </div>
-    </form>
+            <div class="login-form">
+                <p>WizardAlias: <input name="username" type="text" placeholder="BaileyTomund"></p>
+                <p>SpellWord: <input name="password" type="password" placeholder="SpellWord"></p>
+                <p>
+                    <input class="login-button" type="button" value="Awaken Sense!">
+                </p>
+            </div>
+        </form>
+    </div>
 
 </div>
 
