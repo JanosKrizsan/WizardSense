@@ -1,9 +1,7 @@
 package com.codecool.shop.model;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 public class Cart {
 
@@ -26,10 +24,6 @@ public class Cart {
 
     public HashMap<Product, Integer> getProductList() {
         return productList;
-    }
-
-    public void setProductList(HashMap<Product, Integer> productList) {
-        this.productList = productList;
     }
 
     public void addProduct(Product product) {

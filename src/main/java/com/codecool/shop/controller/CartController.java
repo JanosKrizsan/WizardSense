@@ -2,7 +2,6 @@ package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.implementation.JDBC.CartDaoJDBC;
-import com.codecool.shop.dao.implementation.JDBC.ProductDaoJDBC;
 import com.codecool.shop.dao.implementation.JDBC.UserDaoJDBC;
 import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.Product;
@@ -23,7 +22,6 @@ import java.util.*;
 public class CartController extends HttpServlet {
     private CartDaoJDBC cartDataStore = CartDaoJDBC.getInstance();
     private UserDaoJDBC userDataStore = UserDaoJDBC.getInstance();
-    private ProductDaoJDBC productDataStore = ProductDaoJDBC.getInstance();
 
 
     private void addOrRemoveProduct(HttpServletRequest req){
@@ -77,23 +75,6 @@ public class CartController extends HttpServlet {
         if (cart == null) {
             cart = new Cart(new HashMap<>(), userDataStore.find(userId));
         }
-//        else if (cart.getProductList().size() > 1){
-//            List<Integer> unsorted = new ArrayList<>();
-//
-//            for (Product product : cart.getProductsInCart()) {
-//                unsorted.add(product.getId());
-//            }
-//
-//            Collections.sort(unsorted);
-//            cart.setProductList(new HashMap<>());
-//
-//            Cart cloneCart = cartDataStore.getCartByUserId(userId);
-//
-//            for (Integer id : unsorted) {
-//                Product product = productDataStore.find(id);
-//                cart.getProductList().put(product, cloneCart.getProductList().get(product));
-//            }
-//        }
 
             TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
             WebContext context = new WebContext(req, resp, req.getServletContext());
