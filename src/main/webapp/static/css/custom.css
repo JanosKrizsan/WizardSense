@@ -294,3 +294,16 @@
 .register-form input {
     align-content: center;
 }
+
+.login{
+    background-image: url("/static/img/login_still_circle.png");
+    width: 900px;
+    height: 483px;
+    background-size: cover;
+    text-align: center;
+}
+
+.container .login {
+    margin-top: 73px;
+    display: inline-block;
+}
