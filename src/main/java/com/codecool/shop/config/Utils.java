@@ -14,4 +14,14 @@ public class Utils {
         return BCrypt.checkpw(candidate, password);
     }
 
+    public static boolean isJUnitTest() {
+        StackTraceElement[] list = Thread.currentThread().getStackTrace();
+        for (StackTraceElement element : list) {
+            if (element.getClassName().startsWith("org.junit.")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

@@ -7,7 +7,6 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
-
 import org.postgresql.ds.PGSimpleDataSource;
 
 
@@ -33,7 +32,11 @@ public abstract class ConnectionHandler {
 
         try{
             ClassLoader cl = Class.forName("com.codecool.shop.config.ConnectionHandler").getClassLoader();
+
             InputStream inputs = cl.getResourceAsStream("datasource.properties");
+            if(Utils.isJUnitTest()) {
+                inputs = cl.getResourceAsStream("test.properties");
+            }
 
             Properties prop = new Properties();
 
@@ -45,6 +48,7 @@ public abstract class ConnectionHandler {
             dataSource.setDatabaseName(prop.getProperty("name"));
             dataSource.setUser(prop.getProperty("user"));
             dataSource.setPassword(prop.getProperty("password"));
+
 
         } catch (ClassNotFoundException | IOException e) {
             System.out.println(e);
@@ -70,6 +74,10 @@ public abstract class ConnectionHandler {
 
     public void setDataSource(PGSimpleDataSource dataSource) {
         this.dataSource = dataSource;
+    }
+
+    private void testChecker() {
+
     }
 }
 

@@ -1,5 +1,7 @@
 package JDBC;
 
+import com.codecool.shop.config.ConnectionHandler;
+import com.codecool.shop.config.Utils;
 import com.codecool.shop.dao.GenericQueriesDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.JDBC.CartDaoJDBC;
@@ -17,11 +19,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.postgresql.ds.PGSimpleDataSource;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -45,9 +52,27 @@ class JDBCDaoTest {
 
 
     static Connection setConnectionData(PGSimpleDataSource dataSource) throws SQLException {
-        dataSource.setDatabaseName("wizardsensetest");
-        dataSource.setUser("postgres");
-        dataSource.setPassword("19980114");
+
+        try {
+            ClassLoader cl = Class.forName("com.codecool.shop.config.ConnectionHandler").getClassLoader();
+
+            InputStream inputs = cl.getResourceAsStream("test.properties");
+
+            Properties prop = new Properties();
+
+            if (inputs != null) {
+                prop.load(new InputStreamReader(inputs, StandardCharsets.UTF_8));
+            }
+
+            dataSource.setURL(prop.getProperty("url"));
+            dataSource.setDatabaseName(prop.getProperty("name"));
+            dataSource.setUser(prop.getProperty("user"));
+            dataSource.setPassword(prop.getProperty("password"));
+
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println(e);
+        }
+
 
         return dataSource.getConnection();
     }
