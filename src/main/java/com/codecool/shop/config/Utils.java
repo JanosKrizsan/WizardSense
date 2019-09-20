@@ -2,8 +2,6 @@ package com.codecool.shop.config;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.util.function.Function;
-
 public class Utils {
 
     static public String hashPass(String password){
