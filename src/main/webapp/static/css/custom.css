@@ -1,70 +1,67 @@
 .glyphicon {
-    margin-right:5px;
+    margin-right: 5px;
 }
-.thumbnail
-{
+
+.thumbnail {
     margin-bottom: 20px;
     padding: 0px;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
 }
-.thumbnail img
-{
+
+.thumbnail img {
     margin-top: 10px;
 }
-.item.list-group-item
-{
+
+.item.list-group-item {
     float: none;
     width: 100%;
     background-color: #fff;
     margin-bottom: 10px;
 }
-.item.list-group-item:nth-of-type(odd):hover,.item.list-group-item:hover
-{
+
+.item.list-group-item:nth-of-type(odd):hover, .item.list-group-item:hover {
     background: #428bca;
 }
 
-.item.list-group-item .list-group-image
-{
+.item.list-group-item .list-group-image {
     margin-right: 10px;
 }
-.item.list-group-item .thumbnail
-{
+
+.item.list-group-item .thumbnail {
     margin-bottom: 0px;
 }
-.item.list-group-item .caption
-{
+
+.item.list-group-item .caption {
     padding: 9px 9px 0px 9px;
 }
-.item.list-group-item:nth-of-type(odd)
-{
+
+.item.list-group-item:nth-of-type(odd) {
     background: #eeeeee;
 }
 
-.item.list-group-item:before, .item.list-group-item:after
-{
+.item.list-group-item:before, .item.list-group-item:after {
     display: table;
     content: " ";
 }
 
-.item.list-group-item img
-{
+.item.list-group-item img {
     float: left;
 }
-.item.list-group-item:after
-{
+
+.item.list-group-item:after {
     clear: both;
 }
-.list-group-item-text
-{
+
+.list-group-item-text {
     margin: 0 0 11px;
 }
 
 #to-main-page, #reset {
-    background: none!important;
+    background: none !important;
     border: none;
-    padding: 0!important;
+    padding: 0 !important;
     /*optional*/
     font-family: arial, sans-serif;
     /*input has OS specific font-family*/
@@ -180,7 +177,7 @@
 
 .magic-select:hover {
     color: rgba(54, 3, 22, 0.95);
-    text-shadow:0px 0px 30px rgba(54, 3, 22, 0.95);
+    text-shadow: 0px 0px 30px rgba(54, 3, 22, 0.95);
     -moz-transition: all 0.2s ease-in;
     -o-transition: all 0.2s ease-in;
     -webkit-transition: all 0.2s ease-in;
@@ -227,11 +224,11 @@
     right: -38px;
 }
 
-.sum-buttons a{
+.sum-buttons a {
     margin-top: -10px;
 }
 
-.sum-buttons span{
+.sum-buttons span {
     margin-right: 50px;
     margin-top: 5px;
     font-size: 24px;
@@ -258,22 +255,22 @@
 
 }
 
-.empty-cart{
+.empty-cart {
     text-align: center;
     color: gray;
     margin-top: 100px
 }
 
-.check-form p , .check-form input {
+.check-form p, .check-form input {
     display: inline-block;
 }
 
-.check-form p{
+.check-form p {
     width: 120px;
 }
 
 
-.container-inputs form input{
+.container-inputs form input {
     margin: 0 20px 20px;
     width: 320px;
     border-radius: 5px;
@@ -282,7 +279,6 @@
 
 .container form {
     text-align: center;
-    margin-top: 130px;
 }
 
 .error-message {
@@ -296,7 +292,7 @@
     align-content: center;
 }
 
-.login{
+.login {
     background-image: url("/static/img/login_still_circle.png");
     width: 900px;
     height: 483px;
@@ -305,7 +301,7 @@
     margin-left: 90px;
 }
 
-.login input{
+.login input {
     font-size: medium;
     width: 130px !important;
 }
@@ -313,12 +309,13 @@
 .login .fancy-text {
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: black;
-    color: purple;
+    text-shadow: 3px 1px 4px grey;
+    color: white;
     font-size: 25px;
     font-weight: bolder;
 }
 
-.login ::placeholder{
+.login ::placeholder {
     -webkit-text-stroke-width: 0;
     -webkit-text-stroke-color: transparent;
     color: grey;
@@ -329,7 +326,7 @@
     display: inline-block;
 }
 
-.index-container {
-    background-image: url("/static/img/shelves.jpg");
-    background-size: cover;
+#magic-form {
+    margin-top: 130px;
 }
+
