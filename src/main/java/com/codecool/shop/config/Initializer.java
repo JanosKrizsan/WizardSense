@@ -7,6 +7,7 @@ import com.codecool.shop.model.*;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
+import java.util.logging.Logger;
 
 @WebListener
 public class Initializer implements ServletContextListener {
@@ -15,6 +16,8 @@ public class Initializer implements ServletContextListener {
     private GenericQueriesDao<Supplier> supplierDataStore = SupplierDaoJDBC.getInstance();
     private GenericQueriesDao<Cart> cartDataStore = CartDaoJDBC.getInstance();
     private GenericQueriesDao<User> userDataStore = UserDaoJDBC.getInstance();
+
+    private static final Logger LOGGER = Logger.getLogger(ConnectionHandler.class.getName());
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
@@ -26,6 +29,8 @@ public class Initializer implements ServletContextListener {
     }
 
     private void fillMeUp(){
+
+        LOGGER.info("Filling up database with values...");
 
         //adding the admin user
         User admin = new User("admin", "admin");

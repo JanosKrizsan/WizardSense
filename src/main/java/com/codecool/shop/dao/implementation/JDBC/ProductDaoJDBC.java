@@ -30,9 +30,8 @@ public class ProductDaoJDBC extends ConnectionHandler implements ProductDao {
 
     @Override
     public void add(Product product) {
-        try {
-            statement = getConn().prepareStatement("INSERT INTO products (name, description, default_price, " +
-                    "default_currency, product_category_id, supplier_id, image_src) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id;");
+        try (PreparedStatement statement = getConn().prepareStatement("INSERT INTO products (name, description, default_price, " +
+                "default_currency, product_category_id, supplier_id, image_src) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id;")) {
             statement.setString(1, product.getName());
             statement.setString(2, product.getDescription());
             statement.setFloat(3, product.getDefaultPrice());
@@ -42,11 +41,11 @@ public class ProductDaoJDBC extends ConnectionHandler implements ProductDao {
             statement.setString(7, product.getImageSrc());
             ResultSet result = statement.executeQuery();
             int cartId = product.getId();
-            while (result.next()){
+            while (result.next()) {
                 cartId = result.getInt("id");
             }
             product.setId(cartId);
-            statement.close();
+//            statement.close();
 
         } catch (SQLException e) {
             System.out.println(e);
@@ -69,19 +68,19 @@ public class ProductDaoJDBC extends ConnectionHandler implements ProductDao {
             int categoryId = 0;
             int supplierId = 0;
 
-            while (results.next()){
+            while (results.next()) {
 
                 productId = results.getInt("id");
                 prodName = results.getString("name");
                 prodDesc = results.getString("description");
                 defPrice = results.getFloat("default_price");
                 defCurrency = results.getString("default_currency");
-                categoryId= results.getInt("product_category_id");
-                supplierId= results.getInt("supplier_id");
+                categoryId = results.getInt("product_category_id");
+                supplierId = results.getInt("supplier_id");
             }
 
-           ProductCategory category = ProductCategoryDaoJDBC.getInstance().find(categoryId);
-           Supplier supplier = SupplierDaoJDBC.getInstance().find(supplierId);
+            ProductCategory category = ProductCategoryDaoJDBC.getInstance().find(categoryId);
+            Supplier supplier = SupplierDaoJDBC.getInstance().find(supplierId);
 
             Product found = new Product(prodName, defPrice, defCurrency, prodDesc, category, supplier);
             found.setId(productId);
