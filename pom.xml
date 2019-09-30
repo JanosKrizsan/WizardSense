@@ -15,7 +15,7 @@
     </properties>
 
     <build>
-        <finalName>codecoolshop</finalName>
+        <finalName>WizardSense</finalName>
         <sourceDirectory>src/main/java</sourceDirectory>
 
         <plugins>

@@ -15,7 +15,6 @@ public class Initializer implements ServletContextListener {
     private ProductDao productDataStore = ProductDaoJDBC.getInstance();
     private GenericQueriesDao<ProductCategory> productCategoryDataStore = ProductCategoryDaoJDBC.getInstance();
     private GenericQueriesDao<Supplier> supplierDataStore = SupplierDaoJDBC.getInstance();
-    private GenericQueriesDao<Cart> cartDataStore = CartDaoJDBC.getInstance();
     private GenericQueriesDao<User> userDataStore = UserDaoJDBC.getInstance();
 
     private static final Logger LOGGER = Logger.getLogger(ConnectionHandler.class.getName());
@@ -36,7 +35,7 @@ public class Initializer implements ServletContextListener {
 
     }
 
-    private void fillMeUp(){
+    private void fillMeUp() {
 
         LOGGER.info("Filling up database with values...");
 

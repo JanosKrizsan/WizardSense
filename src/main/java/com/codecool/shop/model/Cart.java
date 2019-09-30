@@ -1,15 +1,16 @@
 package com.codecool.shop.model;
 
-import java.util.HashMap;
+import com.codecool.shop.dao.implementation.JDBC.CartDaoJDBC;
 import java.util.Set;
+import java.util.TreeMap;
 
 public class Cart {
 
     private int id;
     private User user;
-    private HashMap<Product, Integer> productList;
+    private TreeMap<Product, Integer> productList;
 
-    public Cart(HashMap<Product, Integer> productList, User user) {
+    public Cart(TreeMap<Product, Integer> productList, User user) {
         this.productList = productList;
         this.user = user;
     }
@@ -22,7 +23,7 @@ public class Cart {
         this.id = id;
     }
 
-    public HashMap<Product, Integer> getProductList() {
+    public TreeMap<Product, Integer> getProductList() {
         return productList;
     }
 
@@ -43,7 +44,7 @@ public class Cart {
     }
 
     public Integer getQuantityOfProduct(Product productToSearch) {
-        return productList.get(productToSearch);
+        return (CartDaoJDBC.getInstance().getCartProductQuantity(this, productToSearch.getId()));
     }
 
     public Set<Product> getProductsInCart() {
@@ -52,12 +53,12 @@ public class Cart {
 
     public Integer getSumOfProducts(){
 
-        int products = 0;
-        for (Product product :
-                getProductsInCart()) {
-            products += productList.get(product);
+        int productCount = 0;
+        for (Integer value : productList.values()) {
+            productCount += value;
+
         }
-        return products;
+        return productCount;
     }
 
 

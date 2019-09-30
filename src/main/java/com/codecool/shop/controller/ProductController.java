@@ -13,10 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -104,7 +101,7 @@ public class ProductController extends HttpServlet {
                     Product product = productDataStore.find(productId);
 
 
-                    HashMap<Product, Integer> products = new HashMap<>();
+                    TreeMap<Product, Integer> products = new TreeMap<>();
                     products.put(product, 1);
 
 
@@ -128,8 +125,6 @@ public class ProductController extends HttpServlet {
                     }
 
                 }
-
-
             } catch (NumberFormatException e) {
                 System.out.println(e);
             }

@@ -53,7 +53,7 @@ public class CartController extends HttpServlet {
         float sum = 0;
 
         for (Product product : cart.getProductsInCart()) {
-            sum += product.getDefaultPrice() * cart.getProductList().get(product);
+            sum += product.getDefaultPrice() * cartDataStore.getCartProductQuantity(cart, product.getId());
         }
         return sum;
     }
@@ -73,7 +73,7 @@ public class CartController extends HttpServlet {
 
         Cart cart = cartDataStore.getCartByUserId(userId);
         if (cart == null) {
-            cart = new Cart(new HashMap<>(), userDataStore.find(userId));
+            cart = new Cart(new TreeMap<>(), userDataStore.find(userId));
         }
 
             TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
@@ -89,7 +89,7 @@ public class CartController extends HttpServlet {
 
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         doGet(req, resp);
     }
 

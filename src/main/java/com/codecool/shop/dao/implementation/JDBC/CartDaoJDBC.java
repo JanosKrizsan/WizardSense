@@ -30,15 +30,17 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
 
     @Override
     public void add(Cart cart) {
-        HashMap<Product, Integer> products = cart.getProductList();
+        TreeMap<Product, Integer> products = cart.getProductList();
         try {
+
             for (Product product : products.keySet()) {
                 statement = getConn().prepareStatement("INSERT INTO carts (id, user_id, product_id, product_quantity) VALUES (? , ? , ?, ?) RETURNING id;");
                 statement.setInt(1, cart.getId());
                 statement.setInt(2, cart.getUser().getId());
                 statement.setInt(3, product.getId());
-                statement.setInt(4, products.get(product));
-                ResultSet result = statement.executeQuery();
+                for (Integer quantity : products.values()) {
+                    statement.setInt(4, quantity);
+                }                ResultSet result = statement.executeQuery();
                 int cartId = cart.getId();
                 while (result.next()){
                     cartId = result.getInt("id");
@@ -63,7 +65,7 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
             int productId;
             int productQuantity;
             User user = null;
-            HashMap<Product, Integer> productMap = new HashMap<>();
+            TreeMap<Product, Integer> productMap = new TreeMap<>();
 
             while (results.next()) {
 
