@@ -85,7 +85,7 @@ class MemoryDaoTest {
     void testFilterBySupplier() {
         productDataStore.add(testProduct);
         productDataStore.add(fakeProduct);
-        List<Product> supposedProducts = new ArrayList<>() {{
+        List<Product> supposedProducts = new ArrayList<Product>() {{
             add(testProduct);
         }};
         assertEquals(productDataStore.getBy(testSupplier), supposedProducts);
@@ -96,7 +96,7 @@ class MemoryDaoTest {
     void testFilterByCategory() {
         productDataStore.add(testProduct);
         productDataStore.add(fakeProduct);
-        List<Product> supposedProducts = new ArrayList<>() {{
+        List<Product> supposedProducts = new ArrayList<Product>() {{
             add(testProduct);
         }};
         assertEquals(productDataStore.getBy(testCategory), supposedProducts);
@@ -129,7 +129,7 @@ class MemoryDaoTest {
         cartDataStore.add(testCart);
         Cart cartToAddTo = cartDataStore.find(0);
         cartToAddTo.addProduct(testProduct);
-        HashMap<Product, Integer> supposedMap = new HashMap<>() {{
+        HashMap<Product, Integer> supposedMap = new HashMap<Product, Integer>() {{
             put(testProduct, 1);
         }};
         assertEquals(cartToAddTo.getProductList(), supposedMap);

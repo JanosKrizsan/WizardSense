@@ -143,7 +143,7 @@ class JDBCDaoTest {
 
         productDataStore.add(testProduct);
         productDataStore.add(fakeProduct);
-        List<Product> supposedProducts = new ArrayList<>() {{
+        List<Product> supposedProducts = new ArrayList<Product>() {{
             add(testProduct);
         }};
         assertEquals(productDataStore.getBy(testSupplier), supposedProducts);
@@ -160,7 +160,7 @@ class JDBCDaoTest {
 
         productDataStore.add(testProduct);
         productDataStore.add(fakeProduct);
-        List<Product> supposedProducts = new ArrayList<>() {{
+        List<Product> supposedProducts = new ArrayList<Product>() {{
             add(testProduct);
         }};
         assertEquals(productDataStore.getBy(testCategory), supposedProducts);
@@ -192,7 +192,7 @@ class JDBCDaoTest {
         cartDataStore.add(testCart);
         Cart cartToAddTo = cartDataStore.find(testCart.getId());
         cartToAddTo.addProduct(testProduct);
-        HashMap<Product, Integer> supposedMap = new HashMap<>() {{
+        HashMap<Product, Integer> supposedMap = new HashMap<Product, Integer>() {{
             put(testProduct, 1);
         }};
         assertEquals(cartToAddTo.getProductList(), supposedMap);
