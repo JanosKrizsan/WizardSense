@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,7 +36,7 @@ class MemoryDaoTest {
     private Supplier fakeSupplier = new Supplier("Fake Supplier", "Fake Description");
     private Product fakeProduct = new Product("FakeProd", 0, "HUF", "Just a fake", fakeCategory, fakeSupplier);
 
-    private Cart testCart = new Cart(new HashMap<>(0), null);
+    private Cart testCart = new Cart(new TreeMap<>(), null);
 
     @BeforeEach
     void cleanTheSlate() {
@@ -84,7 +85,7 @@ class MemoryDaoTest {
     void testFilterBySupplier() {
         productDataStore.add(testProduct);
         productDataStore.add(fakeProduct);
-        List<Product> supposedProducts = new ArrayList<Product>() {{
+        List<Product> supposedProducts = new ArrayList<>() {{
             add(testProduct);
         }};
         assertEquals(productDataStore.getBy(testSupplier), supposedProducts);
@@ -95,7 +96,7 @@ class MemoryDaoTest {
     void testFilterByCategory() {
         productDataStore.add(testProduct);
         productDataStore.add(fakeProduct);
-        List<Product> supposedProducts = new ArrayList<Product>() {{
+        List<Product> supposedProducts = new ArrayList<>() {{
             add(testProduct);
         }};
         assertEquals(productDataStore.getBy(testCategory), supposedProducts);
@@ -128,7 +129,7 @@ class MemoryDaoTest {
         cartDataStore.add(testCart);
         Cart cartToAddTo = cartDataStore.find(0);
         cartToAddTo.addProduct(testProduct);
-        HashMap<Product, Integer> supposedMap = new HashMap<Product, Integer>() {{
+        HashMap<Product, Integer> supposedMap = new HashMap<>() {{
             put(testProduct, 1);
         }};
         assertEquals(cartToAddTo.getProductList(), supposedMap);

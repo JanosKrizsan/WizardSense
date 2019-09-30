@@ -25,10 +25,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -44,7 +41,7 @@ class JDBCDaoTest {
     private ProductCategory testCategory = new ProductCategory("Test Category", "Test Department", "Test Description");
     private Supplier testSupplier = new Supplier("Test Supplier", "Test Description");
     private Product testProduct = new Product("TestProd", 0, "USD", "Just a test", testCategory, testSupplier);
-    private Cart testCart = new Cart(new HashMap<>(0), null);
+    private Cart testCart = new Cart(new TreeMap<>(), null);
 
     private ProductCategory fakeCategory = new ProductCategory("Fake Category", "Fake Department", "Fake Description");
     private Supplier fakeSupplier = new Supplier("Fake Supplier", "Fake Description");
@@ -146,7 +143,7 @@ class JDBCDaoTest {
 
         productDataStore.add(testProduct);
         productDataStore.add(fakeProduct);
-        List<Product> supposedProducts = new ArrayList<Product>() {{
+        List<Product> supposedProducts = new ArrayList<>() {{
             add(testProduct);
         }};
         assertEquals(productDataStore.getBy(testSupplier), supposedProducts);
@@ -163,7 +160,7 @@ class JDBCDaoTest {
 
         productDataStore.add(testProduct);
         productDataStore.add(fakeProduct);
-        List<Product> supposedProducts = new ArrayList<Product>() {{
+        List<Product> supposedProducts = new ArrayList<>() {{
             add(testProduct);
         }};
         assertEquals(productDataStore.getBy(testCategory), supposedProducts);
@@ -195,7 +192,7 @@ class JDBCDaoTest {
         cartDataStore.add(testCart);
         Cart cartToAddTo = cartDataStore.find(testCart.getId());
         cartToAddTo.addProduct(testProduct);
-        HashMap<Product, Integer> supposedMap = new HashMap<Product, Integer>() {{
+        HashMap<Product, Integer> supposedMap = new HashMap<>() {{
             put(testProduct, 1);
         }};
         assertEquals(cartToAddTo.getProductList(), supposedMap);

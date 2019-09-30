@@ -5,11 +5,11 @@ import com.codecool.shop.dao.GenericQueriesDao;
 import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.User;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.logging.Logger;
 
 public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<Cart> {
 
@@ -32,7 +32,6 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
     public void add(Cart cart) {
         TreeMap<Product, Integer> products = cart.getProductList();
         try {
-
             for (Product product : products.keySet()) {
                 statement = getConn().prepareStatement("INSERT INTO carts (id, user_id, product_id, product_quantity) VALUES (? , ? , ?, ?) RETURNING id;");
                 statement.setInt(1, cart.getId());
@@ -40,9 +39,10 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
                 statement.setInt(3, product.getId());
                 for (Integer quantity : products.values()) {
                     statement.setInt(4, quantity);
-                }                ResultSet result = statement.executeQuery();
+                }
+                ResultSet result = statement.executeQuery();
                 int cartId = cart.getId();
-                while (result.next()){
+                while (result.next()) {
                     cartId = result.getInt("id");
                 }
                 cart.setId(cartId);
@@ -56,8 +56,7 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
     @Override
     public Cart find(int id) {
         Cart cart = null;
-        try {
-            statement = getConn().prepareStatement("SELECT * FROM carts WHERE id = ?;");
+        try (PreparedStatement statement = getConn().prepareStatement("SELECT * FROM carts WHERE id = ?;")) {
             statement.setInt(1, id);
 
             ResultSet results = statement.executeQuery();
@@ -77,7 +76,6 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
 
             cart = new Cart(productMap, user);
             cart.setId(id);
-            statement.close();
             results.close();
 
         } catch (SQLException e) {
@@ -88,11 +86,9 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
 
     @Override
     public void remove(int id) {
-        try {
-            statement = getConn().prepareStatement("DELETE FROM carts WHERE product_id=?;");
+        try (PreparedStatement statement = getConn().prepareStatement("DELETE FROM carts WHERE product_id=?;")) {
             statement.setInt(1, id);
             statement.executeUpdate();
-            statement.close();
 
         } catch (SQLException e) {
             LOGGER.warning(String.format("SQLException occurred: %s", e));
@@ -102,8 +98,7 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
     @Override
     public List<Cart> getAll() {
         List<Cart> carts = new ArrayList<>();
-        try {
-            statement = getConn().prepareStatement("SELECT id FROM carts");
+        try (PreparedStatement statement = getConn().prepareStatement("SELECT id FROM carts")) {
             ResultSet results = statement.executeQuery();
 
             while (results.next()) {
@@ -113,7 +108,6 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
 
             }
 
-            statement.close();
             results.close();
 
             return carts;
@@ -125,10 +119,8 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
 
     @Override
     public void removeAll() {
-        try {
-            statement = getConn().prepareStatement("TRUNCATE carts CASCADE ");
+        try (PreparedStatement statement = getConn().prepareStatement("TRUNCATE carts CASCADE ")) {
             statement.executeUpdate();
-            statement.close();
 
         } catch (SQLException e) {
             LOGGER.warning(String.format("SQLException occurred: %s", e));
@@ -136,8 +128,7 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
     }
 
     public Cart getCartByUserId(int id) {
-        try {
-            statement = getConn().prepareStatement("SELECT id FROM carts WHERE user_id=?;");
+        try (PreparedStatement statement = getConn().prepareStatement("SELECT id FROM carts WHERE user_id=?;")) {
             statement.setInt(1, id);
             ResultSet results = statement.executeQuery();
 
@@ -146,8 +137,6 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
 
                 cart = find(results.getInt("id"));
             }
-
-            statement.close();
             results.close();
 
             return cart;
@@ -182,8 +171,7 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
     }
 
     public Integer getCartProductQuantity(Cart cart, int productId) {
-        try {
-            statement = getConn().prepareStatement("SELECT product_quantity FROM carts WHERE id=? AND user_id=? AND product_id=?;");
+        try (PreparedStatement statement = getConn().prepareStatement("SELECT product_quantity FROM carts WHERE id=? AND user_id=? AND product_id=?;")) {
             statement.setInt(1, cart.getId());
             statement.setInt(2, cart.getUser().getId());
             statement.setInt(3, productId);

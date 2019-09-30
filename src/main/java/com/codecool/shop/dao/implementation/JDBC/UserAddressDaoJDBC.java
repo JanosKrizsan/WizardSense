@@ -3,6 +3,7 @@ package com.codecool.shop.dao.implementation.JDBC;
 import com.codecool.shop.config.ConnectionHandler;
 import com.codecool.shop.dao.GenericQueriesDao;
 import com.codecool.shop.model.UserAddress;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -40,7 +41,7 @@ public class UserAddressDaoJDBC extends ConnectionHandler implements GenericQuer
             statement.setString(8, userAddress.getOrderFields().get("address"));
             ResultSet result = statement.executeQuery();
             int cartId = userAddress.getId();
-            while (result.next()){
+            while (result.next()) {
                 cartId = result.getInt("id");
             }
             userAddress.setId(cartId);
@@ -64,15 +65,15 @@ public class UserAddressDaoJDBC extends ConnectionHandler implements GenericQuer
             HashMap<String, String> addressFields = new HashMap<>();
             while (results.next()) {
 
-                 addressFields.put("name", results.getString("name"));
-                 addressFields.put("eMail", results.getString("e_mail"));
-                 addressFields.put("phoneNumber",results.getString("phone_number"));
-                 addressFields.put("country",results.getString("country"));
-                 addressFields.put("city",results.getString("city"));
-                 addressFields.put("zipCode",results.getString("zip_code"));
-                 addressFields.put("address",results.getString("address"));
+                addressFields.put("name", results.getString("name"));
+                addressFields.put("eMail", results.getString("e_mail"));
+                addressFields.put("phoneNumber", results.getString("phone_number"));
+                addressFields.put("country", results.getString("country"));
+                addressFields.put("city", results.getString("city"));
+                addressFields.put("zipCode", results.getString("zip_code"));
+                addressFields.put("address", results.getString("address"));
 
-                 userId = results.getInt("user_id");
+                userId = results.getInt("user_id");
             }
             address = new UserAddress(addressFields, userId);
             address.setId(id);
@@ -103,8 +104,7 @@ public class UserAddressDaoJDBC extends ConnectionHandler implements GenericQuer
     @Override
     public List<UserAddress> getAll() {
         List<UserAddress> addresses = new ArrayList<>();
-        try {
-            statement = getConn().prepareStatement("SELECT id FROM addresses");
+        try (PreparedStatement statement = getConn().prepareStatement("SELECT id FROM addresses")) {
             ResultSet results = statement.executeQuery();
 
             while (results.next()) {
@@ -113,10 +113,7 @@ public class UserAddressDaoJDBC extends ConnectionHandler implements GenericQuer
                 addresses.add(find(id));
 
             }
-
-            statement.close();
             results.close();
-
             return addresses;
         } catch (SQLException e) {
             ExceptionOccurred(e);
@@ -126,30 +123,24 @@ public class UserAddressDaoJDBC extends ConnectionHandler implements GenericQuer
 
     @Override
     public void removeAll() {
-        try {
-            statement = getConn().prepareStatement("TRUNCATE addresses CASCADE ");
+        try (PreparedStatement statement = getConn().prepareStatement("TRUNCATE addresses CASCADE ")) {
             statement.executeUpdate();
-            statement.close();
-
         } catch (SQLException e) {
             ExceptionOccurred(e);
         }
+
     }
 
     public List<UserAddress> getAddressByUserId(int userID) {
-        try {
-            statement = getConn().prepareStatement("SELECT * FROM addresses WHERE user_id=?;");
+        try (PreparedStatement statement = getConn().prepareStatement("SELECT * FROM addresses WHERE user_id=?;")) {
             statement.setInt(1, userID);
 
             List<UserAddress> addressesOfUser = new ArrayList<>();
             ResultSet results = statement.executeQuery();
 
-            while(results.next()) {
-
+            while (results.next()) {
                 addressesOfUser.add(find(results.getInt("id")));
-
             }
-
             return addressesOfUser;
         } catch (SQLException e) {
             ExceptionOccurred(e);

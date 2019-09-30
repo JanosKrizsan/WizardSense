@@ -13,7 +13,6 @@ import java.util.List;
 public class ProductCategoryDaoJDBC extends ConnectionHandler implements GenericQueriesDao<ProductCategory> {
 
     private static ProductCategoryDaoJDBC instance = null;
-    private PreparedStatement statement;
 
 
     private ProductCategoryDaoJDBC() {
@@ -28,8 +27,7 @@ public class ProductCategoryDaoJDBC extends ConnectionHandler implements Generic
 
     @Override
     public void add(ProductCategory category) {
-        try {
-            statement = getConn().prepareStatement("INSERT INTO product_categories (name, description, department) VALUES  (?, ?, ?) RETURNING id;");
+        try (PreparedStatement statement = getConn().prepareStatement("INSERT INTO product_categories (name, description, department) VALUES  (?, ?, ?) RETURNING id;")) {
             statement.setString(1, category.getName());
             statement.setString(2, category.getDescription());
             statement.setString(3, category.getDepartment());
@@ -39,7 +37,6 @@ public class ProductCategoryDaoJDBC extends ConnectionHandler implements Generic
                 cartId = result.getInt("id");
             }
             category.setId(cartId);
-            statement.close();
 
         } catch (SQLException e) {
             ExceptionOccurred(e);
@@ -49,8 +46,7 @@ public class ProductCategoryDaoJDBC extends ConnectionHandler implements Generic
     @Override
     public ProductCategory find(int id) {
         ProductCategory category = null;
-        try {
-            statement = getConn().prepareStatement("SELECT * FROM product_categories WHERE id = ?;");
+        try (PreparedStatement statement = getConn().prepareStatement("SELECT * FROM product_categories WHERE id = ?;")) {
             statement.setInt(1, id);
 
             ResultSet results = statement.executeQuery();
@@ -68,8 +64,6 @@ public class ProductCategoryDaoJDBC extends ConnectionHandler implements Generic
             category = new ProductCategory(name, department, description);
             category.setId(id);
 
-            statement.close();
-
         } catch (SQLException e) {
             ExceptionOccurred(e);
         }
@@ -78,11 +72,9 @@ public class ProductCategoryDaoJDBC extends ConnectionHandler implements Generic
 
     @Override
     public void remove(int id) {
-        try {
-            statement = getConn().prepareStatement("DELETE FROM product_categories WHERE id=?;");
+        try (PreparedStatement statement = getConn().prepareStatement("DELETE FROM product_categories WHERE id=?;")) {
             statement.setInt(1, id);
             statement.executeUpdate();
-            statement.close();
         } catch (SQLException e) {
             ExceptionOccurred(e);
         }
@@ -91,18 +83,13 @@ public class ProductCategoryDaoJDBC extends ConnectionHandler implements Generic
     @Override
     public List<ProductCategory> getAll() {
         List<ProductCategory> categories = new ArrayList<>();
-        try {
-            statement = getConn().prepareStatement("SELECT id FROM product_categories");
-            ResultSet results = statement.executeQuery();
+        try (PreparedStatement statement = getConn().prepareStatement("SELECT id FROM product_categories");
+             ResultSet results = statement.executeQuery()) {
 
             while (results.next()) {
-
                 int id = results.getInt("id");
                 categories.add(find(id));
-
             }
-
-            statement.close();
             results.close();
 
             return categories;
@@ -114,12 +101,10 @@ public class ProductCategoryDaoJDBC extends ConnectionHandler implements Generic
 
     @Override
     public void removeAll() {
-        try {
-            statement = getConn().prepareStatement("TRUNCATE product_categories CASCADE ");
+        try (PreparedStatement statement = getConn().prepareStatement("TRUNCATE product_categories CASCADE ")) {
             statement.executeUpdate();
-            statement.close();
-
-        } catch (SQLException e) {
+        } catch (
+                SQLException e) {
             ExceptionOccurred(e);
         }
     }

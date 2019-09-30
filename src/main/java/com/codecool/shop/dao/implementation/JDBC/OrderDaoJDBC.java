@@ -3,6 +3,7 @@ package com.codecool.shop.dao.implementation.JDBC;
 import com.codecool.shop.config.ConnectionHandler;
 import com.codecool.shop.dao.GenericQueriesDao;
 import com.codecool.shop.model.Order;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,7 +13,6 @@ import java.util.List;
 public class OrderDaoJDBC extends ConnectionHandler implements GenericQueriesDao<Order> {
 
     private static OrderDaoJDBC instance = null;
-    private PreparedStatement statement;
     private UserDaoJDBC userDao = UserDaoJDBC.getInstance();
     private CartDaoJDBC cartDao = CartDaoJDBC.getInstance();
 
@@ -29,13 +29,11 @@ public class OrderDaoJDBC extends ConnectionHandler implements GenericQueriesDao
 
     @Override
     public void add(Order order) {
-        try {
-            statement = getConn().prepareStatement("INSERT INTO orders (cart_id, user_id, status) VALUES (? , ?, ?);");
+        try (PreparedStatement statement = getConn().prepareStatement("INSERT INTO orders (cart_id, user_id, status) VALUES (? , ?, ?);")) {
             statement.setInt(1, order.getCart().getId());
             statement.setInt(2, order.getUser().getId());
             statement.setString(3, order.getStatus());
             statement.executeUpdate();
-            statement.close();
         } catch (SQLException e) {
             ExceptionOccurred(e);
         }
@@ -44,8 +42,7 @@ public class OrderDaoJDBC extends ConnectionHandler implements GenericQueriesDao
     @Override
     public Order find(int id) {
         Order order = null;
-        try {
-            statement = getConn().prepareStatement("SELECT * FROM orders WHERE id = ?;");
+        try (PreparedStatement statement = getConn().prepareStatement("SELECT * FROM orders WHERE id = ?;")) {
             statement.setInt(1, id);
 
             ResultSet results = statement.executeQuery();
@@ -61,11 +58,8 @@ public class OrderDaoJDBC extends ConnectionHandler implements GenericQueriesDao
                 userId = results.getInt("user_id");
                 orderStatus = results.getString("status");
             }
-
             order = new Order(userDao.find(userId), cartDao.find(cartId), orderStatus);
             order.setId(orderId);
-
-            statement.close();
 
         } catch (SQLException e) {
             ExceptionOccurred(e);
@@ -75,11 +69,9 @@ public class OrderDaoJDBC extends ConnectionHandler implements GenericQueriesDao
 
     @Override
     public void remove(int id) {
-        try {
-            statement = getConn().prepareStatement("DELETE FROM orders WHERE id=?;");
+        try (PreparedStatement statement = getConn().prepareStatement("DELETE FROM orders WHERE id=?;")) {
             statement.setInt(1, id);
             statement.executeUpdate();
-            statement.close();
         } catch (SQLException e) {
             ExceptionOccurred(e);
         }
@@ -88,18 +80,14 @@ public class OrderDaoJDBC extends ConnectionHandler implements GenericQueriesDao
     @Override
     public List<Order> getAll() {
         List<Order> orders = new ArrayList<>();
-        try {
-            statement = getConn().prepareStatement("SELECT id FROM orders");
+        try (PreparedStatement statement = getConn().prepareStatement("SELECT id FROM orders")) {
             ResultSet results = statement.executeQuery();
-
             while (results.next()) {
 
                 int id = results.getInt("id");
                 orders.add(find(id));
 
             }
-
-            statement.close();
             results.close();
 
             return orders;
@@ -111,11 +99,8 @@ public class OrderDaoJDBC extends ConnectionHandler implements GenericQueriesDao
 
     @Override
     public void removeAll() {
-        try {
-            statement = getConn().prepareStatement("TRUNCATE orders CASCADE ");
+        try (PreparedStatement statement = getConn().prepareStatement("TRUNCATE orders CASCADE ")) {
             statement.executeUpdate();
-            statement.close();
-
         } catch (SQLException e) {
             ExceptionOccurred(e);
         }
