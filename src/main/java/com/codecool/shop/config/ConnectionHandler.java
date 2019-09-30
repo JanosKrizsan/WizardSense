@@ -26,7 +26,7 @@ public abstract class ConnectionHandler {
         }
     }
 
-    public PGSimpleDataSource connect() throws SQLException {
+    static public PGSimpleDataSource connect() throws SQLException {
 
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
 

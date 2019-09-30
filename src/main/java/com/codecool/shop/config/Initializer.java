@@ -7,6 +7,7 @@ import com.codecool.shop.model.*;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
+import java.sql.SQLException;
 import java.util.logging.Logger;
 
 @WebListener
@@ -22,6 +23,13 @@ public class Initializer implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
 
+        LOGGER.info("Trying to connect to database...");
+        try {
+            ConnectionHandler.connect();
+            LOGGER.info("Connection Established Successfully!");
+        } catch (SQLException e){
+            LOGGER.info("Connection Failed. Reason: \n"+e);
+        }
         if(productDataStore.getAll().size() == 0 && userDataStore.getAll().size() == 0){
             fillMeUp();
         }
