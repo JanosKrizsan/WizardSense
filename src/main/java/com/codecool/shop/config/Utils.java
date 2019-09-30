@@ -2,7 +2,7 @@ package com.codecool.shop.config;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-public class Utils {
+public final class Utils {
 
     static public String hashPass(String password){
         return BCrypt.hashpw(password, BCrypt.gensalt(10));
