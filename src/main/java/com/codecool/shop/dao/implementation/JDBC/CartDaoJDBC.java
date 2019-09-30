@@ -9,13 +9,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.logging.Logger;
 
 public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<Cart> {
 
     private static CartDaoJDBC instance = null;
     private PreparedStatement statement;
     private ProductDaoJDBC productDao = ProductDaoJDBC.getInstance();
-
 
     private CartDaoJDBC() {
         super();
@@ -49,7 +49,7 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
                 statement.close();
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            LOGGER.warning(String.format("SQLException occurred: %s", e));
         }
     }
 
@@ -81,7 +81,7 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
             results.close();
 
         } catch (SQLException e) {
-            System.out.println(e);
+            LOGGER.warning(String.format("SQLException occurred: %s", e));
         }
         return cart;
     }
@@ -95,7 +95,7 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
             statement.close();
 
         } catch (SQLException e) {
-            System.out.println(e);
+            LOGGER.warning(String.format("SQLException occurred: %s", e));
         }
     }
 
@@ -118,7 +118,7 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
 
             return carts;
         } catch (SQLException e) {
-            System.out.println(e);
+            LOGGER.warning(String.format("SQLException occurred: %s", e));
         }
         return carts;
     }
@@ -131,7 +131,7 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
             statement.close();
 
         } catch (SQLException e) {
-            System.out.println(e);
+            LOGGER.warning(String.format("SQLException occurred: %s", e));
         }
     }
 
@@ -152,7 +152,7 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
 
             return cart;
         } catch (SQLException e) {
-            System.out.println(e);
+            LOGGER.warning(String.format("SQLException occurred: %s", e));
         }
         return null;
     }
@@ -177,7 +177,7 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
             statement.close();
 
         } catch (SQLException e) {
-            System.out.println(e);
+            LOGGER.warning(String.format("SQLException occurred: %s", e));
         }
     }
 
@@ -198,7 +198,7 @@ public class CartDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
             }
             return quantity;
         } catch (SQLException e) {
-            System.out.println(e);
+            LOGGER.warning(String.format("SQLException occurred: %s", e));
         }
 
         return null;

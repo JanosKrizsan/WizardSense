@@ -37,7 +37,7 @@ public class OrderDaoJDBC extends ConnectionHandler implements GenericQueriesDao
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
     }
 
@@ -68,7 +68,7 @@ public class OrderDaoJDBC extends ConnectionHandler implements GenericQueriesDao
             statement.close();
 
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
         return order;
     }
@@ -81,7 +81,7 @@ public class OrderDaoJDBC extends ConnectionHandler implements GenericQueriesDao
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
     }
 
@@ -104,7 +104,7 @@ public class OrderDaoJDBC extends ConnectionHandler implements GenericQueriesDao
 
             return orders;
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
         return orders;
     }
@@ -117,7 +117,7 @@ public class OrderDaoJDBC extends ConnectionHandler implements GenericQueriesDao
             statement.close();
 
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
     }
 }

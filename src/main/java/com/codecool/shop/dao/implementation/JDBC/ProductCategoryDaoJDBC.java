@@ -3,6 +3,7 @@ package com.codecool.shop.dao.implementation.JDBC;
 import com.codecool.shop.config.ConnectionHandler;
 import com.codecool.shop.dao.GenericQueriesDao;
 import com.codecool.shop.model.ProductCategory;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,14 +35,14 @@ public class ProductCategoryDaoJDBC extends ConnectionHandler implements Generic
             statement.setString(3, category.getDepartment());
             ResultSet result = statement.executeQuery();
             int cartId = category.getId();
-            while (result.next()){
+            while (result.next()) {
                 cartId = result.getInt("id");
             }
             category.setId(cartId);
             statement.close();
 
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
     }
 
@@ -58,7 +59,7 @@ public class ProductCategoryDaoJDBC extends ConnectionHandler implements Generic
             String department = "";
             String description = "";
 
-            while (results.next()){
+            while (results.next()) {
                 name = results.getString("name");
                 department = results.getString("department");
                 description = results.getString("description");
@@ -70,7 +71,7 @@ public class ProductCategoryDaoJDBC extends ConnectionHandler implements Generic
             statement.close();
 
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
         return category;
     }
@@ -83,7 +84,7 @@ public class ProductCategoryDaoJDBC extends ConnectionHandler implements Generic
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
     }
 
@@ -106,7 +107,7 @@ public class ProductCategoryDaoJDBC extends ConnectionHandler implements Generic
 
             return categories;
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
         return categories;
     }
@@ -119,7 +120,7 @@ public class ProductCategoryDaoJDBC extends ConnectionHandler implements Generic
             statement.close();
 
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
     }
 }

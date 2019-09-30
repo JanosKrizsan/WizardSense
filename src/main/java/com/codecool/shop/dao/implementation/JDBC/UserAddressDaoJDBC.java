@@ -47,7 +47,7 @@ public class UserAddressDaoJDBC extends ConnectionHandler implements GenericQuer
             statement.close();
 
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
     }
 
@@ -83,7 +83,7 @@ public class UserAddressDaoJDBC extends ConnectionHandler implements GenericQuer
             return address;
 
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
         return address;
     }
@@ -96,7 +96,7 @@ public class UserAddressDaoJDBC extends ConnectionHandler implements GenericQuer
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
     }
 
@@ -119,7 +119,7 @@ public class UserAddressDaoJDBC extends ConnectionHandler implements GenericQuer
 
             return addresses;
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
         return null;
     }
@@ -132,7 +132,7 @@ public class UserAddressDaoJDBC extends ConnectionHandler implements GenericQuer
             statement.close();
 
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
     }
 
@@ -152,7 +152,7 @@ public class UserAddressDaoJDBC extends ConnectionHandler implements GenericQuer
 
             return addressesOfUser;
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
         return null;
     }

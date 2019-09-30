@@ -1,5 +1,6 @@
 package com.codecool.shop.dao;
 
+
 import java.util.List;
 
 public interface GenericQueriesDao<T> {

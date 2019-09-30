@@ -45,10 +45,9 @@ public class ProductDaoJDBC extends ConnectionHandler implements ProductDao {
                 cartId = result.getInt("id");
             }
             product.setId(cartId);
-//            statement.close();
 
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
     }
 
@@ -90,7 +89,7 @@ public class ProductDaoJDBC extends ConnectionHandler implements ProductDao {
 
             return found;
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
         return null;
     }
@@ -103,7 +102,7 @@ public class ProductDaoJDBC extends ConnectionHandler implements ProductDao {
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
     }
 
@@ -127,7 +126,7 @@ public class ProductDaoJDBC extends ConnectionHandler implements ProductDao {
 
             return products;
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
         return null;
     }
@@ -154,7 +153,7 @@ public class ProductDaoJDBC extends ConnectionHandler implements ProductDao {
             statement.close();
 
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
     }
 }

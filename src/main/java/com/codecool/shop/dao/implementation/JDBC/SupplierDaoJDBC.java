@@ -39,7 +39,7 @@ public class SupplierDaoJDBC extends ConnectionHandler implements GenericQueries
             statement.close();
 
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
     }
 
@@ -66,7 +66,7 @@ public class SupplierDaoJDBC extends ConnectionHandler implements GenericQueries
             statement.close();
 
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
         return supplier;
     }
@@ -79,7 +79,7 @@ public class SupplierDaoJDBC extends ConnectionHandler implements GenericQueries
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
     }
 
@@ -102,7 +102,7 @@ public class SupplierDaoJDBC extends ConnectionHandler implements GenericQueries
 
             return suppliers;
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
         return suppliers;
     }
@@ -115,7 +115,7 @@ public class SupplierDaoJDBC extends ConnectionHandler implements GenericQueries
             statement.close();
 
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
     }
 }

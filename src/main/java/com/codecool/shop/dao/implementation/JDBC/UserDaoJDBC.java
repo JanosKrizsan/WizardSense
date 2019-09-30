@@ -40,7 +40,7 @@ public class UserDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
             statement.close();
 
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
     }
 
@@ -69,7 +69,7 @@ public class UserDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
             results.close();
 
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
         return user;
     }
@@ -98,7 +98,7 @@ public class UserDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
             results.close();
 
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
         return user;
     }
@@ -112,7 +112,7 @@ public class UserDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
     }
 
@@ -135,7 +135,7 @@ public class UserDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
 
             return users;
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
         return users;
     }
@@ -148,7 +148,7 @@ public class UserDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
             statement.close();
 
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
     }
 
