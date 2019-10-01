@@ -20,7 +20,7 @@
         <div th:each="item : ${cart.getProductsInCart()}" class="cart-item">
             <div class="product-card">
                 <img class="cart-image" src="http://placehold.it/400x250/000/fff"
-                     th:attr="src='/static/img/product_' + ${item.getId()} + '.png'" alt="Image not found"/>
+                     th:attr="src=${item.getImageSrc()}" alt="Image not found"/>
                 <div class="item-details">
                     <p class="item-name" th:text="${item.getName()}">...</p>
                     <p class="item-cat" th:text="${item.getProductCategory().getName()}">...</p>

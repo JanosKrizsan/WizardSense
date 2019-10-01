@@ -29,21 +29,27 @@ public class OrderDaoJDBC extends ConnectionHandler implements GenericQueriesDao
 
     @Override
     public void add(Order order) {
-        try (PreparedStatement statement = getConn().prepareStatement("INSERT INTO orders (cart_id, user_id, status) VALUES (? , ?, ?);")) {
+        try (PreparedStatement statement = getConn().prepareStatement("INSERT INTO orders (cart_id, user_id, status) VALUES (? , ?, ?) RETURNING id;")) {
             statement.setInt(1, order.getCart().getId());
             statement.setInt(2, order.getUser().getId());
             statement.setString(3, order.getStatus());
-            statement.executeUpdate();
+            ResultSet result = statement.executeQuery();
+
+            int id = 0;
+            while(result.next()) {
+                id = result.getInt("id");
+            }
+            order.setId(id);
         } catch (SQLException e) {
             ExceptionOccurred(e);
         }
     }
 
     @Override
-    public Order find(int id) {
+    public Order find(int cartID) {
         Order order = null;
-        try (PreparedStatement statement = getConn().prepareStatement("SELECT * FROM orders WHERE id = ?;")) {
-            statement.setInt(1, id);
+        try (PreparedStatement statement = getConn().prepareStatement("SELECT * FROM orders WHERE cart_id = ?;")) {
+            statement.setInt(1, cartID);
 
             ResultSet results = statement.executeQuery();
 
@@ -101,6 +107,18 @@ public class OrderDaoJDBC extends ConnectionHandler implements GenericQueriesDao
     public void removeAll() {
         try (PreparedStatement statement = getConn().prepareStatement("TRUNCATE orders CASCADE ")) {
             statement.executeUpdate();
+        } catch (SQLException e) {
+            ExceptionOccurred(e);
+        }
+    }
+
+    public void setStatus(String status, Order order) {
+        try (PreparedStatement statement = getConn().prepareStatement("UPDATE orders SET status = ? WHERE id=? AND cart_id=? AND user_id=?;")) {
+            statement.setString(1, status);
+            statement.setInt(2, order.getId());
+            statement.setInt(3, order.getCart().getId());
+            statement.setInt(4, order.getUser().getId());
+
         } catch (SQLException e) {
             ExceptionOccurred(e);
         }

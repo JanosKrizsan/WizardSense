@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="head.html :: copy"></head>
+
+<body>
+
+<div th:replace="logo.html :: copy"></div>
+
+<div class="container">
+    <div>
+        <span th:text="${'Your total gold extinguished from yer pockets: ' + totalPaid + ' GP'}">...</span>
+        <span th:text="${'Total number of items ye bought: ' + cart.getSumOfProducts()}">...</span>
+
+        <div id="product-container" th:each=" item : ${cart.getProductsInCart()}">
+            <div>
+                <span th:text="${item.getName()}"></span>
+                <span th:text="${item.getProductCategory()}"></span>
+                <span th:text="${item.getSupplier()}"></span>
+                <span th:text="${item.getDefaultPrice() + ' GP'}"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a th:href="@{/}">Back to main page</a>
+<div th:replace="footer.html :: copy"></div>
+
+</body>
+</html>

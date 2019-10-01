@@ -1,19 +1,13 @@
 package JDBC;
 
-import com.codecool.shop.config.ConnectionHandler;
-import com.codecool.shop.config.Utils;
-import com.codecool.shop.dao.GenericQueriesDao;
-import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.JDBC.CartDaoJDBC;
 import com.codecool.shop.dao.implementation.JDBC.ProductCategoryDaoJDBC;
 import com.codecool.shop.dao.implementation.JDBC.ProductDaoJDBC;
 import com.codecool.shop.dao.implementation.JDBC.SupplierDaoJDBC;
-import com.codecool.shop.dao.implementation.Memory.*;
 import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -183,7 +177,7 @@ class JDBCDaoTest {
     @Test
     void testRemoveCart() {
         cartDataStore.add(testCart);
-        cartDataStore.remove(testCart.getId());
+        cartDataStore.clearProductFromCart(testCart.getId());
         assertEquals(cartDataStore.getAll(), new ArrayList<Cart>());
     }
 

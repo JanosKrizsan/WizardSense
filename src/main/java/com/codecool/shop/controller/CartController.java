@@ -1,13 +1,12 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
+import com.codecool.shop.config.Utils;
 import com.codecool.shop.dao.implementation.JDBC.CartDaoJDBC;
 import com.codecool.shop.dao.implementation.JDBC.UserDaoJDBC;
 import com.codecool.shop.model.Cart;
-import com.codecool.shop.model.Product;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -42,20 +41,11 @@ public class CartController extends HttpServlet {
             int prodId = Integer.parseInt(req.getParameter("decrease"));
 
             if(cartDataStore.getCartProductQuantity(cart, prodId) <= 1) {
-                cartDataStore.remove(prodId);
+                cartDataStore.clearProductFromCart(prodId);
             } else {
                 cartDataStore.increaseOrDecreaseQuantity(cart, prodId, false);
             }
         }
-    }
-
-    private float getTotalSum(Cart cart) {
-        float sum = 0;
-
-        for (Product product : cart.getProductsInCart()) {
-            sum += product.getDefaultPrice() * cartDataStore.getCartProductQuantity(cart, product.getId());
-        }
-        return sum;
     }
 
 
@@ -63,13 +53,16 @@ public class CartController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         List<String> headers = Collections.list(req.getParameterNames());
 
+        HttpSession session = req.getSession();
+        if (session.getAttribute("userID") == null) {
+            resp.sendError(401, "Unauthorized access!");
+        }
+
         if (headers.contains("increase") || headers.contains("decrease")) {
             addOrRemoveProduct(req);
         }
 
-        HttpSession session = req.getSession();
-
-        Integer userId = (Integer) session.getAttribute("userID");
+        int userId = (int) session.getAttribute("userID");
 
         Cart cart = cartDataStore.getCartByUserId(userId);
         if (cart == null) {
@@ -80,7 +73,7 @@ public class CartController extends HttpServlet {
             WebContext context = new WebContext(req, resp, req.getServletContext());
 
             context.setVariable("cart", cart);
-            context.setVariable("totalSum", getTotalSum(cart));
+            context.setVariable("totalSum", Utils.getTotalSum(cart));
             context.setVariable("userID", session.getAttribute("userID"));
             context.setVariable("userName", session.getAttribute("userName"));
 

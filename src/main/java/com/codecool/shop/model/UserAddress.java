@@ -24,15 +24,7 @@ public class UserAddress {
         return orderFields;
     }
 
-    public void setOrderFields(HashMap<String, String> orderFields) {
-        this.orderFields = orderFields;
-    }
-
     public int getUserId() {
         return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 }

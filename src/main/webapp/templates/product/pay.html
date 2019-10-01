@@ -7,7 +7,17 @@
 <div th:replace="logo.html :: copy"></div>
 
 <div class="container">
-    <img src="https://res.cloudinary.com/teepublic/image/private/s--NWxFjHLj--/t_Preview/b_rgb:768e9a,c_limit,f_jpg,h_630,q_90,w_630/v1539384919/production/designs/3309274_0.jpg">
+    <div th:value="${totalSum}"></div>
+    <div>
+        <a th:href="@{/confirmation}">
+            <button class="btn btn-success" th:text="${'Send gold via psychic link'}"></button>
+        </a>
+    </div>
+    <div>
+        <a th:href="@{/}">
+            <button class="btn btn-danger" th:text="${'Decline thine purchase'}"></button>
+        </a>
+    </div>
 </div>
 
 <div th:replace="footer.html :: copy"></div>

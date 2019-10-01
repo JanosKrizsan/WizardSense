@@ -7,7 +7,6 @@ public class User {
     private int id;
     private String username;
     private String password;
-    private List<UserAddress> addresses = new ArrayList<>();
 
     public User(String username, String password) {
         this.username = username;
@@ -36,13 +35,5 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public List<UserAddress> getAddresses() {
-        return addresses;
-    }
-
-    public void setAddresses(List<UserAddress> addresses) {
-        this.addresses = addresses;
     }
 }

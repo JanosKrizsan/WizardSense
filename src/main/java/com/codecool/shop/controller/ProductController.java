@@ -55,7 +55,6 @@ public class ProductController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
         HttpSession session = req.getSession();
 
         int cartSize = 0;

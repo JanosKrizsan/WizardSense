@@ -19,6 +19,7 @@ import java.util.List;
 
 @WebServlet(urlPatterns = {"/address-list"})
 public class AddressController extends HttpServlet {
+
     private UserAddressDaoJDBC addressDataStore = UserAddressDaoJDBC.getInstance();
     private CartDaoJDBC cartDataStore = CartDaoJDBC.getInstance();
 

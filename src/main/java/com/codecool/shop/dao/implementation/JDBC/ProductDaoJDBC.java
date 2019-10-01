@@ -64,6 +64,7 @@ public class ProductDaoJDBC extends ConnectionHandler implements ProductDao {
             String defCurrency = "";
             int categoryId = 0;
             int supplierId = 0;
+            String imageSrc = "";
 
             while (results.next()) {
 
@@ -74,6 +75,7 @@ public class ProductDaoJDBC extends ConnectionHandler implements ProductDao {
                 defCurrency = results.getString("default_currency");
                 categoryId = results.getInt("product_category_id");
                 supplierId = results.getInt("supplier_id");
+                imageSrc = results.getString("image_src");
             }
 
             ProductCategory category = ProductCategoryDaoJDBC.getInstance().find(categoryId);
@@ -81,6 +83,7 @@ public class ProductDaoJDBC extends ConnectionHandler implements ProductDao {
 
             Product found = new Product(prodName, defPrice, defCurrency, prodDesc, category, supplier);
             found.setId(productId);
+            found.setImageSrc(imageSrc);
 
             results.close();
 
