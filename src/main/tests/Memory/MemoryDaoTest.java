@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,7 +36,7 @@ class MemoryDaoTest {
     private Supplier fakeSupplier = new Supplier("Fake Supplier", "Fake Description");
     private Product fakeProduct = new Product("FakeProd", 0, "HUF", "Just a fake", fakeCategory, fakeSupplier);
 
-    private Cart testCart = new Cart(new HashMap<>(0), null);
+    private Cart testCart = new Cart(new TreeMap<>(), null);
 
     @BeforeEach
     void cleanTheSlate() {

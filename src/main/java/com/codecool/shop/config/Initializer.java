@@ -4,10 +4,14 @@ import com.codecool.shop.dao.GenericQueriesDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.JDBC.*;
 import com.codecool.shop.model.*;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 @WebListener
@@ -15,7 +19,6 @@ public class Initializer implements ServletContextListener {
     private ProductDao productDataStore = ProductDaoJDBC.getInstance();
     private GenericQueriesDao<ProductCategory> productCategoryDataStore = ProductCategoryDaoJDBC.getInstance();
     private GenericQueriesDao<Supplier> supplierDataStore = SupplierDaoJDBC.getInstance();
-    private GenericQueriesDao<Cart> cartDataStore = CartDaoJDBC.getInstance();
     private GenericQueriesDao<User> userDataStore = UserDaoJDBC.getInstance();
 
     private static final Logger LOGGER = Logger.getLogger(ConnectionHandler.class.getName());
@@ -27,16 +30,16 @@ public class Initializer implements ServletContextListener {
         try {
             ConnectionHandler.connect();
             LOGGER.info("Connection Established Successfully!");
-        } catch (SQLException e){
-            LOGGER.info("Connection Failed. Reason: \n"+e);
+        } catch (SQLException e) {
+            LOGGER.info("Connection Failed. Reason: \n" + e);
         }
-        if(productDataStore.getAll().size() == 0 && userDataStore.getAll().size() == 0){
+        if (productDataStore.getAll().size() == 0 && userDataStore.getAll().size() == 0) {
             fillMeUp();
         }
 
     }
 
-    private void fillMeUp(){
+    private void fillMeUp() {
 
         LOGGER.info("Filling up database with values...");
 
@@ -69,13 +72,35 @@ public class Initializer implements ServletContextListener {
         productCategoryDataStore.add(potion);
 
         //setting up products and printing it
-        productDataStore.add(new Product("Potion of Healing", 24, "USD", "A magical liquid capable of healing up wounds with accelerated regeneration.", potion, eldamar));
-        productDataStore.add(new Product("Potion of Greater Healing", 46, "USD", "A more potent version of the healing potion.", potion, eldamar));
-        productDataStore.add(new Product("Scroll of Frost Ray", 37, "USD", "A scroll of magic containing the 1st level spell: Frost Ray", scroll, arnix));
-        productDataStore.add(new Product("Sword of Cinders", 123, "USD", "A finely crafted longsword capable of producing minor flames on it's blade upon speaking the command word.", weapon, althiev));
-        productDataStore.add(new Product("Sword of Sands", 170, "USD", "A blade found in the desert, reinforced by Althiev.", weapon, althiev));
-        productDataStore.add(new Product("Scroll of Illusions", 76, "USD", "A scroll containing the 3rd level spell: Major Image", scroll, arnix));
-        productDataStore.add(new Product("Ointment of Kvaarn", 87, "USD", "A small flask of iron containing a syrupy liquid. Said to cure almost all common diseases.", potion, eldamar));
+
+        List<Product> productList = new ArrayList<>();
+        Product PotionOfHealing = new Product("Potion of Healing", 24, "USD", "A magical liquid capable of healing up wounds with accelerated regeneration.", potion, eldamar);
+        PotionOfHealing.setImageSrc("https://i.imgur.com/Vjpfgpb.png");
+        productList.add(PotionOfHealing);
+        Product PotionOfGreaterHealing = new Product("Potion of Greater Healing", 46, "USD", "A more potent version of the healing potion.", potion, eldamar);
+        PotionOfGreaterHealing.setImageSrc("https://i.imgur.com/6XEN5i2.png");
+        productList.add(PotionOfGreaterHealing);
+        Product ScrollOfFrostRay = new Product("Scroll of Frost Ray", 37, "USD", "A scroll of magic containing the 1st level spell: Frost Ray", scroll, arnix);
+        ScrollOfFrostRay.setImageSrc("https://i.imgur.com/adNtxWQ.png");
+        productList.add(ScrollOfFrostRay);
+        Product SwordOfCinders = new Product("Sword of Cinders", 123, "USD", "A finely crafted longsword capable of producing minor flames on it's blade upon speaking the command word.", weapon, althiev);
+        SwordOfCinders.setImageSrc("https://i.imgur.com/Y4DUl1u.png");
+        productList.add(SwordOfCinders);
+        Product SwordOfSands = new Product("Sword of Sands", 170, "USD", "A blade found in the desert, reinforced by Althiev.", weapon, althiev);
+        SwordOfSands.setImageSrc("https://i.imgur.com/zB0GNjq.png");
+        productList.add(SwordOfSands);
+        Product ScrollOfIllusions = new Product("Scroll of Illusions", 76, "USD", "A scroll containing the 3rd level spell: Major Image", scroll, arnix);
+        ScrollOfIllusions.setImageSrc("https://i.imgur.com/RyBK1LO.png");
+        productList.add(ScrollOfIllusions);
+        Product OintmentOfKVaarn = new Product("Ointment of Kvaarn", 87, "USD", "A small flask of iron containing a syrupy liquid. Said to cure almost all common diseases.", potion, eldamar);
+        OintmentOfKVaarn.setImageSrc("https://i.imgur.com/m4ACjLh.png");
+        productList.add(OintmentOfKVaarn);
+
+        for (Product prod : productList) {
+            productDataStore.add(prod);
+        }
+
+        LOGGER.info("All done, ready to go!");
 
     }
 }

@@ -21,9 +21,7 @@ import java.util.List;
 
 @WebServlet(urlPatterns = {"/checkout"})
 public class CheckoutController extends HttpServlet {
-    private static OrderDaoJDBC orderDataStore = OrderDaoJDBC.getInstance();
-    private static CartDaoJDBC cartDataStore = CartDaoJDBC.getInstance();
-    private static UserDaoJDBC userDataStore = UserDaoJDBC.getInstance();
+
     private static UserAddressDaoJDBC addressDataStore = UserAddressDaoJDBC.getInstance();
 
 
@@ -31,25 +29,28 @@ public class CheckoutController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         List<String> headers = Collections.list(req.getParameterNames());
-
         HttpSession session = req.getSession();
+        if (session.getAttribute("userID") == null) {
+            resp.sendError(401, "Unauthorized access!");
+        }
+
         int userId = (int) session.getAttribute("userID");
         String userName = (String) session.getAttribute("userName");
 
         UserAddress address = new UserAddress(new HashMap<>(), userId);
 
+        Integer addressID = null;
         if(headers.contains("selection")) {
 
-            int addressID = Integer.parseInt(req.getParameter("selection"));
+            addressID = Integer.parseInt(req.getParameter("selection"));
             address = addressDataStore.find(addressID);
 
         }
-        orderDataStore.add(new Order(userDataStore.find(userId), cartDataStore.getCartByUserId(userId), "in progress"));
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
 
-
+        context.setVariable("addressID", addressID);
         context.setVariable("userID", userId);
         context.setVariable("userName", userName);
         context.setVariable("details", address);

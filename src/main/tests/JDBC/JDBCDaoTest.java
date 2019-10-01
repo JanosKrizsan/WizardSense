@@ -1,19 +1,13 @@
 package JDBC;
 
-import com.codecool.shop.config.ConnectionHandler;
-import com.codecool.shop.config.Utils;
-import com.codecool.shop.dao.GenericQueriesDao;
-import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.JDBC.CartDaoJDBC;
 import com.codecool.shop.dao.implementation.JDBC.ProductCategoryDaoJDBC;
 import com.codecool.shop.dao.implementation.JDBC.ProductDaoJDBC;
 import com.codecool.shop.dao.implementation.JDBC.SupplierDaoJDBC;
-import com.codecool.shop.dao.implementation.Memory.*;
 import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,10 +19,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -44,7 +35,7 @@ class JDBCDaoTest {
     private ProductCategory testCategory = new ProductCategory("Test Category", "Test Department", "Test Description");
     private Supplier testSupplier = new Supplier("Test Supplier", "Test Description");
     private Product testProduct = new Product("TestProd", 0, "USD", "Just a test", testCategory, testSupplier);
-    private Cart testCart = new Cart(new HashMap<>(0), null);
+    private Cart testCart = new Cart(new TreeMap<>(), null);
 
     private ProductCategory fakeCategory = new ProductCategory("Fake Category", "Fake Department", "Fake Description");
     private Supplier fakeSupplier = new Supplier("Fake Supplier", "Fake Description");
@@ -186,7 +177,7 @@ class JDBCDaoTest {
     @Test
     void testRemoveCart() {
         cartDataStore.add(testCart);
-        cartDataStore.remove(testCart.getId());
+        cartDataStore.clearProductFromCart(testCart.getId());
         assertEquals(cartDataStore.getAll(), new ArrayList<Cart>());
     }
 

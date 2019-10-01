@@ -9,7 +9,7 @@
 <div class="container container-inputs" th:if="${userID}">
     <div>
         <table>
-            <form th:action="@{/order}" method="post">
+            <form th:action="@{/pay}" method="post">
 
                 <!-- Billing Data -->
 
@@ -43,7 +43,7 @@
                 <tr><input name="shippingZip" th:value="${details.getOrderFields().get('zipCode')}"  th:placeholder="'0512'" required></tr>
                 <strong>Thine quarters</strong>
                 <tr><input name="shippingAddress" th:value="${details.getOrderFields().get('address')}"  th:placeholder="'14 Victory Street'" required></tr>
-
+                <input name="addressID" hidden="hidden" th:value="${addressID}">
                 <button class="btn btn-success" type="submit" th:text="${'Pay thine gold'}"></button>
             </form>
         </table>

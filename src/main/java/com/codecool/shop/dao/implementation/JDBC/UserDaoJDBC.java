@@ -4,6 +4,7 @@ import com.codecool.shop.config.ConnectionHandler;
 import com.codecool.shop.config.Utils;
 import com.codecool.shop.dao.GenericQueriesDao;
 import com.codecool.shop.model.User;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,7 +13,6 @@ import java.util.List;
 
 public class UserDaoJDBC extends ConnectionHandler implements GenericQueriesDao<User> {
     private static UserDaoJDBC instance = null;
-    private PreparedStatement statement;
 
     private UserDaoJDBC() {
     }
@@ -27,27 +27,23 @@ public class UserDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
 
     @Override
     public void add(User user) {
-        try {
-            statement = getConn().prepareStatement("INSERT INTO users (user_name, password) VALUES  (?, ?) RETURNING id; ");
+        try (PreparedStatement statement = getConn().prepareStatement("INSERT INTO users (user_name, password) VALUES  (?, ?) RETURNING id; ")) {
             statement.setString(1, user.getUsername());
             statement.setString(2, Utils.hashPass(user.getPassword()));
             ResultSet result = statement.executeQuery();
             int cartId = user.getId();
-            while (result.next()){
+            while (result.next()) {
                 cartId = result.getInt("id");
             }
             user.setId(cartId);
-            statement.close();
-
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
     }
 
     public User find(String username) {
         User user = null;
-        try {
-            statement = getConn().prepareStatement("SELECT * FROM users WHERE user_name = ?;");
+        try (PreparedStatement statement = getConn().prepareStatement("SELECT * FROM users WHERE user_name = ?;")) {
             statement.setString(1, username);
 
             ResultSet results = statement.executeQuery();
@@ -65,11 +61,11 @@ public class UserDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
             user = new User(userName, password);
             user.setId(userId);
 
-            statement.close();
             results.close();
 
-        } catch (SQLException e) {
-            System.out.println(e);
+        } catch (
+                SQLException e) {
+            ExceptionOccurred(e);
         }
         return user;
     }
@@ -77,8 +73,7 @@ public class UserDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
     @Override
     public User find(int id) {
         User user = null;
-        try {
-            statement = getConn().prepareStatement("SELECT * FROM users WHERE id = ?;");
+        try (PreparedStatement statement = getConn().prepareStatement("SELECT * FROM users WHERE id = ?;")) {
             statement.setInt(1, id);
 
             ResultSet results = statement.executeQuery();
@@ -94,11 +89,10 @@ public class UserDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
             user = new User(userName, password);
             user.setId(id);
 
-            statement.close();
             results.close();
 
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
         return user;
     }
@@ -106,21 +100,18 @@ public class UserDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
 
     @Override
     public void remove(int id) {
-        try {
-            statement = getConn().prepareStatement("DELETE FROM users WHERE id=?;");
+        try (PreparedStatement statement = getConn().prepareStatement("DELETE FROM users WHERE id=?;")) {
             statement.setInt(1, id);
             statement.executeUpdate();
-            statement.close();
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
     }
 
     @Override
     public List<User> getAll() {
         List<User> users = new ArrayList<>();
-        try {
-            statement = getConn().prepareStatement("SELECT id FROM users");
+        try (PreparedStatement statement = getConn().prepareStatement("SELECT id FROM users")) {
             ResultSet results = statement.executeQuery();
 
             while (results.next()) {
@@ -130,25 +121,21 @@ public class UserDaoJDBC extends ConnectionHandler implements GenericQueriesDao<
 
             }
 
-            statement.close();
             results.close();
 
             return users;
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
         return users;
     }
 
     @Override
     public void removeAll() {
-        try {
-            statement = getConn().prepareStatement("TRUNCATE users CASCADE ");
+        try (PreparedStatement statement = getConn().prepareStatement("TRUNCATE users CASCADE ")) {
             statement.executeUpdate();
-            statement.close();
-
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
     }
 

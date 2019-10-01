@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 public class ProductDaoJDBC extends ConnectionHandler implements ProductDao {
 
     private static ProductDaoJDBC instance = null;
-    private PreparedStatement statement;
 
     private ProductDaoJDBC() {
     }
@@ -45,17 +44,15 @@ public class ProductDaoJDBC extends ConnectionHandler implements ProductDao {
                 cartId = result.getInt("id");
             }
             product.setId(cartId);
-//            statement.close();
-
+            result.close();
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
     }
 
     @Override
     public Product find(int id) {
-        try {
-            statement = getConn().prepareStatement("SELECT * FROM products WHERE id=?;");
+        try (PreparedStatement statement = getConn().prepareStatement("SELECT * FROM products WHERE id=?;")) {
             statement.setInt(1, id);
 
             ResultSet results = statement.executeQuery();
@@ -67,6 +64,7 @@ public class ProductDaoJDBC extends ConnectionHandler implements ProductDao {
             String defCurrency = "";
             int categoryId = 0;
             int supplierId = 0;
+            String imageSrc = "";
 
             while (results.next()) {
 
@@ -77,6 +75,7 @@ public class ProductDaoJDBC extends ConnectionHandler implements ProductDao {
                 defCurrency = results.getString("default_currency");
                 categoryId = results.getInt("product_category_id");
                 supplierId = results.getInt("supplier_id");
+                imageSrc = results.getString("image_src");
             }
 
             ProductCategory category = ProductCategoryDaoJDBC.getInstance().find(categoryId);
@@ -84,33 +83,32 @@ public class ProductDaoJDBC extends ConnectionHandler implements ProductDao {
 
             Product found = new Product(prodName, defPrice, defCurrency, prodDesc, category, supplier);
             found.setId(productId);
+            found.setImageSrc(imageSrc);
 
-            statement.closeOnCompletion();
             results.close();
 
             return found;
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
         return null;
     }
 
     @Override
     public void remove(int id) {
-        try {
-            statement = getConn().prepareStatement("DELETE FROM products WHERE id=?;");
+        try (PreparedStatement statement = getConn().prepareStatement("DELETE FROM products WHERE id=?;"))
+        {
             statement.setInt(1, id);
             statement.executeUpdate();
-            statement.close();
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
     }
 
     @Override
     public List<Product> getAll() {
-        try {
-            statement = getConn().prepareStatement("SELECT id FROM products;");
+        try (PreparedStatement statement = getConn().prepareStatement("SELECT id FROM products;"))
+            {
             ResultSet results = statement.executeQuery();
 
             List<Product> products = new ArrayList<>();
@@ -121,13 +119,10 @@ public class ProductDaoJDBC extends ConnectionHandler implements ProductDao {
                 products.add(find(id));
 
             }
-
-            statement.close();
             results.close();
-
             return products;
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
         return null;
     }
@@ -148,13 +143,11 @@ public class ProductDaoJDBC extends ConnectionHandler implements ProductDao {
 
     @Override
     public void removeAll() {
-        try {
-            statement = getConn().prepareStatement("TRUNCATE carts CASCADE ");
+        try (PreparedStatement statement = getConn().prepareStatement("TRUNCATE carts CASCADE "))
+            {
             statement.executeUpdate();
-            statement.close();
-
         } catch (SQLException e) {
-            System.out.println(e);
+            ExceptionOccurred(e);
         }
     }
 }
