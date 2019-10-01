@@ -6,7 +6,8 @@
 
 <div name="store-name" class="navbar">
     <form name="reset-form" action="#" th:action="@{/}" method="post">
-        <button id="reset" type="submit" name="reset" value="0"><img class="logo" src="static/img/page_logo.png" alt="WizardSense"/></button>
+        <button id="reset" type="submit" name="reset" value="0"><img class="logo" src="static/img/page_logo.png"
+                                                                     alt="WizardSense"/></button>
     </form>
     <a th:if="${userID != null}" href="/shopping-cart" style="text-decoration: none">
         <img class="cart-logo" src="/static/img/shopping-cart.png" alt="">
@@ -18,17 +19,36 @@
     </div>
 </div>
 
-<div class="container container-inputs" th:each=" address : ${addresses}">
-    <form th:action="@{/checkout}" method="post">
-    <button type="submit" class="address-card" name="selection" th:value="${address.getId()}">
-        <span th:text="${address.getOrderFields().get('city')}">no value</span>
-        <span th:text="${address.getOrderFields().get('address')}">no value</span>
-    </button>
-    </form>
-</div>
+<div class="container">
 
-<div>
-    <a href="/checkout">Create New</a>
+    <h3>Your Addresses:</h3>
+    <a href="/checkout">Create New Address</a>
+
+    <form th:action="@{/checkout}" method="post">
+        <div th:if="${addresses.size() != 0}" class="container-inputs card-container">
+            <button type="submit" class="address-card" name="selection" th:each=" address : ${addresses}" th:value="${address.getId()}">
+                <div class="floating flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <h4 th:text="${address.getOrderFields().get('city')}">City</h4>
+                            <h4 th:text="${address.getOrderFields().get('zipCode')}">ZipCode</h4>
+                        </div>
+                        <div class="flip-card-back">
+                            <p th:text="${address.getOrderFields().get('name')}">Name</p>
+                            <p th:text="${address.getOrderFields().get('city')}">City</p>
+                            <p th:text="${address.getOrderFields().get('address')}">Address</p>
+                        </div>
+                    </div>
+                </div>
+            </button>
+            </div>
+        </div>
+    </form>
+
+    <div th:unless="${addresses.size() != 0}">
+        <p>You don't have any saved addresses!</p>
+    </div>
+
 </div>
 
 <div th:replace="footer.html :: copy"></div>
