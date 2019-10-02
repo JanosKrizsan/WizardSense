@@ -176,8 +176,8 @@
 }
 
 .magic-select:hover {
-    color: rgba(54, 3, 22, 0.95);
-    text-shadow: 0px 0px 30px rgba(54, 3, 22, 0.95);
+    color: rgba(119, 34, 109, 0.95);
+    text-shadow: 0px 0px 30px rgba(84, 35, 85, 0.95);
     -moz-transition: all 0.2s ease-in;
     -o-transition: all 0.2s ease-in;
     -webkit-transition: all 0.2s ease-in;
@@ -418,4 +418,65 @@
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
+}
+
+body {
+    background-color: white;
+}
+
+.card {
+    background-color: transparent !important;
+    color: black;
+    justify-content: center;
+    border: none;
+}
+
+#checkout-container{
+    background-image: url("/static/img/blank_scroll.png");
+    background-position: center;
+    background-size: cover;
+    width: 997px;
+    height: 1200px;
+    display: flex;
+    flex-flow: column wrap;
+    align-self: center;
+    align-content: center;
+    padding-top: 210px;
+    margin-left: 70px;
+    right: 50%;
+}
+
+#checkout-container p{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 600px;
+}
+
+#checkout-container p:nth-child(0){
+    text-align: left;
+}
+
+#checkout-container p:nth-child(1){
+    text-align: right;
+}
+
+#checkout-submit{
+    width: 438px;
+    height: 90px;
+    background-image: url("/static/img/SealTheDeal.png");
+    background-size: contain;
+    border: 0;
+    background-color: transparent;
+    margin-top: -25px;
+    margin-left: 162px;
+}
+
+#checkout-submit:hover{
+    background-image: url("/static/img/SealTheDealHover.png");
+}
+
+#submit-quill{
+    position: relative;
+    margin-top: -900px;
+    margin-left: 815px;
 }

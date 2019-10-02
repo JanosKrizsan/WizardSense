@@ -22,6 +22,7 @@
 </div>
 
 <div class="container">
+
     <div class="btn-group">
         <button type="button" class="btn btn-secondary dropdown-toggle filtering-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Cast Filtering Spell
@@ -43,7 +44,7 @@
     </div>
 
     <div id="products" class="row">
-        <div class="col col-sm-12 col-md-6 col-lg-4" th:each="prod : ${products}">
+        <div class="col col-sm-12 col-md-6 col-lg-4 row-card" th:each="prod : ${products}">
             <div class="card magic-select">
                 <img src="http://placehold.it/400x250/000/fff" th:attr="src=${prod.getImageSrc()}" alt="" />
                 <div class="card-header">
@@ -65,7 +66,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 <div th:replace="footer.html :: copy"></div>

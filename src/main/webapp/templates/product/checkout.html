@@ -7,47 +7,54 @@
 <div th:replace="logo.html :: copy"></div>
 
 <div class="container container-inputs" th:if="${userID}">
-    <div>
-        <table>
-            <form th:action="@{/pay}" method="post">
+    <div id="checkout-container">
+        <form th:action="@{/pay}" method="post">
 
-                <!-- Billing Data -->
+            <!-- Billing Data -->
 
-                <strong>Buyer's Name</strong>
-                <tr><input name="billingName" th:value="${details.getOrderFields().get('name')}" th:placeholder="'First Name Last Name'" required></tr>
-                <strong>Buyer's Mental BrainBox</strong>
-                <tr><input name="billingEmail" th:value="${details.getOrderFields().get('eMail')}"  th:placeholder="'email@wizardsense.com'" required></tr>
-                <strong>Buyer's Psychic Link </strong>
-                <tr><input name="billingPhone" th:value="${details.getOrderFields().get('phoneNumber')}"  th:placeholder="'+36-000-0000'" required pattern="[\+]\d{2}[\-]\d{3}[\-]\d{4}"></tr>
-                <strong>Country where the Buyer livest</strong>
-                <tr><input name="billingCountry" th:value="${details.getOrderFields().get('country')}"  th:placeholder="'Pabusia'" required></tr>
-                <strong>The City of the Buyer's dwelling</strong>
-                <tr><input name="billingCity" th:value="${details.getOrderFields().get('city')}"  th:placeholder="'Paingbing'" required></tr>
-                <strong>District of the Buyer's</strong>
-                <tr><input name="billingZip" th:value="${details.getOrderFields().get('zipCode')}"  th:placeholder="'0512'" required></tr>
-                <strong>Buyer's quarters</strong>
-                <tr><input name="billingAddress" th:value="${details.getOrderFields().get('address')}"  th:placeholder="'14 Victory Street'" required></tr>
+            <p><strong>Buyer's Name</strong>
+                <input name="billingName" th:value="${details.getOrderFields().get('name')}"
+                       th:placeholder="'First Name Last Name'" required></p>
+            <p><strong>Buyer's Mental BrainBox</strong>
+                <input name="billingEmail" th:value="${details.getOrderFields().get('eMail')}"
+                       th:placeholder="'email@wizardsense.com'" required></p>
+            <p><strong>Buyer's Psychic Link </strong>
+                <input name="billingPhone" th:value="${details.getOrderFields().get('phoneNumber')}"
+                       th:placeholder="'+36-000-0000'" required pattern="[\+]\d{2}[\-]\d{3}[\-]\d{4}"></p>
+            <p><strong>Country where the Buyer livest</strong>
+                <input name="billingCountry" th:value="${details.getOrderFields().get('country')}"
+                       th:placeholder="'Pabusia'"
+                       required></p>
+            <p><strong>The City of the Buyer's dwelling</strong>
+                <input name="billingCity" th:value="${details.getOrderFields().get('city')}"
+                       th:placeholder="'Paingbing'" required></p>
+            <p><strong>District of the Buyer's</strong>
+                <input name="billingZip" th:value="${details.getOrderFields().get('zipCode')}" th:placeholder="'0512'"
+                       required></p>
+            <p><strong>Buyer's quarters</strong>
+                <input name="billingAddress" th:value="${details.getOrderFields().get('address')}"
+                       th:placeholder="'14 Victory Street'" required></p>
 
-                <!--Shipping Data -->
-                <strong>Yer Name</strong>
-                <tr><input name="shippingName" th:value="${details.getOrderFields().get('name')}"  th:placeholder="'First Name Last Name'" required></tr>
-                <strong>Yer Mental BrainBox</strong>
-                <tr><input name="shippingEmail" th:value="${details.getOrderFields().get('eMail')}"  th:placeholder="'email@wizardsense.com'" required></tr>
-                <strong>Yer Psychic Link </strong>
-                <tr><input name="shippingPhone" th:value="${details.getOrderFields().get('phoneNumber')}"  th:placeholder="'+36-000-0000'" required pattern="[\+]\d{2}[\-]\d{3}[\-]\d{4}"></tr>
-                <strong>Country where ye livest</strong>
-                <tr><input name="shippingCountry" th:value="${details.getOrderFields().get('country')}"  th:placeholder="'Pabusia'" required></tr>
-                <strong>The City of thine dwelling</strong>
-                <tr><input name="shippingCity" th:value="${details.getOrderFields().get('city')}"  th:placeholder="'Paingbing'" required></tr>
-                <strong>District of Yours</strong>
-                <tr><input name="shippingZip" th:value="${details.getOrderFields().get('zipCode')}"  th:placeholder="'0512'" required></tr>
-                <strong>Thine quarters</strong>
-                <tr><input name="shippingAddress" th:value="${details.getOrderFields().get('address')}"  th:placeholder="'14 Victory Street'" required></tr>
-                <input name="addressID" hidden="hidden" th:value="${addressID}">
-                <button class="btn btn-success" type="submit" th:text="${'Pay thine gold'}"></button>
-            </form>
-        </table>
+            <!--Shipping Data -->
+            <p><strong>Country where ye livest</strong>
+                <tr><input name="shippingCountry" th:value="${details.getOrderFields().get('country')}"
+                           th:placeholder="'Pabusia'"
+                           required></tr>
+            </p>
+            <p><strong>The City of thine dwelling</strong>
+                <input name="shippingCity" th:value="${details.getOrderFields().get('city')}"
+                       th:placeholder="'Paingbing'" required></p>
+            <p><strong>District of Yours</strong>
+                <input name="shippingZip" th:value="${details.getOrderFields().get('zipCode')}" th:placeholder="'0512'"
+                       required></p>
+            <p><strong>Thine quarters</strong>
+                <input name="shippingAddress" th:value="${details.getOrderFields().get('address')}"
+                       th:placeholder="'14 Victory Street'" required></p>
+            <input name="addressID" hidden="hidden" th:value="${addressID}">
+            <button id="checkout-submit" type="submit"></button>
+        </form>
     </div>
+    <img id="submit-quill" class="floating" src="/static/img/submit_quill.png">
 </div>
 
 <div th:replace="footer.html :: copy"></div>
