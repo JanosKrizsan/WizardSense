@@ -114,10 +114,6 @@ public class ProductController extends HttpServlet {
                         cartDataStore.add(newCart);
                     } else {
 
-                        //TODO what is this? shows as unused
-                        Set myset = cartToCheck.getProductsInCart();
-                        boolean mybool = cartToCheck.getProductsInCart().contains(product);
-
                         if(cartDataStore.getCartProductQuantity(cartToCheck, productId) >= 1){
                             cartDataStore.increaseOrDecreaseQuantity(cartToCheck, productId, true);
                         } else {
