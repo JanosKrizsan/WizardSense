@@ -31,7 +31,7 @@ public class AddressController extends HttpServlet {
         HttpSession session = req.getSession();
 
         try {
-            handler.CheckErrors(session, resp);
+            handler.checkUserLoggedIn(session, resp);
             Integer userID = (Integer) session.getAttribute("userID");
             String userName = (String) session.getAttribute("userName");
 
@@ -51,7 +51,7 @@ public class AddressController extends HttpServlet {
             context.setVariable("userName", userName);
             engine.process("product/address_list.html", context, resp.getWriter());
         } catch (IOException | SQLException e) {
-            handler.ExceptionOccurred(session, e);
+            handler.ExceptionOccurred(resp, session, e);
         }
     }
 }

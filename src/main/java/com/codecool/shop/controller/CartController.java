@@ -59,7 +59,7 @@ public class CartController extends HttpServlet {
         HttpSession session = req.getSession();
 
         try {
-            handler.CheckErrors(session, resp);
+            handler.checkUserLoggedIn(session, resp);
 
             if (headers.contains("increase") || headers.contains("decrease")) {
                 addOrRemoveProduct(req);
@@ -82,7 +82,7 @@ public class CartController extends HttpServlet {
 
             engine.process("product/shopping-cart.html", context, resp.getWriter());
         } catch (SQLException | IOException e) {
-            handler.ExceptionOccurred(session, e);
+            handler.ExceptionOccurred(resp, session, e);
         }
     }
 

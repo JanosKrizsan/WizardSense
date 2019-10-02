@@ -6,7 +6,6 @@ import com.codecool.shop.dao.implementation.JDBC.UserAddressDaoJDBC;
 import com.codecool.shop.model.UserAddress;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
-
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +31,7 @@ public class CheckoutController extends HttpServlet {
         HttpSession session = req.getSession();
 
         try {
-            handler.CheckErrors(session, resp);
+            handler.checkUserLoggedIn(session, resp);
 
             int userId = (int) session.getAttribute("userID");
             String userName = (String) session.getAttribute("userName");
@@ -57,7 +56,7 @@ public class CheckoutController extends HttpServlet {
 
             engine.process("product/checkout.html", context, resp.getWriter());
         } catch (SQLException | IOException e) {
-            handler.ExceptionOccurred(session, e);
+            handler.ExceptionOccurred(resp, session, e);
         }
     }
 

@@ -92,12 +92,10 @@ public class OrderDaoJDBC extends ConnectionHandler implements GenericQueriesDao
     }
 
     @Override
-    public void removeAll() {
-        try (PreparedStatement statement = getConn().prepareStatement("TRUNCATE orders CASCADE ")) {
+    public void removeAll() throws SQLException {
+        PreparedStatement statement = getConn().prepareStatement("TRUNCATE orders CASCADE ");
             statement.executeUpdate();
-        } catch (SQLException e) {
-            ExceptionOccurred(e);
-        }
+            statement.close();
     }
 
     public void setStatus(String status, Order order) throws SQLException {

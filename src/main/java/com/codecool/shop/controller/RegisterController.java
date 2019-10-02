@@ -32,7 +32,7 @@ public class RegisterController extends HttpServlet {
         try {
             engine.process("product/register.html", context, resp.getWriter());
         } catch (IOException e) {
-            handler.ExceptionOccurred(session, e);
+            handler.ExceptionOccurred(resp, session, e);
         }
     }
 
@@ -57,7 +57,7 @@ public class RegisterController extends HttpServlet {
                 resp.sendRedirect("/");
             }
         } catch (SQLException | IOException e) {
-            handler.ExceptionOccurred(session, e);
+            handler.ExceptionOccurred(resp, session, e);
         }
 
     }

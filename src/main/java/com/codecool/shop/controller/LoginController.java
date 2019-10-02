@@ -7,8 +7,6 @@ import com.codecool.shop.dao.implementation.JDBC.*;
 import com.codecool.shop.model.User;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
-
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +35,7 @@ public class LoginController extends HttpServlet {
         try {
             engine.process("product/login.html", context, resp.getWriter());
         } catch (IOException e) {
-            handler.ExceptionOccurred(session, e);
+            handler.ExceptionOccurred(resp, session, e);
         }
     }
 
@@ -60,7 +58,7 @@ public class LoginController extends HttpServlet {
                 resp.sendRedirect("/");
             }
         } catch (IOException | SQLException e) {
-            handler.ExceptionOccurred(session, e);
+            handler.ExceptionOccurred(resp, session, e);
         }
     }
 }

@@ -86,7 +86,7 @@ public class ProductController extends HttpServlet {
 
             engine.process("product/index.html", context, resp.getWriter());
         } catch (IOException | SQLException e) {
-            handler.ExceptionOccurred(session, e);
+            handler.ExceptionOccurred(resp, session, e);
         }
     }
 
@@ -129,7 +129,7 @@ public class ProductController extends HttpServlet {
             doGet(req, resp);
 
         } catch (NumberFormatException | SQLException e) {
-            handler.ExceptionOccurred(session, e);
+            handler.ExceptionOccurred(resp, session, e);
         }
     }
 

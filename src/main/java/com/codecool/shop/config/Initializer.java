@@ -10,7 +10,6 @@ import javax.servlet.annotation.WebListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 @WebListener
 public class Initializer implements ServletContextListener {
@@ -36,7 +35,7 @@ public class Initializer implements ServletContextListener {
                 fillMeUp();
             }
         } catch (SQLException e) {
-            handler.ExceptionOccurred(e);
+            ErrorHandling.ExceptionOccurred(e);
         }
 
 
@@ -103,7 +102,8 @@ public class Initializer implements ServletContextListener {
                 productDataStore.add(prod);
             }
         } catch (SQLException e) {
-            handler.ExceptionOccurred(e);
+            ErrorHandling.LOGGER.info("Initialization failed!");
+            ErrorHandling.ExceptionOccurred(e);
         }
 
         ErrorHandling.LOGGER.info("Initialization all done, ready to go!");

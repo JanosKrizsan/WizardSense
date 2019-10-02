@@ -49,11 +49,11 @@ public abstract class ConnectionHandler extends ErrorHandling {
 
 
         } catch (ClassNotFoundException | IOException e) {
-            System.out.println(e);
+            ErrorHandling.ExceptionOccurred(e);
         }
 
-
         dataSource.getConnection().close();
+
 
         return dataSource;
     }

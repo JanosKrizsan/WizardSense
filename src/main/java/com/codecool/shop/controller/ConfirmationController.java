@@ -29,7 +29,7 @@ public class ConfirmationController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = req.getSession();
         try {
-            handler.CheckErrors(session, resp);
+            handler.checkUserLoggedIn(session, resp);
 
             int userID = (int) session.getAttribute("userID");
             String userName = (String) session.getAttribute("userName");
@@ -53,7 +53,7 @@ public class ConfirmationController extends HttpServlet {
 
             engine.process("product/confirmation.html", context, resp.getWriter());
         } catch (SQLException | IOException e) {
-            handler.ExceptionOccurred(session, e);
+            handler.ExceptionOccurred(resp, session, e);
         }
 
     }

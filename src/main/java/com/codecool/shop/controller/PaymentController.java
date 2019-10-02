@@ -40,7 +40,7 @@ public class PaymentController extends HttpServlet {
         HttpSession session = req.getSession();
 
         try {
-            handler.CheckErrors(session, resp);
+            handler.checkUserLoggedIn(session, resp);
 
             int userID = (int) session.getAttribute("userID");
 
@@ -69,7 +69,7 @@ public class PaymentController extends HttpServlet {
 
             engine.process("product/pay.html", context, resp.getWriter());
         } catch (IOException | SQLException e) {
-            handler.ExceptionOccurred(session, e);
+            handler.ExceptionOccurred(resp, session, e);
         }
     }
 
