@@ -1,5 +1,6 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.config.ErrorHandling;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.config.Utils;
 import com.codecool.shop.dao.implementation.JDBC.CartDaoJDBC;
@@ -13,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-
 import java.util.*;
 
 
@@ -21,12 +21,14 @@ import java.util.*;
 public class CartController extends HttpServlet {
     private CartDaoJDBC cartDataStore = CartDaoJDBC.getInstance();
     private UserDaoJDBC userDataStore = UserDaoJDBC.getInstance();
+    private ErrorHandling handler = new ErrorHandling();
 
 
     private void addOrRemoveProduct(HttpServletRequest req){
         List<String> headers = Collections.list(req.getParameterNames());
 
         HttpSession session = req.getSession();
+
 
         int userId = (int)session.getAttribute("userID");
 
@@ -54,9 +56,8 @@ public class CartController extends HttpServlet {
         List<String> headers = Collections.list(req.getParameterNames());
 
         HttpSession session = req.getSession();
-        if (session.getAttribute("userID") == null) {
-            resp.sendError(401, "Unauthorized access!");
-        }
+
+        handler.CheckErrors(session, resp);
 
         if (headers.contains("increase") || headers.contains("decrease")) {
             addOrRemoveProduct(req);

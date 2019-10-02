@@ -1,5 +1,6 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.config.ErrorHandling;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.implementation.JDBC.CartDaoJDBC;
 import com.codecool.shop.dao.implementation.JDBC.UserAddressDaoJDBC;
@@ -7,7 +8,6 @@ import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.UserAddress;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
-
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +22,8 @@ public class AddressController extends HttpServlet {
 
     private UserAddressDaoJDBC addressDataStore = UserAddressDaoJDBC.getInstance();
     private CartDaoJDBC cartDataStore = CartDaoJDBC.getInstance();
+    private ErrorHandling handler = new ErrorHandling();
+
 
 
     @Override
@@ -29,11 +31,12 @@ public class AddressController extends HttpServlet {
 
         HttpSession session = req.getSession();
 
+        handler.CheckErrors(session, resp);
+
         Integer userID = (Integer)session.getAttribute("userID");
         String userName = (String)session.getAttribute("userName");
 
         List<UserAddress> addressList = addressDataStore.getAddressByUserId(userID);
-        Cart cart = cartDataStore.getCartByUserId(userID);
 
         Integer cartSize = cartDataStore.getCartByUserId(userID).getSumOfProducts();
 

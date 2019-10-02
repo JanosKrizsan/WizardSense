@@ -1,5 +1,6 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.config.ErrorHandling;
 import com.codecool.shop.dao.GenericQueriesDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.JDBC.*;
@@ -113,6 +114,7 @@ public class ProductController extends HttpServlet {
                         cartDataStore.add(newCart);
                     } else {
 
+                        //TODO what is this? shows as unused
                         Set myset = cartToCheck.getProductsInCart();
                         boolean mybool = cartToCheck.getProductsInCart().contains(product);
 
@@ -125,7 +127,7 @@ public class ProductController extends HttpServlet {
 
                 }
             } catch (NumberFormatException e) {
-                System.out.println(e);
+                new ErrorHandling().ExceptionOccurred(e);
             }
         }
 

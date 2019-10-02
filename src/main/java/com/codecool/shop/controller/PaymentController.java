@@ -1,5 +1,6 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.config.ErrorHandling;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.config.Utils;
 import com.codecool.shop.dao.implementation.JDBC.CartDaoJDBC;
@@ -12,14 +13,12 @@ import com.codecool.shop.model.User;
 import com.codecool.shop.model.UserAddress;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
-
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.lang.reflect.Parameter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -32,13 +31,14 @@ public class PaymentController extends HttpServlet {
     private OrderDaoJDBC orderDataStore = OrderDaoJDBC.getInstance();
     private CartDaoJDBC cartDataStore = CartDaoJDBC.getInstance();
     private UserDaoJDBC userDataStore = UserDaoJDBC.getInstance();
+    private ErrorHandling handler = new ErrorHandling();
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession session = req.getSession();
-        if (session.getAttribute("userID") == null) {
-            resp.sendError(401, "Unauthorized access!");
-        }
+
+        handler.CheckErrors(session, resp);
 
         int userID = (int) session.getAttribute("userID");
 

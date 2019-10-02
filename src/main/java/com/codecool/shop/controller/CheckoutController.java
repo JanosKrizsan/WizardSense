@@ -1,10 +1,7 @@
 package com.codecool.shop.controller;
+import com.codecool.shop.config.ErrorHandling;
 import com.codecool.shop.config.TemplateEngineUtil;
-import com.codecool.shop.dao.implementation.JDBC.CartDaoJDBC;
-import com.codecool.shop.dao.implementation.JDBC.OrderDaoJDBC;
 import com.codecool.shop.dao.implementation.JDBC.UserAddressDaoJDBC;
-import com.codecool.shop.dao.implementation.JDBC.UserDaoJDBC;
-import com.codecool.shop.model.Order;
 import com.codecool.shop.model.UserAddress;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -23,6 +20,8 @@ import java.util.List;
 public class CheckoutController extends HttpServlet {
 
     private static UserAddressDaoJDBC addressDataStore = UserAddressDaoJDBC.getInstance();
+    private ErrorHandling handler = new ErrorHandling();
+
 
 
 
@@ -30,9 +29,8 @@ public class CheckoutController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         List<String> headers = Collections.list(req.getParameterNames());
         HttpSession session = req.getSession();
-        if (session.getAttribute("userID") == null) {
-            resp.sendError(401, "Unauthorized access!");
-        }
+
+        handler.CheckErrors(session, resp);
 
         int userId = (int) session.getAttribute("userID");
         String userName = (String) session.getAttribute("userName");
