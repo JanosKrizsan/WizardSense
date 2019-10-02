@@ -26,7 +26,7 @@ public class LogoutController extends HttpServlet {
 
             resp.sendRedirect("/");
         } catch (IOException e) {
-            handler.ExceptionOccurred(e);
+            handler.ExceptionOccurred(session, e);
         }
     }
 

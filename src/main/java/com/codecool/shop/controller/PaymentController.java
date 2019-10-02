@@ -69,7 +69,7 @@ public class PaymentController extends HttpServlet {
 
             engine.process("product/pay.html", context, resp.getWriter());
         } catch (IOException | SQLException e) {
-            handler.ExceptionOccurred(e);
+            handler.ExceptionOccurred(session, e);
         }
     }
 

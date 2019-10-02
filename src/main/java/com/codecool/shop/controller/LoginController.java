@@ -25,6 +25,8 @@ public class LoginController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+        HttpSession session = req.getSession();
+
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
 
@@ -35,7 +37,7 @@ public class LoginController extends HttpServlet {
         try {
             engine.process("product/login.html", context, resp.getWriter());
         } catch (IOException e) {
-            handler.ExceptionOccurred(e);
+            handler.ExceptionOccurred(session, e);
         }
     }
 
@@ -58,7 +60,7 @@ public class LoginController extends HttpServlet {
                 resp.sendRedirect("/");
             }
         } catch (IOException | SQLException e) {
-            handler.ExceptionOccurred(e);
+            handler.ExceptionOccurred(session, e);
         }
     }
 }

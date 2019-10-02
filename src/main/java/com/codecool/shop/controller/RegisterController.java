@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -21,6 +22,8 @@ public class RegisterController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+        HttpSession session = req.getSession();
+
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
 
@@ -29,13 +32,14 @@ public class RegisterController extends HttpServlet {
         try {
             engine.process("product/register.html", context, resp.getWriter());
         } catch (IOException e) {
-            handler.ExceptionOccurred(e);
+            handler.ExceptionOccurred(session, e);
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         UserDaoJDBC userDataStore = UserDaoJDBC.getInstance();
+        HttpSession session = req.getSession();
 
         String username = req.getParameter("username");
         String password = req.getParameter("password");
@@ -53,7 +57,7 @@ public class RegisterController extends HttpServlet {
                 resp.sendRedirect("/");
             }
         } catch (SQLException | IOException e) {
-            handler.ExceptionOccurred(e);
+            handler.ExceptionOccurred(session, e);
         }
 
     }

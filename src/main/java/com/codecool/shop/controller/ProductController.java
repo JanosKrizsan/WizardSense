@@ -86,7 +86,7 @@ public class ProductController extends HttpServlet {
 
             engine.process("product/index.html", context, resp.getWriter());
         } catch (IOException | SQLException e) {
-            handler.ExceptionOccurred(e);
+            handler.ExceptionOccurred(session, e);
         }
     }
 
@@ -94,9 +94,10 @@ public class ProductController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
 
         List<String> headers = Collections.list(req.getParameterNames());
+        HttpSession session = req.getSession();
+
         try {
             if (headers.contains("product")) {
-                HttpSession session = req.getSession();
 
                 int userId = (int) session.getAttribute("userID");
                 User user = userDataStore.find(userId);
@@ -123,13 +124,12 @@ public class ProductController extends HttpServlet {
                             cartDataStore.add(newCart);
                         }
                     }
-
                 }
             }
             doGet(req, resp);
 
         } catch (NumberFormatException | SQLException e) {
-            handler.ExceptionOccurred(e);
+            handler.ExceptionOccurred(session, e);
         }
     }
 

@@ -53,7 +53,7 @@ public class ConfirmationController extends HttpServlet {
 
             engine.process("product/confirmation.html", context, resp.getWriter());
         } catch (SQLException | IOException e) {
-            handler.ExceptionOccurred(e);
+            handler.ExceptionOccurred(session, e);
         }
 
     }

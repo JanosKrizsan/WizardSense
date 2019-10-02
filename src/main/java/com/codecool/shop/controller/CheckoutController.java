@@ -57,7 +57,7 @@ public class CheckoutController extends HttpServlet {
 
             engine.process("product/checkout.html", context, resp.getWriter());
         } catch (SQLException | IOException e) {
-            handler.ExceptionOccurred(e);
+            handler.ExceptionOccurred(session, e);
         }
     }
 
