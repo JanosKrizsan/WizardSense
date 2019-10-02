@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet(urlPatterns = {"/confirmation"})
 public class ConfirmationController extends HttpServlet {
@@ -25,38 +26,40 @@ public class ConfirmationController extends HttpServlet {
     private ErrorHandling handler = new ErrorHandling();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = req.getSession();
+        try {
+            handler.CheckErrors(session, resp);
 
-        handler.CheckErrors(session, resp);
+            int userID = (int) session.getAttribute("userID");
+            String userName = (String) session.getAttribute("userName");
 
-        int userID = (int) session.getAttribute("userID");
-        String userName = (String) session.getAttribute("userName");
+            TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
+            WebContext context = new WebContext(req, resp, req.getServletContext());
 
-        TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
-        WebContext context = new WebContext(req, resp, req.getServletContext());
+            Cart cart = cartDataStore.getCartByUserId(userID);
+            context.setVariable("totalPaid", Utils.getTotalSum(cart));
+            context.setVariable("cart", cart);
+            context.setVariable("userID", userID);
+            context.setVariable("userName", userName);
 
-        Cart cart = cartDataStore.getCartByUserId(userID);
-        context.setVariable("totalPaid", Utils.getTotalSum(cart));
-        context.setVariable("cart", cart);
-        context.setVariable("userID", userID);
-        context.setVariable("userName", userName);
+            Order order = orderDataStore.find(cart.getId());
+            orderDataStore.setStatus("complete", order);
+            cartDataStore.remove(cart.getId());
 
-        Order order = orderDataStore.find(cart.getId());
-        orderDataStore.setStatus("complete", order);
-        cartDataStore.remove(cart.getId());
+            int addressLocation = addressDataStore.getAddressByUserId(userID).size() - 1;
+            String emailAddress = addressDataStore.getAddressByUserId(userID).get(addressLocation).getOrderFields().get("eMail");
+            Utils.sendEmail(emailAddress);
 
-        int addressLocation = addressDataStore.getAddressByUserId(userID).size() -1;
-        String emailAddress = addressDataStore.getAddressByUserId(userID).get(addressLocation).getOrderFields().get("eMail");
-        Utils.sendEmail(emailAddress);
-
-        engine.process("product/confirmation.html", context, resp.getWriter());
-
+            engine.process("product/confirmation.html", context, resp.getWriter());
+        } catch (SQLException | IOException e) {
+            handler.ExceptionOccurred(e);
+        }
 
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         doGet(req, resp);
     }
 }

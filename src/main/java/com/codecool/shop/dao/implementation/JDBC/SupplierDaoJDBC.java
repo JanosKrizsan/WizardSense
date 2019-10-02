@@ -24,82 +24,71 @@ public class SupplierDaoJDBC extends ConnectionHandler implements GenericQueries
     }
 
     @Override
-    public void add(Supplier supplier) {
-        try (PreparedStatement statement = getConn().prepareStatement("INSERT INTO suppliers (name, description) VALUES  (?, ?) RETURNING id;")) {
-            statement.setString(2, supplier.getDescription());
-            statement.setString(1, supplier.getName());
-            ResultSet result = statement.executeQuery();
-            int cartId = supplier.getId();
-            while (result.next()) {
-                cartId = result.getInt("id");
-            }
-            supplier.setId(cartId);
-
-        } catch (SQLException e) {
-            ExceptionOccurred(e);
+    public void add(Supplier supplier) throws SQLException {
+        PreparedStatement statement = getConn().prepareStatement("INSERT INTO suppliers (name, description) VALUES  (?, ?) RETURNING id;");
+        statement.setString(2, supplier.getDescription());
+        statement.setString(1, supplier.getName());
+        ResultSet result = statement.executeQuery();
+        int cartId = supplier.getId();
+        while (result.next()) {
+            cartId = result.getInt("id");
         }
+        supplier.setId(cartId);
+
+        statement.close();
     }
 
     @Override
-    public Supplier find(int id) {
-        Supplier supplier = null;
-        try (PreparedStatement statement = getConn().prepareStatement("SELECT * FROM suppliers WHERE id = ?;")) {
-            statement.setInt(1, id);
+    public Supplier find(int id) throws SQLException {
+        Supplier supplier;
+        PreparedStatement statement = getConn().prepareStatement("SELECT * FROM suppliers WHERE id = ?;");
+        statement.setInt(1, id);
 
-            ResultSet results = statement.executeQuery();
+        ResultSet results = statement.executeQuery();
 
-            String name = "";
-            String description = "";
+        String name = "";
+        String description = "";
 
-            while (results.next()) {
-                name = results.getString("name");
-                description = results.getString("description");
-            }
-
-            supplier = new Supplier(name, description);
-            supplier.setId(id);
-
-        } catch (SQLException e) {
-            ExceptionOccurred(e);
+        while (results.next()) {
+            name = results.getString("name");
+            description = results.getString("description");
         }
+
+        supplier = new Supplier(name, description);
+        supplier.setId(id);
+
+        statement.close();
         return supplier;
     }
 
     @Override
-    public void remove(int id) {
-        try (PreparedStatement statement = getConn().prepareStatement("DELETE FROM suppliers WHERE id=?;")) {
-            statement.setInt(1, id);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            ExceptionOccurred(e);
-        }
+    public void remove(int id) throws SQLException {
+        PreparedStatement statement = getConn().prepareStatement("DELETE FROM suppliers WHERE id=?;");
+        statement.setInt(1, id);
+        statement.executeUpdate();
+        statement.close();
     }
 
     @Override
-    public List<Supplier> getAll() {
+    public List<Supplier> getAll() throws SQLException {
         List<Supplier> suppliers = new ArrayList<>();
-        try (PreparedStatement statement = getConn().prepareStatement("SELECT id FROM suppliers;")) {
-            ResultSet results = statement.executeQuery();
+        PreparedStatement statement = getConn().prepareStatement("SELECT id FROM suppliers;");
+        ResultSet results = statement.executeQuery();
 
-            while (results.next()) {
-                int id = results.getInt("id");
-                suppliers.add(find(id));
-            }
-
-            results.close();
-            return suppliers;
-        } catch (SQLException e) {
-            ExceptionOccurred(e);
+        while (results.next()) {
+            int id = results.getInt("id");
+            suppliers.add(find(id));
         }
+
+        results.close();
+        statement.close();
         return suppliers;
     }
 
     @Override
-    public void removeAll() {
-        try (PreparedStatement statement = getConn().prepareStatement("TRUNCATE suppliers CASCADE ")) {
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            ExceptionOccurred(e);
-        }
+    public void removeAll() throws SQLException {
+        PreparedStatement statement = getConn().prepareStatement("TRUNCATE suppliers CASCADE ");
+        statement.executeUpdate();
+        statement.close();
     }
 }

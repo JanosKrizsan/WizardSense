@@ -7,6 +7,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.sql.SQLException;
 import java.util.Properties;
 
 public final class Utils {
@@ -31,7 +32,7 @@ public final class Utils {
         return false;
     }
 
-    public static float getTotalSum(Cart cart) {
+    public static float getTotalSum(Cart cart) throws SQLException {
         float sum = 0;
 
         for (Product product : cart.getProductsInCart()) {

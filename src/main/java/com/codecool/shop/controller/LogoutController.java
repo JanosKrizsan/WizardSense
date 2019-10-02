@@ -16,14 +16,18 @@ public class LogoutController extends HttpServlet {
 
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = req.getSession();
-        handler.CheckErrors(session, resp);
+        try {
+            handler.CheckErrors(session, resp);
 
-        req.getSession().removeAttribute("userName");
-        req.getSession().removeAttribute("userID");
+            req.getSession().removeAttribute("userName");
+            req.getSession().removeAttribute("userID");
 
-        resp.sendRedirect("/");
+            resp.sendRedirect("/");
+        } catch (IOException e) {
+            handler.ExceptionOccurred(e);
+        }
     }
 
 

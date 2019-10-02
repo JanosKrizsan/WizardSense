@@ -1,6 +1,8 @@
 package com.codecool.shop.model;
 
 import com.codecool.shop.dao.implementation.JDBC.CartDaoJDBC;
+
+import java.sql.SQLException;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -43,7 +45,7 @@ public class Cart {
         }
     }
 
-    public Integer getQuantityOfProduct(Product productToSearch) {
+    public Integer getQuantityOfProduct(Product productToSearch) throws SQLException {
         return (CartDaoJDBC.getInstance().getCartProductQuantity(this, productToSearch.getId()));
     }
 
