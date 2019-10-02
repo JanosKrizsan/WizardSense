@@ -4,14 +4,9 @@ import com.codecool.shop.dao.implementation.JDBC.CartDaoJDBC;
 import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.Product;
 import org.mindrot.jbcrypt.BCrypt;
-
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Properties;
 
 public final class Utils {
