@@ -4,6 +4,7 @@ import com.codecool.shop.dao.GenericQueriesDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.JDBC.*;
 import com.codecool.shop.model.*;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
@@ -247,19 +248,19 @@ public class Initializer implements ServletContextListener {
             WandOfOrcus.setImageSrc("https://i.imgur.com/Vv2eR2R.png");
             productList.add(WandOfOrcus);
 
-            Product WindVane = new Product("Windvane", 88, "USD","A spear, also can open portals to other realms.",weapon, adventurers);
+            Product WindVane = new Product("Windvane", 88, "USD", "A spear, also can open portals to other realms.", weapon, adventurers);
             WindVane.setImageSrc("https://i.imgur.com/ILPUuJn.png");
             productList.add(WindVane);
 
-            Product ImmovableRod = new Product("Immovable Rod", 255, "USD","With the push of a button, you can make this rod immovable, defying even physical laws.", rod, rodolpho);
+            Product ImmovableRod = new Product("Immovable Rod", 255, "USD", "With the push of a button, you can make this rod immovable, defying even physical laws.", rod, rodolpho);
             ImmovableRod.setImageSrc("https://i.imgur.com/3W2HbA2.png");
             productList.add(ImmovableRod);
 
-            Product RodOfRulership = new Product("Rod of Rulership", 192, "USD","Enables the wielder to impose his/her will on others.",rod, rodolpho);
+            Product RodOfRulership = new Product("Rod of Rulership", 192, "USD", "Enables the wielder to impose his/her will on others.", rod, rodolpho);
             RodOfRulership.setImageSrc("https://i.imgur.com/RFbKq2p.png");
             productList.add(RodOfRulership);
 
-            Product ShieldOfTheHiddenLord = new Product("Shield of The Hidden Lord", 399, "USD","Of gems and mithril. The shield may or may not speak.",armor, adventurers);
+            Product ShieldOfTheHiddenLord = new Product("Shield of The Hidden Lord", 399, "USD", "Of gems and mithril. The shield may or may not speak.", armor, adventurers);
             ShieldOfTheHiddenLord.setImageSrc("https://i.imgur.com/Vs2NyHj.png");
             productList.add(ShieldOfTheHiddenLord);
 
