@@ -1,15 +1,15 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.config.ErrorHandler;
+import com.codecool.shop.config.TemplateEngineUtil;
+import com.codecool.shop.config.Utils;
 import com.codecool.shop.dao.implementation.JDBC.CartDaoJDBC;
 import com.codecool.shop.dao.implementation.JDBC.OrderDaoJDBC;
 import com.codecool.shop.dao.implementation.JDBC.UserAddressDaoJDBC;
 import com.codecool.shop.dao.implementation.JDBC.UserDaoJDBC;
-import com.codecool.shop.model.Cart;
-import com.codecool.shop.model.Order;
-import com.codecool.shop.model.User;
-import com.codecool.shop.model.UserAddress;
-
+import com.codecool.shop.model.*;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,9 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 
 @WebServlet(urlPatterns = {"/pay"})
@@ -30,11 +28,13 @@ public class PaymentController extends HttpServlet {
     private CartDaoJDBC cartDataStore = CartDaoJDBC.getInstance();
     private UserDaoJDBC userDataStore = UserDaoJDBC.getInstance();
     private ErrorHandler handler = new ErrorHandler();
-    private UserAddressDaoJDBC userAddressDataStore = UserAddressDaoJDBC.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = req.getSession();
+
+        TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
+        WebContext context = new WebContext(req, resp, req.getServletContext());
 
         try {
             handler.checkUserLoggedIn(session, resp);
@@ -50,15 +50,23 @@ public class PaymentController extends HttpServlet {
             }
 
             int addressId = Integer.parseInt(req.getParameter("addressID"));
-
+            String userName = (String) session.getAttribute("userName");
 
             User user = userDataStore.find(userID);
             Cart cart = cartDataStore.getCartByUserId(userID);
             UserAddress address = addressDataStore.find(addressId);
-        orderDataStore.add(new Order(user, cart, address, "in progress"));
+            orderDataStore.add(new Order(user, cart, address, "in progress"));
+            Order order = orderDataStore.find(cart.getId());
 
 
-        resp.sendRedirect("/confirmation");
+            context.setVariable("userID", userID);
+            context.setVariable("userName", userName);
+            context.setVariable("totalPaid", Utils.getTotalSum(cart));
+            context.setVariable("products", order.getCart().getProductsInCart());
+            context.setVariable("address", order.getAddress().getOrderFields());
+            context.setVariable("cart", order.getCart());
+
+            engine.process("product/pay.html", context, resp.getWriter());
         } catch (IOException | SQLException e) {
             handler.ExceptionOccurred(resp, session, e);
         }
