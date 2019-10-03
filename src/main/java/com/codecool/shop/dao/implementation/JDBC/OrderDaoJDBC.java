@@ -106,7 +106,7 @@ public class OrderDaoJDBC extends ConnectionHandler implements GenericQueriesDao
     }
 
     public void setStatus(String status, Order order) throws SQLException {
-        PreparedStatement statement = getConn().prepareStatement("UPDATE orders SET cart_id = 0, status = ? WHERE id=? AND cart_id=? AND user_id=? AND address_id=?;");
+        PreparedStatement statement = getConn().prepareStatement("UPDATE orders SET cart_id = CAST(NULL AS INTEGER), status = ? WHERE id=? AND cart_id=? AND user_id=? AND address_id=?;");
         statement.setString(1, status);
         statement.setInt(2, order.getId());
         statement.setInt(3, order.getCart().getId());

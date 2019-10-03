@@ -46,8 +46,8 @@ public class ConfirmationController extends HttpServlet {
 
             Cart cart = cartDataStore.getCartByUserId(userID);
             if(req.getParameter("wipe").equals("do")) {
-                cartDataStore.remove(cart.getId());
                 orderDataStore.setStatus("complete", orderDataStore.find(cart.getId()));
+                cartDataStore.remove(cart.getId());
             }
 
             String addressEmail = addressDataStore.find(addressID).getOrderFields().get("eMail");

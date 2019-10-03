@@ -59,8 +59,7 @@ public class PaymentController extends HttpServlet {
             User user = userDataStore.find(userID);
             Cart cart = cartDataStore.getCartByUserId(userID);
 
-            if (orderDataStore.find(cart.getId()) == null) {
-
+            if (orderDataStore.find(cart.getId()).getId() == 0) {
                 Order newOrder = new Order(user, cart, address, "in progress");
                 orderDataStore.add(newOrder);
             }

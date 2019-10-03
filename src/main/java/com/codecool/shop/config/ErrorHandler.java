@@ -11,6 +11,7 @@ public class ErrorHandler {
     public static final Logger LOGGER = Logger.getLogger(ErrorHandler.class.getName());
 
     public void ExceptionOccurred(HttpServletResponse resp, HttpSession sess, Exception e) {
+
         if (e instanceof SQLException) {
             LOGGER.warning(String.format("SQLException occurred: %s", e));
             sess.setAttribute("error", "SQLException");
@@ -31,7 +32,7 @@ public class ErrorHandler {
     }
 
     public static void ExceptionOccurred(Exception e) {
-            LOGGER.severe(String.format("Internal server error occurred: %s", e));
+        LOGGER.severe(String.format("Internal server error occurred: %s", e));
     }
 
     private void respondToExceptions(HttpSession session, HttpServletResponse resp) {
@@ -41,26 +42,48 @@ public class ErrorHandler {
             if (session.getAttribute("userID") == null) {
                 errorMessage = HttpServletResponse.SC_UNAUTHORIZED;
                 resp.sendError(errorMessage, "Unauthorized access, please Register or Log into your profile.");
-            } else if (session.getAttribute("error").equals("SQLException")) {
-                errorMessage = HttpServletResponse.SC_NO_CONTENT;
-                resp.sendError(errorMessage, "Database error occurred, please contact the Arch Wizard!");
-            } else if (session.getAttribute("error").equals("IOException")) {
-                errorMessage = HttpServletResponse.SC_NOT_FOUND;
-                resp.sendError(errorMessage, "Resource not found, please contact your Admin Wizard.");
-            } else if (session.getAttribute("error").equals("IllegalArgumentException")) {
-                errorMessage = 418;
-                resp.sendError(errorMessage, "Inappropriate argument passed, please contact your Wizard Mod to brew your coffee.");
-            } else if (session.getAttribute("error").equals("InterruptedException")) {
-                errorMessage = HttpServletResponse.SC_GATEWAY_TIMEOUT;
-                resp.sendError(errorMessage, "Time out, please try again.");
-            } else if (session.getAttribute("error").equals("UnknownException")) {
-                errorMessage = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-                resp.sendError(errorMessage, "Unknown error occurred, please contact the Arch Wizard!");
+
+            } else {
+                if (session.getAttribute("error") != null) {
+                    switch (session.getAttribute("error").toString()) {
+                        case "SQLException":
+                            errorMessage = HttpServletResponse.SC_NO_CONTENT;
+                            resp.sendError(errorMessage, "Database error occurred, please contact the Arch Wizard!");
+                            Thread.sleep(3000);
+                            resp.sendRedirect("/");
+
+                            break;
+                        case "IOException":
+                            errorMessage = HttpServletResponse.SC_NOT_FOUND;
+                            resp.sendError(errorMessage, "Resource not found, please contact your Admin Wizard.");
+                            Thread.sleep(3000);
+                            resp.sendRedirect("/");
+
+                            break;
+                        case "IllegalArgumentException":
+                            errorMessage = 418;
+                            resp.sendError(errorMessage, "Inappropriate argument passed, please contact your Wizard Mod to brew your coffee.");
+                            Thread.sleep(3000);
+                            resp.sendRedirect("/");
+
+                            break;
+                        case "InterruptedException":
+                            errorMessage = HttpServletResponse.SC_GATEWAY_TIMEOUT;
+                            resp.sendError(errorMessage, "Time out, please try again.");
+                            Thread.sleep(3000);
+                            resp.sendRedirect("/");
+                            break;
+                        case "UnknownException":
+                            errorMessage = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+                            resp.sendError(errorMessage, "Unknown error occurred, please contact the Arch Wizard!");
+                            Thread.sleep(3000);
+                            resp.sendRedirect("/");
+                            break;
+                    }
+                }
             }
 
-            resp.wait(5);
-            resp.sendRedirect("/");
-        } catch (Exception e) {
+        } catch (InterruptedException | IOException e) {
             LOGGER.warning(String.format("Unknown Exception occurred: %s", e));
         }
     }
