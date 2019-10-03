@@ -64,7 +64,8 @@ CREATE TABLE orders
     id      SERIAL PRIMARY KEY,
     cart_id INTEGER,
     user_id INTEGER,
-    status  VARCHAR(10)
+    address_id INTEGER,
+    status  VARCHAR(20)
 );
 
 DROP TABLE IF EXISTS users;
@@ -100,7 +101,8 @@ ALTER TABLE ONLY carts
     ADD CONSTRAINT fk_user_cart_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     ADD CONSTRAINT fk_product_id FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE;
 ALTER TABLE ONLY orders
-    ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE;
+    ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    ADD CONSTRAINT fk_address_id FOREIGN KEY (address_id) REFERENCES addresses (id) ON DELETE CASCADE;
 ALTER TABLE addresses
     ADD CONSTRAINT fk_user_address_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE;
 

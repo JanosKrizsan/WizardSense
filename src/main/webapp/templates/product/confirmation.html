@@ -12,6 +12,10 @@
         <span th:text="${'Your total gold extinguished from yer pockets: ' + totalPaid + ' GP'}">...</span>
         <span th:text="${'Total number of items ye bought: ' + cart.getSumOfProducts()}">...</span>
 
+        <p th:text="${order.toString}"></p>
+
+        <p th:text="${cart.getId()}"></p>
+
         <div id="product-container" th:each=" item : ${cart.getProductsInCart()}">
             <div>
                 <span th:text="${item.getName()}"></span>

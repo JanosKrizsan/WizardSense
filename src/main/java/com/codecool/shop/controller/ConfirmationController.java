@@ -46,10 +46,11 @@ public class ConfirmationController extends HttpServlet {
             Order order = orderDataStore.find(cart.getId());
             orderDataStore.setStatus("complete", order);
             cartDataStore.remove(cart.getId());
+            context.setVariable("order", order);
 
             int addressLocation = addressDataStore.getAddressByUserId(userID).size() - 1;
             String emailAddress = addressDataStore.getAddressByUserId(userID).get(addressLocation).getOrderFields().get("eMail");
-            Utils.sendEmail(emailAddress);
+//            Utils.sendEmail(emailAddress);
 
             engine.process("product/confirmation.html", context, resp.getWriter());
         } catch (SQLException | IOException e) {

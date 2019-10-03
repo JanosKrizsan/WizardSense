@@ -3,6 +3,8 @@ package com.codecool.shop.dao.implementation.JDBC;
 import com.codecool.shop.config.ConnectionHandler;
 import com.codecool.shop.dao.GenericQueriesDao;
 import com.codecool.shop.model.Order;
+import com.codecool.shop.model.User;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +16,7 @@ public class OrderDaoJDBC extends ConnectionHandler implements GenericQueriesDao
     private static OrderDaoJDBC instance = null;
     private UserDaoJDBC userDao = UserDaoJDBC.getInstance();
     private CartDaoJDBC cartDao = CartDaoJDBC.getInstance();
+    private UserAddressDaoJDBC addressDao = UserAddressDaoJDBC.getInstance();
 
 
     private OrderDaoJDBC() {
@@ -28,10 +31,11 @@ public class OrderDaoJDBC extends ConnectionHandler implements GenericQueriesDao
 
     @Override
     public void add(Order order) throws SQLException {
-        PreparedStatement statement = getConn().prepareStatement("INSERT INTO orders (cart_id, user_id, status) VALUES (? , ?, ?) RETURNING id;");
+        PreparedStatement statement = getConn().prepareStatement("INSERT INTO orders (cart_id, user_id, address_id, status) VALUES (? , ?, ?, ?) RETURNING id;");
         statement.setInt(1, order.getCart().getId());
         statement.setInt(2, order.getUser().getId());
-        statement.setString(3, order.getStatus());
+        statement.setInt(3, order.getAddress().getId());
+            statement.setString(4, order.getStatus());
         ResultSet result = statement.executeQuery();
 
         int id = 0;
@@ -53,16 +57,19 @@ public class OrderDaoJDBC extends ConnectionHandler implements GenericQueriesDao
         int orderId = 0;
         int cartId = 0;
         int userId = 0;
-        String orderStatus = "";
+        int addressId= 0;
+            String orderStatus = "";
 
         while (results.next()) {
             orderId = results.getInt("id");
             cartId = results.getInt("cart_id");
             userId = results.getInt("user_id");
-            orderStatus = results.getString("status");
-        }
-        order = new Order(userDao.find(userId), cartDao.find(cartId), orderStatus);
-        order.setId(orderId);
+            addressId = results.getInt("address_id");
+                orderStatus = results.getString("status");
+            }
+            order = new Order(userDao.find(userId), cartDao.find(cartId), addressDao.find(addressId), orderStatus);
+            order.setId(orderId);
+
         statement.close();
         return order;
     }
@@ -99,11 +106,12 @@ public class OrderDaoJDBC extends ConnectionHandler implements GenericQueriesDao
     }
 
     public void setStatus(String status, Order order) throws SQLException {
-        PreparedStatement statement = getConn().prepareStatement("UPDATE orders SET status = ? WHERE id=? AND cart_id=? AND user_id=?;");
+        PreparedStatement statement = getConn().prepareStatement("UPDATE orders SET status = ? WHERE id=? AND cart_id=? AND user_id=? AND address_id=?;");
         statement.setString(1, status);
         statement.setInt(2, order.getId());
         statement.setInt(3, order.getCart().getId());
         statement.setInt(4, order.getUser().getId());
+            statement.setInt(5, order.getAddress().getId());
         statement.close();
     }
 }

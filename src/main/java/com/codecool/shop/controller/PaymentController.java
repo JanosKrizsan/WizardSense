@@ -33,7 +33,7 @@ public class PaymentController extends HttpServlet {
     private CartDaoJDBC cartDataStore = CartDaoJDBC.getInstance();
     private UserDaoJDBC userDataStore = UserDaoJDBC.getInstance();
     private ErrorHandling handler = new ErrorHandling();
-
+    private UserAddressDaoJDBC userAddressDataStore = UserAddressDaoJDBC.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
@@ -52,22 +52,16 @@ public class PaymentController extends HttpServlet {
                 }
             }
 
-            TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
-            WebContext context = new WebContext(req, resp, req.getServletContext());
+            int addressId = Integer.parseInt(req.getParameter("addressID"));
 
 
             User user = userDataStore.find(userID);
             Cart cart = cartDataStore.getCartByUserId(userID);
-            orderDataStore.add(new Order(user, cart, "in progress"));
-            float totalSum = Utils.getTotalSum(cartDataStore.find(cart.getId()));
+            UserAddress address = addressDataStore.find(addressId);
+        orderDataStore.add(new Order(user, cart, address, "in progress"));
 
 
-            context.setVariable("totalSum", totalSum);
-            context.setVariable("userID", req.getSession().getAttribute("userID"));
-            context.setVariable("userName", req.getSession().getAttribute("userName"));
-
-
-            engine.process("product/pay.html", context, resp.getWriter());
+        resp.sendRedirect("/confirmation");
         } catch (IOException | SQLException e) {
             handler.ExceptionOccurred(resp, session, e);
         }
