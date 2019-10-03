@@ -7,15 +7,10 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
-import java.util.logging.Logger;
-
 import org.postgresql.ds.PGSimpleDataSource;
 
 
-public abstract class ConnectionHandler {
-
-    public static final Logger LOGGER = Logger.getLogger(ConnectionHandler.class.getName());
-
+public abstract class ConnectionHandler extends ErrorHandling {
 
     private Connection conn;
     private PGSimpleDataSource dataSource;
@@ -54,11 +49,11 @@ public abstract class ConnectionHandler {
 
 
         } catch (ClassNotFoundException | IOException e) {
-            System.out.println(e);
+            ErrorHandling.ExceptionOccurred(e);
         }
 
-
         dataSource.getConnection().close();
+
 
         return dataSource;
     }
@@ -73,10 +68,6 @@ public abstract class ConnectionHandler {
 
     public void setConn(Connection conn) {
         this.conn = conn;
-    }
-
-    public void ExceptionOccurred(Exception e) {
-        LOGGER.warning(String.format("Exception occurred: %s", e));
     }
 }
 

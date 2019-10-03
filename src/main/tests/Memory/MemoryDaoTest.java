@@ -13,6 +13,7 @@ import com.codecool.shop.model.Supplier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +40,7 @@ class MemoryDaoTest {
     private Cart testCart = new Cart(new TreeMap<>(), null);
 
     @BeforeEach
-    void cleanTheSlate() {
+    void cleanTheSlate() throws SQLException {
         productDataStore.removeAll();
         supplierDataStore.removeAll();
         productCategoryDataStore.removeAll();
@@ -47,42 +48,42 @@ class MemoryDaoTest {
     }
 
     @Test
-    void testAddProductCategory() {
+    void testAddProductCategory() throws SQLException {
         productCategoryDataStore.add(testCategory);
         ProductCategory supposedProductCategory = productCategoryDataStore.find(1);
         assertEquals(testCategory, supposedProductCategory);
     }
 
     @Test
-    void testRemoveProductCategory() {
+    void testRemoveProductCategory() throws SQLException {
         productCategoryDataStore.add(testCategory);
         productCategoryDataStore.remove(1);
         assertEquals(productCategoryDataStore.getAll(), new ArrayList<ProductCategory>());
     }
 
     @Test
-    void testAddSupplier() {
+    void testAddSupplier() throws SQLException {
         supplierDataStore.add(testSupplier);
         Supplier supposedSupplier = supplierDataStore.find(1);
         assertEquals(testSupplier, supposedSupplier);
     }
 
     @Test
-    void testRemoveSupplier() {
+    void testRemoveSupplier() throws SQLException {
         supplierDataStore.add(testSupplier);
         supplierDataStore.remove(1);
         assertEquals(supplierDataStore.getAll(), new ArrayList<Supplier>());
     }
 
     @Test
-    void testAddProduct() {
+    void testAddProduct() throws SQLException {
         productDataStore.add(testProduct);
         Product supposedProduct = productDataStore.find(1);
         assertEquals(testProduct, supposedProduct);
     }
 
     @Test
-    void testFilterBySupplier() {
+    void testFilterBySupplier() throws SQLException {
         productDataStore.add(testProduct);
         productDataStore.add(fakeProduct);
         List<Product> supposedProducts = new ArrayList<Product>() {{
@@ -93,7 +94,7 @@ class MemoryDaoTest {
     }
 
     @Test
-    void testFilterByCategory() {
+    void testFilterByCategory() throws SQLException {
         productDataStore.add(testProduct);
         productDataStore.add(fakeProduct);
         List<Product> supposedProducts = new ArrayList<Product>() {{
@@ -104,28 +105,28 @@ class MemoryDaoTest {
     }
 
     @Test
-    void testRemoveProduct() {
+    void testRemoveProduct() throws SQLException {
         productDataStore.add(testProduct);
         productDataStore.remove(1);
         assertEquals(productDataStore.getAll(), new ArrayList<Product>());
     }
 
     @Test
-    void testAddCart() {
+    void testAddCart() throws SQLException {
         cartDataStore.add(testCart);
         Cart supposedCart = cartDataStore.find(0);
         assertEquals(testCart, supposedCart);
     }
 
     @Test
-    void testRemoveCart() {
+    void testRemoveCart() throws SQLException {
         cartDataStore.add(testCart);
         cartDataStore.remove(0);
         assertEquals(cartDataStore.getAll(), new ArrayList<Cart>());
     }
 
     @Test
-    void testAddToCart() {
+    void testAddToCart() throws SQLException {
         cartDataStore.add(testCart);
         Cart cartToAddTo = cartDataStore.find(0);
         cartToAddTo.addProduct(testProduct);
@@ -137,7 +138,7 @@ class MemoryDaoTest {
     }
 
     @Test
-    void testRemoveFromCart() {
+    void testRemoveFromCart() throws SQLException {
         cartDataStore.add(testCart);
         Cart cartToAddTo = cartDataStore.find(0);
         cartToAddTo.addProduct(testProduct);

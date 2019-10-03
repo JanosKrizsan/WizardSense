@@ -1,5 +1,7 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.config.ErrorHandling;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -10,15 +12,22 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {"/logout"})
 public class LogoutController extends HttpServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        if (req.getSession().getAttribute("userID") == null) {
-            resp.sendError(401, "Unauthorized access!");
-        }
-        req.getSession().removeAttribute("userName");
-        req.getSession().removeAttribute("userID");
+    private ErrorHandling handler = new ErrorHandling();
 
-        resp.sendRedirect("/");
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+        HttpSession session = req.getSession();
+        try {
+            handler.checkUserLoggedIn(session, resp);
+
+            req.getSession().removeAttribute("userName");
+            req.getSession().removeAttribute("userID");
+
+            resp.sendRedirect("/");
+        } catch (IOException e) {
+            handler.ExceptionOccurred(resp, session, e);
+        }
     }
 
 

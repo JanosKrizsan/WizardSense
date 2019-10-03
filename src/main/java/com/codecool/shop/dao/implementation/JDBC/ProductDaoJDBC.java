@@ -5,7 +5,6 @@ import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,126 +27,108 @@ public class ProductDaoJDBC extends ConnectionHandler implements ProductDao {
     }
 
     @Override
-    public void add(Product product) {
-        try (PreparedStatement statement = getConn().prepareStatement("INSERT INTO products (name, description, default_price, " +
-                "default_currency, product_category_id, supplier_id, image_src) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id;")) {
-            statement.setString(1, product.getName());
-            statement.setString(2, product.getDescription());
-            statement.setFloat(3, product.getDefaultPrice());
-            statement.setString(4, product.getDefaultCurrency().getCurrencyCode());
-            statement.setInt(5, product.getProductCategory().getId());
-            statement.setInt(6, product.getSupplier().getId());
-            statement.setString(7, product.getImageSrc());
-            ResultSet result = statement.executeQuery();
-            int cartId = product.getId();
-            while (result.next()) {
-                cartId = result.getInt("id");
-            }
-            product.setId(cartId);
-            result.close();
-        } catch (SQLException e) {
-            ExceptionOccurred(e);
+    public void add(Product product) throws SQLException {
+        PreparedStatement statement = getConn().prepareStatement("INSERT INTO products (name, description, default_price, " +
+                "default_currency, product_category_id, supplier_id, image_src) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id;");
+        statement.setString(1, product.getName());
+        statement.setString(2, product.getDescription());
+        statement.setFloat(3, product.getDefaultPrice());
+        statement.setString(4, product.getDefaultCurrency().getCurrencyCode());
+        statement.setInt(5, product.getProductCategory().getId());
+        statement.setInt(6, product.getSupplier().getId());
+        statement.setString(7, product.getImageSrc());
+        ResultSet result = statement.executeQuery();
+        int cartId = product.getId();
+        while (result.next()) {
+            cartId = result.getInt("id");
         }
+        product.setId(cartId);
+        statement.close();
+        result.close();
     }
 
     @Override
-    public Product find(int id) {
-        try (PreparedStatement statement = getConn().prepareStatement("SELECT * FROM products WHERE id=?;")) {
-            statement.setInt(1, id);
+    public Product find(int id) throws SQLException {
+        PreparedStatement statement = getConn().prepareStatement("SELECT * FROM products WHERE id=?;");
+        statement.setInt(1, id);
 
-            ResultSet results = statement.executeQuery();
+        ResultSet results = statement.executeQuery();
 
-            int productId = 0;
-            String prodName = "";
-            String prodDesc = "";
-            float defPrice = 0;
-            String defCurrency = "";
-            int categoryId = 0;
-            int supplierId = 0;
-            String imageSrc = "";
+        int productId = 0;
+        String prodName = "";
+        String prodDesc = "";
+        float defPrice = 0;
+        String defCurrency = "";
+        int categoryId = 0;
+        int supplierId = 0;
+        String imageSrc = "";
+        Product found;
+        while (results.next()) {
 
-            while (results.next()) {
-
-                productId = results.getInt("id");
-                prodName = results.getString("name");
-                prodDesc = results.getString("description");
-                defPrice = results.getFloat("default_price");
-                defCurrency = results.getString("default_currency");
-                categoryId = results.getInt("product_category_id");
-                supplierId = results.getInt("supplier_id");
-                imageSrc = results.getString("image_src");
-            }
-
-            ProductCategory category = ProductCategoryDaoJDBC.getInstance().find(categoryId);
-            Supplier supplier = SupplierDaoJDBC.getInstance().find(supplierId);
-
-            Product found = new Product(prodName, defPrice, defCurrency, prodDesc, category, supplier);
-            found.setId(productId);
-            found.setImageSrc(imageSrc);
-
-            results.close();
-
-            return found;
-        } catch (SQLException e) {
-            ExceptionOccurred(e);
+            productId = results.getInt("id");
+            prodName = results.getString("name");
+            prodDesc = results.getString("description");
+            defPrice = results.getFloat("default_price");
+            defCurrency = results.getString("default_currency");
+            categoryId = results.getInt("product_category_id");
+            supplierId = results.getInt("supplier_id");
+            imageSrc = results.getString("image_src");
         }
-        return null;
+
+        ProductCategory category = ProductCategoryDaoJDBC.getInstance().find(categoryId);
+        Supplier supplier = SupplierDaoJDBC.getInstance().find(supplierId);
+
+        found = new Product(prodName, defPrice, defCurrency, prodDesc, category, supplier);
+        found.setId(productId);
+        found.setImageSrc(imageSrc);
+
+        results.close();
+        return found;
     }
 
     @Override
-    public void remove(int id) {
-        try (PreparedStatement statement = getConn().prepareStatement("DELETE FROM products WHERE id=?;"))
-        {
-            statement.setInt(1, id);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            ExceptionOccurred(e);
-        }
+    public void remove(int id) throws SQLException {
+        PreparedStatement statement = getConn().prepareStatement("DELETE FROM products WHERE id=?;");
+        statement.setInt(1, id);
+        statement.executeUpdate();
+        statement.close();
     }
 
     @Override
-    public List<Product> getAll() {
-        try (PreparedStatement statement = getConn().prepareStatement("SELECT id FROM products;"))
-            {
-            ResultSet results = statement.executeQuery();
+    public List<Product> getAll() throws SQLException {
+        PreparedStatement statement = getConn().prepareStatement("SELECT id FROM products;");
+        ResultSet results = statement.executeQuery();
 
-            List<Product> products = new ArrayList<>();
+        List<Product> products = new ArrayList<>();
 
-            while (results.next()) {
+        while (results.next()) {
 
-                int id = results.getInt("id");
-                products.add(find(id));
+            int id = results.getInt("id");
+            products.add(find(id));
 
-            }
-            results.close();
-            return products;
-        } catch (SQLException e) {
-            ExceptionOccurred(e);
         }
-        return null;
+        results.close();
+        return products;
     }
 
     @Override
-    public List<Product> getBy(Supplier supplier) {
+    public List<Product> getBy(Supplier supplier) throws SQLException {
 
         List<Product> product = getAll();
         return product.stream().filter(prod -> prod.getSupplier().getId() == supplier.getId()).collect(Collectors.toList());
     }
 
     @Override
-    public List<Product> getBy(ProductCategory productCategory) {
+    public List<Product> getBy(ProductCategory productCategory) throws SQLException {
 
         List<Product> product = getAll();
         return product.stream().filter(prod -> prod.getProductCategory().getId() == productCategory.getId()).collect(Collectors.toList());
     }
 
     @Override
-    public void removeAll() {
-        try (PreparedStatement statement = getConn().prepareStatement("TRUNCATE carts CASCADE "))
-            {
+    public void removeAll() throws SQLException {
+        PreparedStatement statement = getConn().prepareStatement("TRUNCATE carts CASCADE ");
             statement.executeUpdate();
-        } catch (SQLException e) {
-            ExceptionOccurred(e);
-        }
+            statement.close();
     }
 }

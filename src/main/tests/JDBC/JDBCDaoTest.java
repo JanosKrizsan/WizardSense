@@ -81,7 +81,7 @@ class JDBCDaoTest {
     }
 
     @BeforeEach
-    void cleanTheSlate() {
+    void cleanTheSlate() throws SQLException {
         productDataStore.removeAll();
         supplierDataStore.removeAll();
         productCategoryDataStore.removeAll();
@@ -90,35 +90,35 @@ class JDBCDaoTest {
 
 
     @Test
-    void testAddProductCategory() {
+    void testAddProductCategory() throws SQLException {
         productCategoryDataStore.add(testCategory);
         ProductCategory supposedCategory = productCategoryDataStore.find(testCategory.getId());
         assertEquals(testCategory, supposedCategory);
     }
 
     @Test
-    void testRemoveProductCategory() {
+    void testRemoveProductCategory() throws SQLException {
         productCategoryDataStore.add(testCategory);
         productCategoryDataStore.remove(testCategory.getId());
         assertEquals(productCategoryDataStore.getAll(), new ArrayList<ProductCategory>());
     }
 
     @Test
-    void testAddSupplier() {
+    void testAddSupplier() throws SQLException {
         supplierDataStore.add(testSupplier);
         Supplier supposedSupplier = supplierDataStore.find(testSupplier.getId());
         assertEquals(testSupplier, supposedSupplier);
     }
 
     @Test
-    void testRemoveSupplier() {
+    void testRemoveSupplier() throws SQLException {
         supplierDataStore.add(testSupplier);
         supplierDataStore.remove(testSupplier.getId());
         assertEquals(supplierDataStore.getAll(), new ArrayList<Supplier>());
     }
 
     @Test
-    void testAddProduct() {
+    void testAddProduct() throws SQLException {
         supplierDataStore.add(testSupplier);
         productCategoryDataStore.add(testCategory);
         productDataStore.add(testProduct);
@@ -127,7 +127,7 @@ class JDBCDaoTest {
     }
 
     @Test
-    void testFilterBySupplier() {
+    void testFilterBySupplier() throws SQLException {
 
         supplierDataStore.add(testSupplier);
         productCategoryDataStore.add(testCategory);
@@ -144,7 +144,7 @@ class JDBCDaoTest {
     }
 
     @Test
-    void testFilterByCategory() {
+    void testFilterByCategory() throws SQLException {
 
         supplierDataStore.add(testSupplier);
         productCategoryDataStore.add(testCategory);
@@ -161,28 +161,28 @@ class JDBCDaoTest {
     }
 
     @Test
-    void testRemoveProduct() {
+    void testRemoveProduct() throws SQLException {
         productDataStore.add(testProduct);
         productDataStore.remove(testProduct.getId());
         assertEquals(productDataStore.getAll(), new ArrayList<Product>());
     }
 
     @Test
-    void testAddCart() {
+    void testAddCart() throws SQLException {
         cartDataStore.add(testCart);
         Cart supposedCart = cartDataStore.find(testCart.getId());
         assertEquals(testCart, supposedCart);
     }
 
     @Test
-    void testRemoveCart() {
+    void testRemoveCart() throws SQLException {
         cartDataStore.add(testCart);
         cartDataStore.clearProductFromCart(testCart.getId());
         assertEquals(cartDataStore.getAll(), new ArrayList<Cart>());
     }
 
     @Test
-    void testAddToCart() {
+    void testAddToCart() throws SQLException {
         cartDataStore.add(testCart);
         Cart cartToAddTo = cartDataStore.find(testCart.getId());
         cartToAddTo.addProduct(testProduct);
@@ -194,7 +194,7 @@ class JDBCDaoTest {
     }
 
     @Test
-    void testRemoveFromCart() {
+    void testRemoveFromCart() throws SQLException {
         cartDataStore.add(testCart);
         Cart cartToAddTo = cartDataStore.find(testCart.getId());
         cartToAddTo.addProduct(testProduct);

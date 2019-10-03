@@ -1,5 +1,6 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.config.ErrorHandling;
 import com.codecool.shop.dao.GenericQueriesDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.JDBC.*;
@@ -7,12 +8,14 @@ import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.model.*;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,8 +28,9 @@ public class ProductController extends HttpServlet {
     private SupplierDaoJDBC supplierDataStore = SupplierDaoJDBC.getInstance();
     private ProductCategoryDaoJDBC productCategoryDataStore = ProductCategoryDaoJDBC.getInstance();
     private List<Product> defaultProds = null;
+    private ErrorHandling handler = new ErrorHandling();
 
-    private void filter(GenericQueriesDao<Supplier> sDS, GenericQueriesDao<ProductCategory> pCD, ProductDao pDS, HttpServletRequest req) {
+    private void filter(GenericQueriesDao<Supplier> sDS, GenericQueriesDao<ProductCategory> pCD, ProductDao pDS, HttpServletRequest req) throws SQLException {
         List<String> headers = Collections.list(req.getParameterNames());
 
         if (headers.contains("filter")) {
@@ -54,43 +58,46 @@ public class ProductController extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = req.getSession();
 
-        int cartSize = 0;
-        if (session.getAttribute("userID") != null) {
-            int userID = (int) session.getAttribute("userID");
-            Cart cart = cartDataStore.getCartByUserId(userID);
+        try {
+            int cartSize = 0;
+            if (session.getAttribute("userID") != null) {
+                int userID = (int) session.getAttribute("userID");
+                Cart cart = cartDataStore.getCartByUserId(userID);
 
-            cartSize = cart != null ? cartDataStore.getCartByUserId(userID).getSumOfProducts() : 0;
+                cartSize = cart != null ? cartDataStore.getCartByUserId(userID).getSumOfProducts() : 0;
+            }
+
+
+            TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
+            WebContext context = new WebContext(req, resp, req.getServletContext());
+
+
+            filter(supplierDataStore, productCategoryDataStore, productDataStore, req);
+            context.setVariable("categories", productCategoryDataStore.getAll());
+            context.setVariable("suppliers", supplierDataStore.getAll());
+            context.setVariable("cartSize", cartSize);
+            context.setVariable("products", defaultProds != null ? defaultProds : productDataStore.getAll());
+            context.setVariable("userID", session.getAttribute("userID"));
+            context.setVariable("userName", session.getAttribute("userName"));
+
+
+            engine.process("product/index.html", context, resp.getWriter());
+        } catch (IOException | SQLException e) {
+            handler.ExceptionOccurred(resp, session, e);
         }
-
-
-        TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
-        WebContext context = new WebContext(req, resp, req.getServletContext());
-
-
-        filter(supplierDataStore, productCategoryDataStore, productDataStore, req);
-        context.setVariable("categories", productCategoryDataStore.getAll());
-        context.setVariable("suppliers", supplierDataStore.getAll());
-        context.setVariable("cartSize", cartSize);
-        context.setVariable("products", defaultProds != null ? defaultProds : productDataStore.getAll());
-        context.setVariable("userID", session.getAttribute("userID"));
-        context.setVariable("userName", session.getAttribute("userName"));
-
-
-        engine.process("product/index.html", context, resp.getWriter());
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
 
         List<String> headers = Collections.list(req.getParameterNames());
+        HttpSession session = req.getSession();
 
-        if (headers.contains("product")) {
-
-            try {
-                HttpSession session = req.getSession();
+        try {
+            if (headers.contains("product")) {
 
                 int userId = (int) session.getAttribute("userID");
                 User user = userDataStore.find(userId);
@@ -99,10 +106,8 @@ public class ProductController extends HttpServlet {
                     int productId = Integer.parseInt(req.getParameter("product"));
                     Product product = productDataStore.find(productId);
 
-
                     TreeMap<Product, Integer> products = new TreeMap<>();
                     products.put(product, 1);
-
 
                     Cart cartToCheck = cartDataStore.getCartByUserId(userId);
 
@@ -113,24 +118,19 @@ public class ProductController extends HttpServlet {
                         cartDataStore.add(newCart);
                     } else {
 
-                        Set myset = cartToCheck.getProductsInCart();
-                        boolean mybool = cartToCheck.getProductsInCart().contains(product);
-
-                        if(cartDataStore.getCartProductQuantity(cartToCheck, productId) >= 1){
+                        if (cartDataStore.getCartProductQuantity(cartToCheck, productId) >= 1) {
                             cartDataStore.increaseOrDecreaseQuantity(cartToCheck, productId, true);
                         } else {
                             cartDataStore.add(newCart);
                         }
                     }
-
                 }
-            } catch (NumberFormatException e) {
-                System.out.println(e);
             }
+            doGet(req, resp);
+
+        } catch (NumberFormatException | SQLException e) {
+            handler.ExceptionOccurred(resp, session, e);
         }
-
-
-        doGet(req, resp);
     }
 
 }

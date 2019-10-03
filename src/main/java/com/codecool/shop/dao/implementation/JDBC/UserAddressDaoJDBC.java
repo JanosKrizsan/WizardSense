@@ -27,124 +27,100 @@ public class UserAddressDaoJDBC extends ConnectionHandler implements GenericQuer
 
 
     @Override
-    public void add(UserAddress userAddress) {
-        try {
-            statement = getConn().prepareStatement("INSERT INTO addresses (user_id, name, e_mail, phone_number, country, city, zip_code, address) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id;");
-            statement.setInt(1, userAddress.getUserId());
-            statement.setString(2, userAddress.getOrderFields().get("name"));
-            statement.setString(3, userAddress.getOrderFields().get("eMail"));
-            statement.setString(4, userAddress.getOrderFields().get("phoneNumber"));
-            statement.setString(5, userAddress.getOrderFields().get("country"));
-            statement.setString(6, userAddress.getOrderFields().get("city"));
-            statement.setString(7, userAddress.getOrderFields().get("zipCode"));
-            statement.setString(8, userAddress.getOrderFields().get("address"));
-            ResultSet result = statement.executeQuery();
-            int cartId = userAddress.getId();
-            while (result.next()) {
-                cartId = result.getInt("id");
-            }
-            userAddress.setId(cartId);
-            statement.close();
-
-        } catch (SQLException e) {
-            ExceptionOccurred(e);
+    public void add(UserAddress userAddress) throws SQLException {
+        statement = getConn().prepareStatement("INSERT INTO addresses (user_id, name, e_mail, phone_number, country, city, zip_code, address) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id;");
+        statement.setInt(1, userAddress.getUserId());
+        statement.setString(2, userAddress.getOrderFields().get("name"));
+        statement.setString(3, userAddress.getOrderFields().get("eMail"));
+        statement.setString(4, userAddress.getOrderFields().get("phoneNumber"));
+        statement.setString(5, userAddress.getOrderFields().get("country"));
+        statement.setString(6, userAddress.getOrderFields().get("city"));
+        statement.setString(7, userAddress.getOrderFields().get("zipCode"));
+        statement.setString(8, userAddress.getOrderFields().get("address"));
+        ResultSet result = statement.executeQuery();
+        int cartId = userAddress.getId();
+        while (result.next()) {
+            cartId = result.getInt("id");
         }
+        userAddress.setId(cartId);
+        statement.close();
     }
 
     @Override
-    public UserAddress find(int id) {
-        UserAddress address = null;
-        try {
-            statement = getConn().prepareStatement("SELECT * FROM addresses WHERE id = ?;");
-            statement.setInt(1, id);
+    public UserAddress find(int id) throws SQLException {
+        UserAddress address;
+        statement = getConn().prepareStatement("SELECT * FROM addresses WHERE id = ?;");
+        statement.setInt(1, id);
 
-            ResultSet results = statement.executeQuery();
+        ResultSet results = statement.executeQuery();
 
-            int userId = 0;
-            HashMap<String, String> addressFields = new HashMap<>();
-            while (results.next()) {
+        int userId = 0;
+        HashMap<String, String> addressFields = new HashMap<>();
+        while (results.next()) {
 
-                addressFields.put("name", results.getString("name"));
-                addressFields.put("eMail", results.getString("e_mail"));
-                addressFields.put("phoneNumber", results.getString("phone_number"));
-                addressFields.put("country", results.getString("country"));
-                addressFields.put("city", results.getString("city"));
-                addressFields.put("zipCode", results.getString("zip_code"));
-                addressFields.put("address", results.getString("address"));
+            addressFields.put("name", results.getString("name"));
+            addressFields.put("eMail", results.getString("e_mail"));
+            addressFields.put("phoneNumber", results.getString("phone_number"));
+            addressFields.put("country", results.getString("country"));
+            addressFields.put("city", results.getString("city"));
+            addressFields.put("zipCode", results.getString("zip_code"));
+            addressFields.put("address", results.getString("address"));
 
-                userId = results.getInt("user_id");
-            }
-            address = new UserAddress(addressFields, userId);
-            address.setId(id);
-
-            statement.close();
-            results.close();
-
-            return address;
-
-        } catch (SQLException e) {
-            ExceptionOccurred(e);
+            userId = results.getInt("user_id");
         }
+        address = new UserAddress(addressFields, userId);
+        address.setId(id);
+
+        statement.close();
+        results.close();
+
         return address;
     }
 
     @Override
-    public void remove(int id) {
-        try {
-            statement = getConn().prepareStatement("DELETE FROM addresses WHERE id=?;");
-            statement.setInt(1, id);
-            statement.executeUpdate();
-            statement.close();
-        } catch (SQLException e) {
-            ExceptionOccurred(e);
-        }
+    public void remove(int id) throws SQLException {
+        statement = getConn().prepareStatement("DELETE FROM addresses WHERE id=?;");
+        statement.setInt(1, id);
+        statement.executeUpdate();
+        statement.close();
     }
 
     @Override
-    public List<UserAddress> getAll() {
+    public List<UserAddress> getAll() throws SQLException {
         List<UserAddress> addresses = new ArrayList<>();
-        try (PreparedStatement statement = getConn().prepareStatement("SELECT id FROM addresses")) {
-            ResultSet results = statement.executeQuery();
+        PreparedStatement statement = getConn().prepareStatement("SELECT id FROM addresses");
+        ResultSet results = statement.executeQuery();
 
-            while (results.next()) {
+        while (results.next()) {
 
-                int id = results.getInt("id");
-                addresses.add(find(id));
+            int id = results.getInt("id");
+            addresses.add(find(id));
 
-            }
-            results.close();
-            return addresses;
-        } catch (SQLException e) {
-            ExceptionOccurred(e);
         }
-        return null;
+        statement.close();
+        return addresses;
     }
 
     @Override
-    public void removeAll() {
-        try (PreparedStatement statement = getConn().prepareStatement("TRUNCATE addresses CASCADE ")) {
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            ExceptionOccurred(e);
-        }
-
+    public void removeAll() throws SQLException {
+        PreparedStatement statement = getConn().prepareStatement("TRUNCATE addresses CASCADE ");
+        statement.executeUpdate();
+        statement.close();
     }
 
-    public List<UserAddress> getAddressByUserId(int userID) {
-        try (PreparedStatement statement = getConn().prepareStatement("SELECT * FROM addresses WHERE user_id=?;")) {
-            statement.setInt(1, userID);
+    public List<UserAddress> getAddressByUserId(int userID) throws SQLException {
+        PreparedStatement statement = getConn().prepareStatement("SELECT * FROM addresses WHERE user_id=?;");
+        statement.setInt(1, userID);
 
-            List<UserAddress> addressesOfUser = new ArrayList<>();
-            ResultSet results = statement.executeQuery();
+        List<UserAddress> addressesOfUser = new ArrayList<>();
+        ResultSet results = statement.executeQuery();
 
-            while (results.next()) {
-                addressesOfUser.add(find(results.getInt("id")));
-            }
-            return addressesOfUser;
-        } catch (SQLException e) {
-            ExceptionOccurred(e);
+        while (results.next()) {
+            addressesOfUser.add(find(results.getInt("id")));
         }
-        return null;
+
+        statement.close();
+        return addressesOfUser;
     }
 }
