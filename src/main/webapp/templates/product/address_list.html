@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="head.html :: copy"></head>
 
-<body>
+<>
 
 <div name="store-name" class="navbar">
     <form name="reset-form" action="#" th:action="@{/}" method="post">
@@ -26,7 +26,8 @@
 
     <form th:action="@{/checkout}" method="post">
         <div th:if="${addresses.size() != 0}" class="container-inputs card-container">
-            <button type="submit" class="address-card" name="selection" th:each=" address : ${addresses}" th:value="${address.getId()}">
+            <button type="submit" class="address-card" name="addressID" th:each=" address : ${addresses}"
+                    th:value="${address.getId()}">
                 <div class="floating flip-card">
                     <div class="flip-card-inner">
                         <div class="flip-card-front">
@@ -41,9 +42,9 @@
                     </div>
                 </div>
             </button>
-            </div>
         </div>
     </form>
+
 
     <div th:unless="${addresses.size() != 0}">
         <p>You don't have any saved addresses!</p>

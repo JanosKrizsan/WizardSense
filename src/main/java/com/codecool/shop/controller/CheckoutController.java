@@ -38,12 +38,11 @@ public class CheckoutController extends HttpServlet {
 
             UserAddress address = new UserAddress(new HashMap<>(), userId);
 
-            Integer addressID = null;
-            if (headers.contains("selection")) {
+            int addressID = 0;
+            if (headers.contains("addressID")) {
 
-                addressID = Integer.parseInt(req.getParameter("selection"));
+                addressID = Integer.parseInt(req.getParameter("addressID"));
                 address = addressDataStore.find(addressID);
-
             }
 
             TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());

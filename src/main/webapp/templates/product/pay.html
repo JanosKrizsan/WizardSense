@@ -35,9 +35,12 @@
             <p th:text="${'Address: '+address.get('address')}"></p>
         </div>
         <div class="summary-buttons">
-            <a th:href="@{/confirmation}">
-                <button class="btn btn-success" th:text="${'Send gold via psychic link'}"></button>
-            </a>
+            <form th:action="@{/confirmation}">
+                <input hidden="hidden" name="addressID" th:value="${addressID}">
+                <input hidden="hidden" name="wipe" value="do">
+                <button class="btn btn-success" type="submit" th:text="${'Send gold via psychic link'}"></button>
+            </form>
+
             <a th:href="@{/}">
                 <button class="btn btn-danger" th:text="${'Decline thine purchase'}"></button>
             </a>

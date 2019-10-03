@@ -35,6 +35,7 @@ public class ConfirmationController extends HttpServlet {
 
             int userID = (int) session.getAttribute("userID");
             String userName = (String) session.getAttribute("userName");
+            int addressID = Integer.parseInt(req.getParameter("addressID"));
 
             TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
             WebContext context = new WebContext(req, resp, req.getServletContext());
@@ -43,14 +44,15 @@ public class ConfirmationController extends HttpServlet {
             context.setVariable("userName", userName);
 
             Cart cart = cartDataStore.getCartByUserId(userID);
-            cartDataStore.remove(cart.getId());
+            if(req.getParameter("wipe").equals("do")) {
+                cartDataStore.remove(cart.getId());
+            }
 
-            int addressLocation = addressDataStore.getAddressByUserId(userID).size() - 1;
-            String emailAddress = addressDataStore.getAddressByUserId(userID).get(addressLocation).getOrderFields().get("eMail");
-            Utils.sendEmail(emailAddress);
+            String addressEmail = addressDataStore.find(addressID).getOrderFields().get("eMail");
+            Utils.sendEmail(addressEmail);
 
             engine.process("product/confirmation.html", context, resp.getWriter());
-        } catch (SQLException | IOException e) {
+        } catch (SQLException | IOException | NullPointerException e) {
             handler.ExceptionOccurred(resp, session, e);
             try {
             throw new InvalidParameterException();

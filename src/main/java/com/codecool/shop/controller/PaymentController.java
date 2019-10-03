@@ -28,7 +28,6 @@ public class PaymentController extends HttpServlet {
     private CartDaoJDBC cartDataStore = CartDaoJDBC.getInstance();
     private UserDaoJDBC userDataStore = UserDaoJDBC.getInstance();
     private ErrorHandler handler = new ErrorHandler();
-    private UserAddressDaoJDBC userAddressDataStore = UserAddressDaoJDBC.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
@@ -42,44 +41,47 @@ public class PaymentController extends HttpServlet {
 
             int userID = (int) session.getAttribute("userID");
 
-
+            int addressID = 0;
+            UserAddress address = null;
             List<String> headers = Collections.list(req.getParameterNames());
             if (headers.contains("addressID")) {
-                if (req.getParameter("addressID") == null) {
-                    createAddresses(req, userID);
+                if (Integer.parseInt(req.getParameter("addressID")) == 0) {
+                    address = createAddresses(req, userID);
+                    addressID = address.getId();
+                } else {
+                    addressID = Integer.parseInt(req.getParameter("addressID"));
+                    address = addressDataStore.find(addressID);
                 }
             }
 
-            int lastItem = addressDataStore.getAddressByUserId(userID).size() - 1;
-            int addressId = addressDataStore.getAddressByUserId(userID).get(lastItem).getId();
-
-            int addressId = Integer.parseInt(req.getParameter("addressID"));
             String userName = (String) session.getAttribute("userName");
 
             User user = userDataStore.find(userID);
             Cart cart = cartDataStore.getCartByUserId(userID);
-            UserAddress address = addressDataStore.find(addressId);
-            orderDataStore.add(new Order(user, cart, address, "in progress"));
-            Order order = orderDataStore.find(cart.getId());
+            Order newOrder = new Order(user, cart, address, "in progress");
+            orderDataStore.add(newOrder);
 
 
             context.setVariable("userID", userID);
             context.setVariable("userName", userName);
             context.setVariable("totalPaid", Utils.getTotalSum(cart));
-            context.setVariable("products", order.getCart().getProductsInCart());
-            context.setVariable("address", order.getAddress().getOrderFields());
-            context.setVariable("cart", order.getCart());
+            context.setVariable("products", cart.getProductsInCart());
+            context.setVariable("address", address.getOrderFields());
+            context.setVariable("addressID", addressID);
+            context.setVariable("cart", cart);
 
             engine.process("product/pay.html", context, resp.getWriter());
-        } catch (IOException | SQLException e) {
+        } catch (IOException | SQLException | NullPointerException e) {
             handler.ExceptionOccurred(resp, session, e);
         }
     }
 
-    private void createAddresses(HttpServletRequest req, int userID) throws SQLException {
+    private UserAddress createAddresses(HttpServletRequest req, int userID) throws SQLException {
 
         HashMap<String, String> addressDetails = new HashMap<>();
         HashMap<String, String> billingDetails = new HashMap<>();
+
+        UserAddress address;
 
         addressDetails.put("name", req.getParameter("billingName"));
         addressDetails.put("eMail", req.getParameter("billingEmail"));
@@ -89,21 +91,26 @@ public class PaymentController extends HttpServlet {
         addressDetails.put("zipCode", req.getParameter("billingZip"));
         addressDetails.put("address", req.getParameter("billingAddress"));
 
-        UserAddress address = new UserAddress(addressDetails, userID);
-        addressDataStore.add(address);
+        UserAddress billing = new UserAddress(addressDetails, userID);
+        addressDataStore.add(billing);
+        address = billing;
 
         if (!req.getParameter("billingZip").equals(req.getParameter("shippingZip"))) {
-            billingDetails.put("name", req.getParameter("shippingName"));
-            billingDetails.put("eMail", req.getParameter("shippingEmail"));
-            billingDetails.put("phoneNumber", req.getParameter("shippingPhone"));
+            billingDetails.put("name", req.getParameter("billingName"));
+            billingDetails.put("eMail", req.getParameter("billingEmail"));
+            billingDetails.put("phoneNumber", req.getParameter("billingPhone"));
             billingDetails.put("country", req.getParameter("shippingCountry"));
             billingDetails.put("city", req.getParameter("shippingCity"));
             billingDetails.put("zipCode", req.getParameter("shippingZip"));
             billingDetails.put("address", req.getParameter("shippingAddress"));
 
-            UserAddress billing = new UserAddress(billingDetails, userID);
-            addressDataStore.add(billing);
+            UserAddress shipping = new UserAddress(billingDetails, userID);
+            addressDataStore.add(shipping);
+            address = shipping;
+
         }
+
+        return address;
     }
 
 
