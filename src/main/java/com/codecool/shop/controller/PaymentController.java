@@ -49,8 +49,8 @@ public class PaymentController extends HttpServlet {
                 }
             }
 
-            int addressId = Integer.parseInt(req.getParameter("addressID"));
-
+            int lastItem = addressDataStore.getAddressByUserId(userID).size() - 1;
+            int addressId = addressDataStore.getAddressByUserId(userID).get(lastItem).getId();
 
             User user = userDataStore.find(userID);
             Cart cart = cartDataStore.getCartByUserId(userID);
