@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="head.html :: copy"></head>
 
-<>
+
 
 <div name="store-name" class="navbar">
     <form name="reset-form" action="#" th:action="@{/}" method="post">
@@ -22,7 +22,7 @@
 <div class="container">
 
     <h3>Your Addresses:</h3>
-    <a href="/checkout">Create New Address</a>
+    <p><a href="/checkout">Create New Address</a></p>
 
     <form th:action="@{/checkout}" method="post">
         <div th:if="${addresses.size() != 0}" class="container-inputs card-container">
@@ -46,7 +46,7 @@
     </form>
 
 
-    <div th:unless="${addresses.size() != 0}">
+    <div class="no-address" th:unless="${addresses.size() != 0}">
         <p>You don't have any saved addresses!</p>
     </div>
 

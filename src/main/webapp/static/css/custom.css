@@ -583,3 +583,8 @@ body {
 .logout {
     margin: 20px;
 }
+
+.no-address{
+    margin: 30px 0;
+    text-align: center;
+}
