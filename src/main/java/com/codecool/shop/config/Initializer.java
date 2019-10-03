@@ -10,9 +10,7 @@ import javax.servlet.annotation.WebListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.HashMap;
-import java.util.logging.Logger;
 
 @WebListener
 public class Initializer implements ServletContextListener {
@@ -21,25 +19,25 @@ public class Initializer implements ServletContextListener {
     private GenericQueriesDao<Supplier> supplierDataStore = SupplierDaoJDBC.getInstance();
     private GenericQueriesDao<User> userDataStore = UserDaoJDBC.getInstance();
     private GenericQueriesDao<UserAddress> addressDataStore = UserAddressDaoJDBC.getInstance();
-    private ErrorHandling handler = new ErrorHandling();
+    private ErrorHandler handler = new ErrorHandler();
 
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
 
-        ErrorHandling.LOGGER.info("Trying to connect to database...");
+        ErrorHandler.LOGGER.info("Trying to connect to database...");
         try {
             ConnectionHandler.connect();
-            ErrorHandling.LOGGER.info("Connection Established Successfully!");
+            ErrorHandler.LOGGER.info("Connection Established Successfully!");
         } catch (SQLException e) {
-            ErrorHandling.LOGGER.info("Connection Failed. Reason: \n" + e);
+            ErrorHandler.LOGGER.info("Connection Failed. Reason: \n" + e);
         }
         try {
             if (productDataStore.getAll().size() == 0 && userDataStore.getAll().size() == 0) {
                 fillMeUp();
             }
         } catch (SQLException e) {
-            ErrorHandling.ExceptionOccurred(e);
+            ErrorHandler.ExceptionOccurred(e);
         }
 
 
@@ -47,7 +45,7 @@ public class Initializer implements ServletContextListener {
 
     private void fillMeUp() {
 
-        ErrorHandling.LOGGER.info("Filling up database with values...");
+        ErrorHandler.LOGGER.info("Filling up database with values...");
         try {
             //adding the admin user
             User admin = new User("admin", "admin");
@@ -120,11 +118,11 @@ public class Initializer implements ServletContextListener {
             }
 
         } catch (SQLException e) {
-            ErrorHandling.LOGGER.info("Initialization failed!");
-            ErrorHandling.ExceptionOccurred(e);
+            ErrorHandler.LOGGER.info("Initialization failed!");
+            ErrorHandler.ExceptionOccurred(e);
         }
 
-        ErrorHandling.LOGGER.info("Initialization all done, ready to go!");
+        ErrorHandler.LOGGER.info("Initialization all done, ready to go!");
 
 
     }

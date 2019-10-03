@@ -1,8 +1,6 @@
 package com.codecool.shop.controller;
 
-import com.codecool.shop.config.ErrorHandling;
-import com.codecool.shop.config.TemplateEngineUtil;
-import com.codecool.shop.config.Utils;
+import com.codecool.shop.config.ErrorHandler;
 import com.codecool.shop.dao.implementation.JDBC.CartDaoJDBC;
 import com.codecool.shop.dao.implementation.JDBC.OrderDaoJDBC;
 import com.codecool.shop.dao.implementation.JDBC.UserAddressDaoJDBC;
@@ -11,8 +9,7 @@ import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.Order;
 import com.codecool.shop.model.User;
 import com.codecool.shop.model.UserAddress;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +29,7 @@ public class PaymentController extends HttpServlet {
     private OrderDaoJDBC orderDataStore = OrderDaoJDBC.getInstance();
     private CartDaoJDBC cartDataStore = CartDaoJDBC.getInstance();
     private UserDaoJDBC userDataStore = UserDaoJDBC.getInstance();
-    private ErrorHandling handler = new ErrorHandling();
+    private ErrorHandler handler = new ErrorHandler();
     private UserAddressDaoJDBC userAddressDataStore = UserAddressDaoJDBC.getInstance();
 
     @Override

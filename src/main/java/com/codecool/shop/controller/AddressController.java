@@ -1,6 +1,6 @@
 package com.codecool.shop.controller;
 
-import com.codecool.shop.config.ErrorHandling;
+import com.codecool.shop.config.ErrorHandler;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.implementation.JDBC.CartDaoJDBC;
 import com.codecool.shop.dao.implementation.JDBC.UserAddressDaoJDBC;
@@ -22,7 +22,7 @@ public class AddressController extends HttpServlet {
 
     private UserAddressDaoJDBC addressDataStore = UserAddressDaoJDBC.getInstance();
     private CartDaoJDBC cartDataStore = CartDaoJDBC.getInstance();
-    private ErrorHandling handler = new ErrorHandling();
+    private ErrorHandler handler = new ErrorHandler();
 
 
     @Override

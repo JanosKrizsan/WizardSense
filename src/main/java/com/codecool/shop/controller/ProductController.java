@@ -1,6 +1,6 @@
 package com.codecool.shop.controller;
 
-import com.codecool.shop.config.ErrorHandling;
+import com.codecool.shop.config.ErrorHandler;
 import com.codecool.shop.dao.GenericQueriesDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.JDBC.*;
@@ -28,7 +28,7 @@ public class ProductController extends HttpServlet {
     private SupplierDaoJDBC supplierDataStore = SupplierDaoJDBC.getInstance();
     private ProductCategoryDaoJDBC productCategoryDataStore = ProductCategoryDaoJDBC.getInstance();
     private List<Product> defaultProds = null;
-    private ErrorHandling handler = new ErrorHandling();
+    private ErrorHandler handler = new ErrorHandler();
 
     private void filter(GenericQueriesDao<Supplier> sDS, GenericQueriesDao<ProductCategory> pCD, ProductDao pDS, HttpServletRequest req) throws SQLException {
         List<String> headers = Collections.list(req.getParameterNames());

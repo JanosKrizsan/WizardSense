@@ -1,6 +1,6 @@
 package com.codecool.shop.controller;
 
-import com.codecool.shop.config.ErrorHandling;
+import com.codecool.shop.config.ErrorHandler;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.config.Utils;
 import com.codecool.shop.dao.implementation.JDBC.CartDaoJDBC;
@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.security.InvalidParameterException;
 import java.sql.SQLException;
 
 @WebServlet(urlPatterns = {"/confirmation"})
@@ -23,7 +24,7 @@ public class ConfirmationController extends HttpServlet {
     private CartDaoJDBC cartDataStore = CartDaoJDBC.getInstance();
     private OrderDaoJDBC orderDataStore = OrderDaoJDBC.getInstance();
     private UserAddressDaoJDBC addressDataStore = UserAddressDaoJDBC.getInstance();
-    private ErrorHandling handler = new ErrorHandling();
+    private ErrorHandler handler = new ErrorHandler();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
@@ -50,11 +51,16 @@ public class ConfirmationController extends HttpServlet {
 
             int addressLocation = addressDataStore.getAddressByUserId(userID).size() - 1;
             String emailAddress = addressDataStore.getAddressByUserId(userID).get(addressLocation).getOrderFields().get("eMail");
-//            Utils.sendEmail(emailAddress);
+            Utils.sendEmail(emailAddress);
 
             engine.process("product/confirmation.html", context, resp.getWriter());
         } catch (SQLException | IOException e) {
             handler.ExceptionOccurred(resp, session, e);
+            try {
+            throw new InvalidParameterException();
+            } catch (InvalidParameterException s) {
+                ErrorHandler.ExceptionOccurred(s);
+            }
         }
 
     }

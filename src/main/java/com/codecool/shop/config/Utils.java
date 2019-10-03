@@ -42,25 +42,16 @@ public final class Utils {
     }
 
     public static void sendEmail(String to) {
-        String from = "BizardWizzard@yandex.com";
-        final String username = "BizardWizzard";
-        final String password = "pwoEkrpo123123";
-        String host = "smtp.mailtrap.io";
-
-        Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", host);
-        props.put("mail.smtp.port", "2525");
-
-        Session session = Session.getDefaultInstance(props, new Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(username, password);
-            }
-        });
-
         try {
+            String from = "bizardwizzard@yandex.com";
+            String host = "smtp.mailtrap.io";
+
+            Properties props = new Properties();
+            props.put("mail.smtp.auth", "false");
+            props.put("mail.smtp.host", host);
+            props.put("mail.smtp.port", "2525");
+
+            Session session = Session.getDefaultInstance(props);
 
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(from));
@@ -68,12 +59,11 @@ public final class Utils {
             message.setSubject("Thank you for your purchase!");
             String content = "Thank ye fer yer purchase, may the powers that be keep thee well! We look forward for yer next purchase!";
             message.setText(content);
-            Transport.send(message);
+            Transport.send(message, "35f15a7443a708", "a5a96f55df9c91");
 
-            ErrorHandling.LOGGER.info("E-mail sent upon purchase!");
+            ErrorHandler.LOGGER.info("E-mail successfully sent upon purchase!");
         } catch (MessagingException e) {
-            new ErrorHandling().ExceptionOccurred(e);
-            throw new RuntimeException(e);
+            ErrorHandler.ExceptionOccurred(e);
         }
     }
 

@@ -4,12 +4,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ErrorHandling {
+public class ErrorHandler {
 
-    public static final Logger LOGGER = Logger.getLogger(ErrorHandling.class.getName());
+    public static final Logger LOGGER = Logger.getLogger(ErrorHandler.class.getName());
 
     public void ExceptionOccurred(HttpServletResponse resp, HttpSession sess, Exception e) {
         if (e instanceof SQLException) {
@@ -59,7 +58,7 @@ public class ErrorHandling {
                 resp.sendError(errorMessage, "Unknown error occurred, please contact the Arch Wizard!");
             }
 
-            resp.wait(10);
+            resp.wait(5);
             resp.sendRedirect("/");
         } catch (Exception e) {
             LOGGER.warning(String.format("Unknown Exception occurred: %s", e));

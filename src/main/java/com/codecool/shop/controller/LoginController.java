@@ -1,6 +1,6 @@
 package com.codecool.shop.controller;
 
-import com.codecool.shop.config.ErrorHandling;
+import com.codecool.shop.config.ErrorHandler;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.config.Utils;
 import com.codecool.shop.dao.implementation.JDBC.*;
@@ -19,7 +19,7 @@ import java.sql.SQLException;
 @WebServlet(urlPatterns = {"/login"})
 public class LoginController extends HttpServlet {
     private UserDaoJDBC userDataStore = UserDaoJDBC.getInstance();
-    private ErrorHandling handler = new ErrorHandling();
+    private ErrorHandler handler = new ErrorHandler();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {

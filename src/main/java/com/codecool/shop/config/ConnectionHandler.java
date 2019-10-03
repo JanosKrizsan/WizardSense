@@ -10,7 +10,7 @@ import java.util.Properties;
 import org.postgresql.ds.PGSimpleDataSource;
 
 
-public abstract class ConnectionHandler extends ErrorHandling {
+public abstract class ConnectionHandler extends ErrorHandler {
 
     private Connection conn;
     private PGSimpleDataSource dataSource;
@@ -49,7 +49,7 @@ public abstract class ConnectionHandler extends ErrorHandling {
 
 
         } catch (ClassNotFoundException | IOException e) {
-            ErrorHandling.ExceptionOccurred(e);
+            ErrorHandler.ExceptionOccurred(e);
         }
 
         dataSource.getConnection().close();

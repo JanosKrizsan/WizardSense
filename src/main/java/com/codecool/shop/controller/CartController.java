@@ -1,6 +1,6 @@
 package com.codecool.shop.controller;
 
-import com.codecool.shop.config.ErrorHandling;
+import com.codecool.shop.config.ErrorHandler;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.config.Utils;
 import com.codecool.shop.dao.implementation.JDBC.CartDaoJDBC;
@@ -22,7 +22,7 @@ import java.util.*;
 public class CartController extends HttpServlet {
     private CartDaoJDBC cartDataStore = CartDaoJDBC.getInstance();
     private UserDaoJDBC userDataStore = UserDaoJDBC.getInstance();
-    private ErrorHandling handler = new ErrorHandling();
+    private ErrorHandler handler = new ErrorHandler();
 
 
     private void addOrRemoveProduct(HttpServletRequest req) throws SQLException {

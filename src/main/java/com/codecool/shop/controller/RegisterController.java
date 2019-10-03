@@ -1,6 +1,6 @@
 package com.codecool.shop.controller;
 
-import com.codecool.shop.config.ErrorHandling;
+import com.codecool.shop.config.ErrorHandler;
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.implementation.JDBC.UserDaoJDBC;
 import com.codecool.shop.model.User;
@@ -18,7 +18,7 @@ import java.sql.SQLException;
 @WebServlet(urlPatterns = {"/register"})
 public class RegisterController extends HttpServlet {
 
-    private ErrorHandling handler = new ErrorHandling();
+    private ErrorHandler handler = new ErrorHandler();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
