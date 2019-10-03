@@ -10,6 +10,9 @@ import javax.servlet.annotation.WebListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.HashMap;
+import java.util.logging.Logger;
 
 @WebListener
 public class Initializer implements ServletContextListener {
@@ -17,6 +20,7 @@ public class Initializer implements ServletContextListener {
     private GenericQueriesDao<ProductCategory> productCategoryDataStore = ProductCategoryDaoJDBC.getInstance();
     private GenericQueriesDao<Supplier> supplierDataStore = SupplierDaoJDBC.getInstance();
     private GenericQueriesDao<User> userDataStore = UserDaoJDBC.getInstance();
+    private GenericQueriesDao<UserAddress> addressDataStore = UserAddressDaoJDBC.getInstance();
     private ErrorHandling handler = new ErrorHandling();
 
 
@@ -107,5 +111,19 @@ public class Initializer implements ServletContextListener {
         }
 
         ErrorHandling.LOGGER.info("Initialization all done, ready to go!");
+
+        HashMap<String, String> adminAddress = new HashMap<>();
+        adminAddress.put("name", "Admin Adminovich von Adminsky");
+        adminAddress.put("eMail", "adminsky@adminmail.com");
+        adminAddress.put("phoneNumber", "+36-420-0000");
+        adminAddress.put("country", "Adminia");
+        adminAddress.put("city", "Adminville");
+        adminAddress.put("zipCode", "1337");
+        adminAddress.put("address", "Adamant Street 42");
+
+        for (int i = 0; i < 6; i++) {
+            addressDataStore.add(new UserAddress(adminAddress, admin.getId()));
+        }
+
     }
 }

@@ -8,7 +8,7 @@
             <button id="reset" type="submit" name="reset" value="0"><img class="logo" src="static/img/page_logo.png" alt="WizardSense"/></button>
         </form>
     <a th:if="${userID != null}" href="/shopping-cart" style="text-decoration: none">
-        <img class="cart-logo" src="/static/img/shopping-cart.png" alt="">
+        <img class="cart-logo cart-anchor" src="/static/img/shopping-cart.png" alt="">
         <span th:if="${cartSize > 0}" th:text="${cartSize}" class="dot"></span>
     </a>
     <div th:if="${userID != null}">
@@ -22,6 +22,7 @@
 </div>
 
 <div class="container">
+
     <div class="btn-group">
         <button type="button" class="btn btn-secondary dropdown-toggle filtering-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Cast Filtering Spell
@@ -43,9 +44,9 @@
     </div>
 
     <div id="products" class="row">
-        <div class="col col-sm-12 col-md-6 col-lg-4" th:each="prod : ${products}">
+        <div class="col col-sm-12 col-md-6 col-lg-4 row-card" th:each="prod : ${products}">
             <div class="card magic-select">
-                <img src="http://placehold.it/400x250/000/fff" th:attr="src=${prod.getImageSrc()}" alt="" />
+                <img src="http://placehold.it/400x250/000/fff" class="product-image" th:attr="src=${prod.getImageSrc()}" alt="" />
                 <div class="card-header">
                     <h4 class="card-title" th:text="${prod.getName()}">Product name</h4>
                     <p class="card-text" th:text="${prod.getDescription()}">Product description... </p>
@@ -57,7 +58,7 @@
                     <div class="card-text">
                         <form th:action="@{/}" method="post">
                             <input type="hidden" th:value="${prod.getId()}" name="product">
-                            <input class="btn btn-success" type="submit" value="Add to cart" th:if="${userID}">
+                            <input class="btn btn-success add-to-cart" type="button" value="Add to cart" th:if="${userID}">
                         </form>
 
                     </div>
@@ -65,7 +66,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 <div th:replace="footer.html :: copy"></div>

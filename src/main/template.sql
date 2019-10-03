@@ -82,13 +82,13 @@ CREATE TABLE addresses
 (
     id           SERIAL PRIMARY KEY,
     user_id      INTEGER,
-    name         VARCHAR(20),
-    e_mail       VARCHAR(20),
-    phone_number VARCHAR(30),
-    country      VARCHAR(30),
-    city         VARCHAR(10),
+    name         VARCHAR(50),
+    e_mail       VARCHAR(50),
+    phone_number VARCHAR(50),
+    country      VARCHAR(50),
+    city         VARCHAR(50),
     zip_code     VARCHAR(8),
-    address      VARCHAR(30)
+    address      VARCHAR(80)
 
 
 );
