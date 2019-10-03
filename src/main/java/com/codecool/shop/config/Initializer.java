@@ -66,6 +66,18 @@ public class Initializer implements ServletContextListener {
             Supplier reinar = new Supplier("Reinar's Tomes", "Tomes Shoppe");
             reinar.setId(4);
             supplierDataStore.add(reinar);
+            Supplier trickstertrinkets = new Supplier("Trickster Trinkets", "Wearables and Stylables");
+            trickstertrinkets.setId(5);
+            supplierDataStore.add(trickstertrinkets);
+            Supplier aldakar = new Supplier("Aldakar & Sons", "Music and Noise Makers");
+            aldakar.setId(6);
+            supplierDataStore.add(aldakar);
+            Supplier adventurers = new Supplier("Adventurers' Guild", "All Things From Beyond The Pale");
+            adventurers.setId(6);
+            supplierDataStore.add(adventurers);
+            Supplier rodolpho = new Supplier("Wands of Rodolpho", "Wands, Staves, Rods, for The Lovers of Magic");
+            rodolpho.setId(6);
+            supplierDataStore.add(rodolpho);
 
             //setting up a new product category
             ProductCategory scroll = new ProductCategory("Scroll", "Consumable", "A rolled up parchment. Contains various things");
@@ -95,6 +107,12 @@ public class Initializer implements ServletContextListener {
             ProductCategory book = new ProductCategory("Book", "Consumable", "A tome full of knowledge and mastery.");
             weapon.setId(9);
             productCategoryDataStore.add(book);
+            ProductCategory wondrous = new ProductCategory("Wondrous", "All", "Items of the weird sort.");
+            wondrous.setId(10);
+            productCategoryDataStore.add(wondrous);
+            ProductCategory instrument = new ProductCategory("Instruments", "Equipment", "For those wishing to play a tune, deadly or not.");
+            instrument.setId(11);
+            productCategoryDataStore.add(instrument);
 
 
             //setting up products and printing it
@@ -129,109 +147,121 @@ public class Initializer implements ServletContextListener {
             OintmentOfKVaarn.setImageSrc("https://i.imgur.com/m4ACjLh.png");
             productList.add(OintmentOfKVaarn);
 
-            Product BookOfExaltedDeeds = new Product("Book of Exalted Deeds", 266, "USD", "description", book, reinar);
-            BookOfExaltedDeeds.setImageSrc("https://imgur.com/oi5hYDD");
+            Product BookOfExaltedDeeds = new Product("Book of Exalted Deeds", 266, "USD", "A tome of magic, recants and enacts deeds of good and mighty.", book, reinar);
+            BookOfExaltedDeeds.setImageSrc("https://i.imgur.com/oi5hYDD.png");
             productList.add(BookOfExaltedDeeds);
 
-            Product BookOfVileDarkness = new Product("Book of Vile Darkness", 412, "USD", "description", book, reinar);
-            BookOfVileDarkness.setImageSrc("https://imgur.com/K3rdBE1");
+            Product BookOfVileDarkness = new Product("Book of Vile Darkness", 412, "USD", "Another tome of magic, quite opposite to its brother \"The Book of Exalted Deeds\"", book, reinar);
+            BookOfVileDarkness.setImageSrc("https://i.imgur.com/K3rdBE1.png");
             productList.add(BookOfVileDarkness);
 
-//            Product AmultetOfHealth = new Product("Amulet of Health");
-//            AmultetOfHealth.setImageSrc();
-//            productList.add(AmultetOfHealth);
-//
-//            Product AmuletOfPlanes = new Product("Amulet of Planes");
-//            AmuletOfPlanes.setImageSrc();
-//            productList.add(AmuletOfPlanes);
-//
-//            Product AnimatedShield = new Product("Animated Shield");
-//            AnimatedShield.setImageSrc();
-//            productList.add(AnimatedShield);
-//
-//            Product AnstruthHarp = new Product("Anstruth's Harp");
-//            AnstruthHarp.setImageSrc();
-//            productList.add(AnstruthHarp);
-//
-//            Product ArmorOfInvulerability = new Product("Armor of Invulnerability");
-//            ArmorOfInvulerability.setImageSrc();
-//            productList.add(ArmorOfInvulerability);
-//
-//            Product ArmorOfResistance = new Product("Armor of Resistance");
-//            ArmorOfResistance.setImageSrc();
-//            productList.add(ArmorOfResistance);
-//
-//            Product AxeOfDwarvishLords = new Product("Axe Of Dwarvish Lords");
-//            AxeOfDwarvishLords.setImageSrc();
-//            productList.add(AxeOfDwarvishLords);
-//
-//            Product BadgeOfTheWatch = new Product("Badge of The Watch");
-//            BadgeOfTheWatch.setImageSrc();
-//            productList.add(BadgeOfTheWatch);
-//
-//            Product BagOfBeans = new Product("Bag of Beans");
-//            BagOfBeans.setImageSrc();
-//            productList.add(BagOfBeans);
-//
-//            Product BeltOfDwarvenkind = new Product("Belt of Dwarvenkind");
-//            BeltOfDwarvenkind.setImageSrc();
-//            productList.add(BeltOfDwarvenkind);
-//
-//            Product BeltOfGiantStrength = new Product("Belt of Giant Strength");
-//            BeltOfGiantStrength.setImageSrc();
-//            productList.add(BeltOfGiantStrength);
-//
-//            Product CubeOfForce = new Product("Cube of Force");
-//            CubeOfForce.setImageSrc();
-//            productList.add(CubeOfForce);
-//
-//            Product DragonSlayer = new Product("Dragonslayer");
-//            DragonSlayer.setImageSrc();
-//            productList.add(DragonSlayer);
-//
-//            Product Drown = new Product("Drown");
-//            Drown.setImageSrc();
-//            productList.add(Drown);
-//
-//            Product ElvenChain = new Product("Elven Chainmail");
-//            ElvenChain.setImageSrc();
-//            productList.add(ElvenChain);
-//
-//            Product IronFang = new Product("Ironfang");
-//            IronFang.setImageSrc();
-//            productList.add(IronFang);
-//
-//            Product Matalotok = new Product("Matalotok");
-//            Matalotok.setImageSrc();
-//            productList.add(Matalotok);
-//
-//            Product OrbOfDragonKind = new Product("Orb of Dragonkind");
-//            OrbOfDragonKind.setImageSrc();
-//            productList.add(OrbOfDragonKind);
-//
-//            Product RingOfAirElementalCommand = new Product("Ring of Air Elemental Command");
-//            RingOfAirElementalCommand.setImageSrc();
-//            productList.add(RingOfAirElementalCommand);
-//
-//            Product StaffOfMagi = new Product("Staff of Magi");
-//            StaffOfMagi.setImageSrc();
-//            productList.add(StaffOfMagi);
-//
-//            Product StoneOfGolorr = new Product("Stone of Golorr");
-//            StoneOfGolorr.setImageSrc();
-//            productList.add(StoneOfGolorr);
-//
-//            Product VorpalSword = new Product("Vorpal Sword");
-//            VorpalSword.setImageSrc();
-//            productList.add(VorpalSword);
-//
-//            Product WandOfOrcus = new Product("Wand of Orcus");
-//            WandOfOrcus.setImageSrc();
-//            productList.add(WandOfOrcus);
-//
-//            Product WindVane = new Product("Windvane");
-//            WindVane.setImageSrc();
-//            productList.add(WindVane);
+            Product AmultetOfHealth = new Product("Amulet of Health", 229, "USD", "While wearing this amulet, your life-essence is increased.", trinket, trickstertrinkets);
+            AmultetOfHealth.setImageSrc("https://i.imgur.com/kwhXG90.png");
+            productList.add(AmultetOfHealth);
+
+            Product AmuletOfPlanes = new Product("Amulet of Planes", 99, "USD", "While wearing this, you may *or accidentally not* travel to another plane of existence.", trinket, trickstertrinkets);
+            AmuletOfPlanes.setImageSrc("https://i.imgur.com/OGEtebD.png");
+            productList.add(AmuletOfPlanes);
+
+            Product AnimatedShield = new Product("Animated Shield", 228, "USD", "A living shield, which protects you automatically.", armor, althiev);
+            AnimatedShield.setImageSrc("https://i.imgur.com/iW5nQ4D.png");
+            productList.add(AnimatedShield);
+
+            Product AnstruthHarp = new Product("Anstruth's Harp", 349, "USD", "Perfect to lull the mind and cull the weary enemy. For the experienced Bard!", instrument, aldakar);
+            AnstruthHarp.setImageSrc("https://i.imgur.com/e8pHAXe.png");
+            productList.add(AnstruthHarp);
+
+            Product ArmorOfInvulerability = new Product("Armor of Invulnerability", 1229, "USD", "While wearing this, you cannot be hurt by physical means. Words and magic still hurt.", armor, adventurers);
+            ArmorOfInvulerability.setImageSrc("https://i.imgur.com/DbMX8tc.png");
+            productList.add(ArmorOfInvulerability);
+
+            Product ArmorOfResistance = new Product("Armor of Resistance", 349, "USD", "Wearing this makes you resistant to a type of environmental condition, although you never know which one.", armor, adventurers);
+            ArmorOfResistance.setImageSrc("https://i.imgur.com/6zpMnlX.png");
+            productList.add(ArmorOfResistance);
+
+            Product AxeOfDwarvishLords = new Product("Axe Of Dwarvish Lords", 750, "USD", "And axe from the first age of Dwarves, forged with lava from the Earth's core.", weapon, althiev);
+            AxeOfDwarvishLords.setImageSrc("https://i.imgur.com/XgxYhPQ.png");
+            productList.add(AxeOfDwarvishLords);
+
+            Product BadgeOfTheWatch = new Product("Badge of The Watch", 55, "USD", "A badge which transforms to the badge of local peacekeeping officers, wherever you may be.", trinket, adventurers);
+            BadgeOfTheWatch.setImageSrc("https://i.imgur.com/coICyM2.png");
+            productList.add(BadgeOfTheWatch);
+
+            Product BagOfBeans = new Product("Bag of Beans", 50, "USD", "A pack of exploding beans.", wondrous, adventurers);
+            BagOfBeans.setImageSrc("https://i.imgur.com/X6lxpzL.png");
+            productList.add(BagOfBeans);
+
+            Product BeltOfDwarvenkind = new Product("Belt of Dwarvenkind", 182, "USD", "You can speak Dwarven, see in the dark, and will gain a bit of strength relative to yours.", armor, althiev);
+            BeltOfDwarvenkind.setImageSrc("https://i.imgur.com/tpNW4Qa.png");
+            productList.add(BeltOfDwarvenkind);
+
+            Product BeltOfGiantStrength = new Product("Belt of Giant Strength", 222, "USD", "", armor, adventurers);
+            BeltOfGiantStrength.setImageSrc("https://i.imgur.com/YwTNfNn.png");
+            productList.add(BeltOfGiantStrength);
+
+            Product CubeOfForce = new Product("Cube of Force", 340, "USD", "Can create a barrier of force dependant on the side pushed.", wondrous, adventurers);
+            CubeOfForce.setImageSrc("https://i.imgur.com/55DgG92.png");
+            productList.add(CubeOfForce);
+
+            Product DragonSlayer = new Product("Dragonslayer", 199, "USD", "Can pass through a dragon's or dragonkin's scales with ease, inflicting ethereal damage as well.", weapon, adventurers);
+            DragonSlayer.setImageSrc("https://i.imgur.com/gtz0xVb.png");
+            productList.add(DragonSlayer);
+
+            Product Drown = new Product("Drown", 120, "USD", "A Trident forged by the waterlord Ozayr, for his three-headed son Tritraties. Can command fishes.", weapon, adventurers);
+            Drown.setImageSrc("https://i.imgur.com/CQzfcV8.png");
+            productList.add(Drown);
+
+            Product ElvenChain = new Product("Elven Chainmail", 100, "USD", "An elven chainmail armor infused with magic resistance.", armor, althiev);
+            ElvenChain.setImageSrc("https://i.imgur.com/UsambcB.png");
+            productList.add(ElvenChain);
+
+            Product IronFang = new Product("Ironfang", 116, "USD", "A warpick, with the power of Ogremoch. Also useful for mining.", weapon, althiev);
+            IronFang.setImageSrc("https://i.imgur.com/m5Z0xmN.png");
+            productList.add(IronFang);
+
+            Product Matalotok = new Product("Matalotok", 210, "USD", "A nether-realm warhammer, surrounded by mist and cold.", weapon, althiev);
+            Matalotok.setImageSrc("https://i.imgur.com/tbIVFnD.png");
+            productList.add(Matalotok);
+
+            Product OrbOfDragonKind = new Product("Orb of Dragonkind", 1499, "USD", "An orb with an Evil Dragon's essence. It is quite useful for many deeds revealed or not.", trinket, adventurers);
+            OrbOfDragonKind.setImageSrc("https://i.imgur.com/v6ipte1.png");
+            productList.add(OrbOfDragonKind);
+
+            Product RingOfAirElementalCommand = new Product("Ring of Air Elemental Command", 480, "USD", "As the name states, you can control an Air Elemental. Only one at a time, mind you!", trinket, trickstertrinkets);
+            RingOfAirElementalCommand.setImageSrc("https://i.imgur.com/fWfCuix.png");
+            productList.add(RingOfAirElementalCommand);
+
+            Product StaffOfMagi = new Product("Staff of Magi", 100, "USD", "Provides invisibility while held, at the cost of your life-force. Or Mana, whichever you prefer.", staff, rodolpho);
+            StaffOfMagi.setImageSrc("https://i.imgur.com/JmQMwFB.png");
+            productList.add(StaffOfMagi);
+
+            Product StoneOfGolorr = new Product("Stone of Golorr", 7899, "USD", "With the usage of this stone, you can recall things long gone from the ages, by the eternal mind of Golorr.", wondrous, adventurers);
+            StoneOfGolorr.setImageSrc("https://i.imgur.com/Z8KqJDD.png");
+            productList.add(StoneOfGolorr);
+
+            Product VorpalSword = new Product("Vorpal Sword", 140, "USD", "Slashes not just the physical body, but mind and soul as well", weapon, althiev);
+            VorpalSword.setImageSrc("https://i.imgur.com/zJeSYrk.png");
+            productList.add(VorpalSword);
+
+            Product WandOfOrcus = new Product("Wand of Orcus", 380, "USD", "A black obsidian and iron rod topped with the skull of a human hero once slain by Orcus.", wand, rodolpho);
+            WandOfOrcus.setImageSrc("https://i.imgur.com/Vv2eR2R.png");
+            productList.add(WandOfOrcus);
+
+            Product WindVane = new Product("Windvane", 88, "USD","A spear, also can open portals to other realms.",weapon, adventurers);
+            WindVane.setImageSrc("https://i.imgur.com/ILPUuJn.png");
+            productList.add(WindVane);
+
+            Product ImmovableRod = new Product("Immovable Rod", 255, "USD","With the push of a button, you can make this rod immovable, defying even physical laws.", rod, rodolpho);
+            ImmovableRod.setImageSrc("https://i.imgur.com/3W2HbA2.png");
+            productList.add(ImmovableRod);
+
+            Product RodOfRulership = new Product("Rod of Rulership", 192, "USD","Enables the wielder to impose his/her will on others.",rod, rodolpho);
+            RodOfRulership.setImageSrc("https://i.imgur.com/RFbKq2p.png");
+            productList.add(RodOfRulership);
+
+            Product ShieldOfTheHiddenLord = new Product("Shield of The Hidden Lord", 399, "USD","Of gems and mithril. The shield may or may not speak.",armor, adventurers);
+            ShieldOfTheHiddenLord.setImageSrc("https://i.imgur.com/Vs2NyHj.png");
+            productList.add(ShieldOfTheHiddenLord);
 
             for (Product prod : productList) {
                 productDataStore.add(prod);
