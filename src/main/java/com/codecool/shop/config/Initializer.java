@@ -100,13 +100,13 @@ public class Initializer implements ServletContextListener {
             wand.setId(6);
             productCategoryDataStore.add(wand);
             ProductCategory rod = new ProductCategory("Rod", "Equipment", "Like a wand, but pointier.");
-            rod.setId(6);
+            rod.setId(7);
             productCategoryDataStore.add(rod);
             ProductCategory trinket = new ProductCategory("Trinket", "Equipment", "Stylish and deadly at the same time.");
             trinket.setId(8);
             productCategoryDataStore.add(trinket);
             ProductCategory book = new ProductCategory("Book", "Consumable", "A tome full of knowledge and mastery.");
-            weapon.setId(9);
+            book.setId(9);
             productCategoryDataStore.add(book);
             ProductCategory wondrous = new ProductCategory("Wondrous", "All", "Items of the weird sort.");
             wondrous.setId(10);

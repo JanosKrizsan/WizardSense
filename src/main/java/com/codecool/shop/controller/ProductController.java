@@ -30,27 +30,26 @@ public class ProductController extends HttpServlet {
     private List<Product> defaultProds = null;
     private ErrorHandler handler = new ErrorHandler();
 
-    private void filter(GenericQueriesDao<Supplier> sDS, GenericQueriesDao<ProductCategory> pCD, ProductDao pDS, HttpServletRequest req) throws SQLException {
+    private void filter(HttpServletRequest req) throws SQLException {
         List<String> headers = Collections.list(req.getParameterNames());
 
         if (headers.contains("filter")) {
-            List<Character> filtered = req.getParameter("filter").chars().mapToObj(e -> (char) e).collect(Collectors.toList());
-            int filterId = Integer.parseInt(filtered.get(filtered.size() - 1).toString());
-            filtered.remove(filtered.size() - 1);
+            String filterName = req.getParameter("filter").trim();
 
-            StringBuilder sBuilder = new StringBuilder();
-            for (Character character : filtered) {
-                sBuilder.append(character);
-            }
-
-            String filterName = sBuilder.toString().trim();
-            List<Supplier> suppliers = sDS.getAll().stream().filter(supplier -> supplier.getName().equals(filterName)).collect(Collectors.toList());
+//            StringBuilder sBuilder = new StringBuilder();
+//            for (Character character : filtered) {
+//                sBuilder.append(character);
+//            }
+//
+//            String filterName = sBuilder.toString().trim();
+            List<Supplier> suppliers = supplierDataStore.getAll().stream().filter(supplier -> supplier.getName().equals(filterName)).collect(Collectors.toList());
+            List<ProductCategory> categories = productCategoryDataStore.getAll().stream().filter(cat -> cat.getName().equals(filterName)).collect(Collectors.toList());
 
 
             if (suppliers.size() > 0) {
-                defaultProds = pDS.getBy(sDS.find(filterId));
+                defaultProds = productDataStore.getBy(supplierDataStore.find(suppliers.get(0).getId()));
             } else {
-                defaultProds = pDS.getBy(pCD.find(filterId));
+                defaultProds = productDataStore.getBy(productCategoryDataStore.find(categories.get(0).getId()));
             }
         } else if (headers.contains("reset")) {
             defaultProds = null;
@@ -75,7 +74,7 @@ public class ProductController extends HttpServlet {
             WebContext context = new WebContext(req, resp, req.getServletContext());
 
 
-            filter(supplierDataStore, productCategoryDataStore, productDataStore, req);
+            filter(req);
             context.setVariable("categories", productCategoryDataStore.getAll());
             context.setVariable("suppliers", supplierDataStore.getAll());
             context.setVariable("cartSize", cartSize);

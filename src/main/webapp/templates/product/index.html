@@ -23,7 +23,7 @@
 
 <div class="container">
 
-    <div class="btn-group">
+    <div class="btn-group" >
         <button type="button" class="btn btn-secondary dropdown-toggle filtering-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Cast Filtering Spell
         </button>
@@ -32,12 +32,12 @@
                 <div><strong>&nbsp&nbsp&nbspCategories:</strong></div>
                 <div class="dropdown-divider"></div>
                 <button name="filter" class="dropdown-item" type="submit" th:each="cat : ${categories}"
-                        th:text="${cat.name}" value="#" th:value="${cat.getName() + ' ' + cat.getId()}">
+                        th:text="${cat.name}" value="#" th:value="${cat.getName()}">
                 </button>
                 <div><strong>&nbsp&nbsp&nbspSuppliers:</strong></div>
                 <div class="dropdown-divider"></div>
                 <button name="filter" class="dropdown-item" type="submit" th:each="sup : ${suppliers}"
-                        th:text="${sup.name}" value="#" th:value="${sup.getName() + ' ' + sup.getId()}">
+                        th:text="${sup.name}" value="#" th:value="${sup.getName()}">
                 </button>
             </form>
         </div>
