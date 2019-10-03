@@ -112,6 +112,7 @@ public class OrderDaoJDBC extends ConnectionHandler implements GenericQueriesDao
         statement.setInt(3, order.getCart().getId());
         statement.setInt(4, order.getUser().getId());
         statement.setInt(5, order.getAddress().getId());
+        statement.executeUpdate();
         statement.close();
     }
 }

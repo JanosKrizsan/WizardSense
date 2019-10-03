@@ -53,7 +53,10 @@ public class RegisterController extends HttpServlet {
                 req.setAttribute("errorMessage", "Thou hast chosen an alias already in existence!");
                 doGet(req, resp);
             } else {
-                userDataStore.add(new User(username, password));
+                User user = new User(username, password);
+                userDataStore.add(user);
+                session.setAttribute("userName", username);
+                session.setAttribute("userID", user.getId());
                 resp.sendRedirect("/");
             }
         } catch (SQLException | IOException e) {
