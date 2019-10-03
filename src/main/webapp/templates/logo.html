@@ -5,7 +5,7 @@
 <div th:fragment="copy" class="navbar">
     <a id="to-main-page" href="#" th:href="@{/}"><img class="logo" src="/static/img/page_logo.png"
                                                       alt="WizardSense"></a>
-    <div th:if="${userID != null}">
+    <div class="logout" th:if="${userID != null}">
         <a th:text="'Hello there '+ ${userName}+'!'"></a>
         (<a th:href="@{/logout}">Logout</a>)
     </div>

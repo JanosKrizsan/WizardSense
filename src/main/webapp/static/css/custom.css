@@ -480,3 +480,106 @@ body {
     margin-top: -900px;
     margin-left: 815px;
 }
+
+.summary-card {
+    margin-left: 15%;
+
+    display: grid;
+    width: 75%;
+    height: auto;
+
+    border: 1px solid #4f4f4f;
+    border-radius: 2px;
+    box-shadow: 9px 7px 18px 1px rgba(92,92,92,0.42);
+
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 2fr 1fr;
+}
+
+.summary-card div{
+    padding: 15px;
+}
+
+.summary-product-list{
+    grid-row: 1;
+    grid-column: 1;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: flex-start;
+}
+
+.summary-info-list{
+    margin-top: 35px;
+    grid-row: 1;
+    grid-column: 2;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.summary-buttons{
+    grid-row: 2;
+    grid-column: 2;
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.summary-buttons button {
+    margin: 5px;
+    padding: 5px;
+}
+
+.summary-products {
+    justify-self: center;
+    border: lightgray 1px;
+}
+
+.summary-sum {
+    grid-row: 2;
+    grid-column: 1;
+    border-top: 2px solid black ;
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    width: 80%;
+    align-self: center;
+    justify-self: center;
+}
+
+.summary-product-cell{
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    margin: -30px -10px;
+}
+
+.heading{
+    font-weight: bold;
+    text-decoration: underline black;
+}
+
+.product-name{
+    grid-column: 1;
+}
+
+.product-quantity {
+    grid-column: 5;
+}
+
+.text-sum{
+    grid-column: 1;
+}
+
+.sum-sum{
+    grid-column: 5;
+}
+
+.goodbye-message{
+    text-align: center;
+    margin: 30px 0;
+}
+
+.logout {
+    margin: 20px;
+}

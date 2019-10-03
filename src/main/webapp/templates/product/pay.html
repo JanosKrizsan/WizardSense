@@ -7,16 +7,41 @@
 <div th:replace="logo.html :: copy"></div>
 
 <div class="container">
-    <div th:value="${totalSum}"></div>
-    <div>
-        <a th:href="@{/confirmation}">
-            <button class="btn btn-success" th:text="${'Send gold via psychic link'}"></button>
-        </a>
-    </div>
-    <div>
-        <a th:href="@{/}">
-            <button class="btn btn-danger" th:text="${'Decline thine purchase'}"></button>
-        </a>
+    <h1> Order Summary:</h1>
+    <div class="summary-card">
+        <div class="summary-product-list">
+            <h4>Your Order:</h4>
+            <h5><u>Products:</u></h5>
+            <div class="summary-products">
+                    <div class="summary-product-cell heading">
+                        <p class="product-name"> Prod. Name</p>
+                        <p class="product-quantity"> Qty</p>
+                    </div>
+                <div th:each="product : ${products} " class="summary-product-cell">
+                    <p class="product-name" th:text="${product.getName()}"></p>
+                    <p class="product-quantity" th:text="${cart.getQuantityOfProduct(product) + 'pcs'}"></p>
+                </div>
+            </div>
+        </div>
+        <div class="summary-sum">
+            <p class="text-sum" th:text="${'Your total is '} "></p>
+            <i><p class="sum-sum" th:text="${totalPaid+' GP'}"></p></i>
+        </div>
+        <div class="summary-info-list">
+            <h5><u>Order Info:</u></h5>
+            <p th:text="${'Country: '+address.get('country')}"></p>
+            <p th:text="${'City: '+address.get('city')}"></p>
+            <p th:text="${'Zip Code: '+address.get('zipCode')}"></p>
+            <p th:text="${'Address: '+address.get('address')}"></p>
+        </div>
+        <div class="summary-buttons">
+            <a th:href="@{/confirmation}">
+                <button class="btn btn-success" th:text="${'Send gold via psychic link'}"></button>
+            </a>
+            <a th:href="@{/}">
+                <button class="btn btn-danger" th:text="${'Decline thine purchase'}"></button>
+            </a>
+        </div>
     </div>
 </div>
 

@@ -8,26 +8,18 @@
 <div th:replace="logo.html :: copy"></div>
 
 <div class="container">
-    <div>
-        <span th:text="${'Your total gold extinguished from yer pockets: ' + totalPaid + ' GP'}">...</span>
-        <span th:text="${'Total number of items ye bought: ' + cart.getSumOfProducts()}">...</span>
+    <div class="goodbye-message">
+        <h1> Thank you for purchasing through us!</h1>
+        <p> The items will arrive at your transportation crystal soon.<br>
+            You will shortly receive a confirmation message spell on your <i>meetia</i> crystal.<br>
+            We hope that you are satisfied with your purchase and you will tell the stories of our shop far and wide!</p>
 
-        <p th:text="${order.toString}"></p>
+        <p>Take care on your travels o' generous one!</p>
 
-        <p th:text="${cart.getId()}"></p>
-
-        <div id="product-container" th:each=" item : ${cart.getProductsInCart()}">
-            <div>
-                <span th:text="${item.getName()}"></span>
-                <span th:text="${item.getProductCategory()}"></span>
-                <span th:text="${item.getSupplier()}"></span>
-                <span th:text="${item.getDefaultPrice() + ' GP'}"></span>
-            </div>
-        </div>
+        <p><a th:href="@{/}">Back to main page</a></p>
     </div>
 </div>
 
-<a th:href="@{/}">Back to main page</a>
 <div th:replace="footer.html :: copy"></div>
 
 </body>
