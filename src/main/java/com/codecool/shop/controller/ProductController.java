@@ -36,12 +36,6 @@ public class ProductController extends HttpServlet {
         if (headers.contains("filter")) {
             String filterName = req.getParameter("filter").trim();
 
-//            StringBuilder sBuilder = new StringBuilder();
-//            for (Character character : filtered) {
-//                sBuilder.append(character);
-//            }
-//
-//            String filterName = sBuilder.toString().trim();
             List<Supplier> suppliers = supplierDataStore.getAll().stream().filter(supplier -> supplier.getName().equals(filterName)).collect(Collectors.toList());
             List<ProductCategory> categories = productCategoryDataStore.getAll().stream().filter(cat -> cat.getName().equals(filterName)).collect(Collectors.toList());
 

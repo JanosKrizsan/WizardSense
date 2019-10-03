@@ -25,6 +25,7 @@ import java.sql.SQLException;
 public class ConfirmationController extends HttpServlet {
     private CartDaoJDBC cartDataStore = CartDaoJDBC.getInstance();
     private UserAddressDaoJDBC addressDataStore = UserAddressDaoJDBC.getInstance();
+    private OrderDaoJDBC orderDataStore = OrderDaoJDBC.getInstance();
     private ErrorHandler handler = new ErrorHandler();
 
     @Override
@@ -46,6 +47,7 @@ public class ConfirmationController extends HttpServlet {
             Cart cart = cartDataStore.getCartByUserId(userID);
             if(req.getParameter("wipe").equals("do")) {
                 cartDataStore.remove(cart.getId());
+                orderDataStore.setStatus("complete", orderDataStore.find(cart.getId()));
             }
 
             String addressEmail = addressDataStore.find(addressID).getOrderFields().get("eMail");
